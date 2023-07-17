@@ -1,5 +1,8 @@
+import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/screens/auth/login.dart';
 import 'package:clientapp_taxi_getgo/screens/home/home.dart';
+import 'package:clientapp_taxi_getgo/screens/tabs_screen.dart';
+import 'package:clientapp_taxi_getgo/widgets/map.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -32,7 +35,9 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'Inter',
       ),
-      home:  HomeScreen(),
+      // home: MapScreen(),
+      initialRoute: Routes.verify,
+      onGenerateRoute: Routes.generateRoute,
     );
   }
 }
