@@ -2,6 +2,7 @@ import 'package:clientapp_taxi_getgo/screens/auth/login.dart';
 import 'package:clientapp_taxi_getgo/screens/auth/verify.dart';
 import 'package:clientapp_taxi_getgo/screens/distance/Distance.dart';
 import 'package:clientapp_taxi_getgo/screens/home/home.dart';
+import 'package:clientapp_taxi_getgo/screens/order/SelectCar.dart';
 import 'package:clientapp_taxi_getgo/screens/search/search_sreen.dart';
 import 'package:clientapp_taxi_getgo/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class Routes {
   static const String Detail = '/detailDistance';
   static const String verify = '/verify';
   static const String login = '/login';
-  static const String setting = '/setting';
+  static const String order = '/order';
   static const String report = '/report';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -27,6 +28,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => DetailDistance());
       case verify:
         return MaterialPageRoute(builder: (_) => VerifyOTP());
+      case order:
+        return MaterialPageRoute(builder: (_) => SelectCar());
       default:
         return null;
     }

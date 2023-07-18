@@ -37,7 +37,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _loadMapStyle() async {
-    String style = await rootBundle.loadString('assets/map_style.json');
+    String style = await rootBundle.loadString('assets/jsons/map_style.json');
     final GoogleMapController controller = await _controller.future;
     controller.setMapStyle(style);
   }

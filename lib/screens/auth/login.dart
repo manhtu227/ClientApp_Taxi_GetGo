@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
@@ -165,7 +166,27 @@ class _LoginScreenState extends State<LoginScreen>
                     child: Padding(
                       padding: const EdgeInsets.all(20),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          print('+1 650 555-6789');
+                        
+                          await FirebaseAuth.instance.verifyPhoneNumber(
+                            phoneNumber: '+84${controller.text}',
+                            verificationCompleted:
+                                (PhoneAuthCredential credential) {},
+                            verificationFailed: (FirebaseAuthException e) {
+                              print('ssssssssssssssssssw2');
+                              print(e.message);
+                              throw Exception(e.message);
+                            },
+                            codeSent:
+                                (String verificationId, int? resendToken) {
+                              print('ssssssssssssssss');
+                              print(resendToken);
+                            },
+                            codeAutoRetrievalTimeout:
+                                (String verificationId) {},
+                          );
+                        },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,
                         ),

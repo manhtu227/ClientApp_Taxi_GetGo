@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.clientapp_taxi_getgo">
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
    <application
         android:label="clientapp_taxi_getgo"
         android:name="${applicationName}"

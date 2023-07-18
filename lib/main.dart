@@ -3,9 +3,13 @@ import 'package:clientapp_taxi_getgo/screens/auth/login.dart';
 import 'package:clientapp_taxi_getgo/screens/home/home.dart';
 import 'package:clientapp_taxi_getgo/screens/tabs_screen.dart';
 import 'package:clientapp_taxi_getgo/widgets/map.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -36,7 +40,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Inter',
       ),
       // home: MapScreen(),
-      initialRoute: Routes.verify,
+      initialRoute: Routes.order,
       onGenerateRoute: Routes.generateRoute,
     );
   }

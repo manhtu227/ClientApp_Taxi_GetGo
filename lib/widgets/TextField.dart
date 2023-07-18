@@ -4,7 +4,12 @@ import 'package:flutter_svg/svg.dart';
 class TextInput extends StatefulWidget {
   String iconHint;
   String hintText;
-  TextInput({required this.iconHint, required this.hintText, super.key});
+  double width;
+  TextInput(
+      {required this.iconHint,
+      this.width = 0,
+      required this.hintText,
+      super.key});
 
   @override
   State<TextInput> createState() => _TextInputState();
@@ -14,10 +19,12 @@ class _TextInputState extends State<TextInput> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
+    if (widget.width == 0) {
+      widget.width = screenWidth - 32 - 16 - 13 - 16;
+    }
     return Container(
       height: 58,
-      width: screenWidth - 32 - 16 - 13 - 16,
+      width: widget.width,
       decoration: BoxDecoration(
         // color: Colors.white,
         color: Color(0xfff1f3f5),
@@ -43,11 +50,13 @@ class _TextInputState extends State<TextInput> {
           ),
           suffixIcon: Padding(
             padding: EdgeInsets.all(10),
-            child: SvgPicture.asset(
-              'assets/svgs/${widget.iconHint}.svg',
-              height: 10,
-              width: 10,
-            ),
+            child: widget.iconHint != "none"
+                ? SvgPicture.asset(
+                    'assets/svgs/${widget.iconHint}.svg',
+                    height: 10,
+                    width: 10,
+                  )
+                : Text(''),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(

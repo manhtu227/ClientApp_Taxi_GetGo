@@ -4,7 +4,16 @@
         "elementType": "geometry",
         "stylers": [
             {
-                "color": "#e0e4e9"
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.business",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
             }
         ]
     },
@@ -22,6 +31,24 @@
         "stylers": [
             {
                 "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
             }
         ]
     },
