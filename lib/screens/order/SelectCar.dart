@@ -9,7 +9,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/widgets.dart';
 
 class SelectCar extends StatelessWidget {
-  const SelectCar({super.key});
+  SelectCar({super.key});
+  TextEditingController _promo = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +87,7 @@ class SelectCar extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextInput(
+                            controller: _promo,
                             iconHint: "none",
                             hintText: "Enter Promo Code",
                             width: 300,

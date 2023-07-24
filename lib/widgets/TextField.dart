@@ -5,8 +5,11 @@ class TextInput extends StatefulWidget {
   String iconHint;
   String hintText;
   double width;
+  TextEditingController controller;
+
   TextInput(
-      {required this.iconHint,
+      {required this.controller,
+      required this.iconHint,
       this.width = 0,
       required this.hintText,
       super.key});
@@ -26,19 +29,11 @@ class _TextInputState extends State<TextInput> {
       height: 58,
       width: widget.width,
       decoration: BoxDecoration(
-        // color: Colors.white,
         color: Color(0xfff1f3f5),
-        // color: Color(0xffFAFAFA),
         borderRadius: BorderRadius.circular(13),
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Color(0x14000000),
-        //     offset: Offset(0, 4),
-        //     blurRadius: 2,
-        //   ),
-        // ],
       ),
       child: TextFormField(
+        controller: widget.controller,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(20),
           hintText: widget.hintText,

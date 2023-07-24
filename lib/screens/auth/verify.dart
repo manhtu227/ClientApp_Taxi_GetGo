@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:clientapp_taxi_getgo/widgets/TextSizeL.dart';
+import 'package:clientapp_taxi_getgo/viewmodel/OTPViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pinput/pinput.dart';
 
 class VerifyOTP extends StatefulWidget {
@@ -16,10 +14,22 @@ class VerifyOTP extends StatefulWidget {
 class _VerifyOTPState extends State<VerifyOTP> {
   int remainingTime = 60;
   late Timer timer;
+  late VerifyOTPViewModel viewModel; // Khởi tạo ViewModel
+  late Map<String, Object> data;
   @override
   void initState() {
     super.initState();
+
     startCountdown();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Lấy giá trị data ở đây sau khi đã hoàn thành initState()
+    data = ModalRoute.of(context)?.settings.arguments as Map<String, Object>;
+
+    viewModel = VerifyOTPViewModel(data['check'] == true);
   }
 
   void startCountdown() {
@@ -67,33 +77,38 @@ class _VerifyOTPState extends State<VerifyOTP> {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextSizeL(
-                    name: "OTP code verification",
+                  Text(
+                    data['title'] as String,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       children: [
                         TextSpan(
-                          text:
-                              'GetGo has sent you a 6-digit OTP to \nyour phone number ',
-                          style: TextStyle(
-                              fontSize: 15,
-                              height: 1.5,
-                              color: Color(0xc4000000)),
+                          text: data['summary'] as String,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            height: 1.5,
+                            color: Color(0xc4000000),
+                          ),
                         ),
                         TextSpan(
-                          text: '0974220702',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xc4000000)),
+                          text: data['phone'] as String,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xc4000000),
+                          ),
                         ),
                       ],
                     ),
@@ -104,48 +119,54 @@ class _VerifyOTPState extends State<VerifyOTP> {
             const SizedBox(
               height: 10,
             ),
-            Center(
-              child: Pinput(
-                length: 6,
-                // defaultPinTheme: defaultPinTheme,
-                // focusedPinTheme: focusedPinTheme,
-                // submittedPinTheme: submittedPinTheme,
-
-                showCursor: true,
-                onCompleted: (pin) => print(pin),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Center(
+                child: Pinput(
+                  length: 6,
+                  // defaultPinTheme: defaultPinTheme,
+                  // focusedPinTheme: focusedPinTheme,
+                  // submittedPinTheme: submittedPinTheme,
+                  showCursor: true,
+                  onCompleted: (value) {
+                    viewModel.onCompleted('84${data['phone']}', value, context);
+                  },
+                ),
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            const Center(
-              child: Text(
-                "Resend code",
-                style: TextStyle(fontSize: 15, height: 1.5),
-              ),
-            ),
-            Center(
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "(Remaining ",
-                      style: TextStyle(
-                          fontSize: 15,
-                          height: 1.5,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                    TextSpan(
-                      text: "${remainingTime}s)",
-                      style: TextStyle(
-                          fontSize: 15,
-                          height: 1.5,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                  ],
+            if (data['check'] != true) ...[
+              Center(
+                child: Text(
+                  "Resend code",
+                  style: TextStyle(fontSize: 15, height: 1.5),
                 ),
               ),
-            ),
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "(Remaining ",
+                        style: TextStyle(
+                            fontSize: 15,
+                            height: 1.5,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                      TextSpan(
+                        text: "${remainingTime}s)",
+                        style: TextStyle(
+                            fontSize: 15,
+                            height: 1.5,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),

@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Inter',
       ),
       // home: MapScreen(),
-      initialRoute: Routes.order,
+      initialRoute: Routes.search,
       onGenerateRoute: Routes.generateRoute,
     );
   }

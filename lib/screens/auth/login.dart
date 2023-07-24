@@ -1,6 +1,10 @@
+import 'package:clientapp_taxi_getgo/services/apis/api_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+
+import '../../routes/routes.dart';
+part 'login.logic.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,11 +15,12 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController phoneController =
+      TextEditingController(text: "974220702");
   late AnimationController _animationController;
   late Animation<Offset> _animation;
-
   bool _isKeyboardOpen = false;
+  bool _checkValidate = false;
   @override
   void initState() {
     super.initState();
@@ -43,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
+    final logic = LoginLogic(phoneNumber: phoneController, context: context);
     return SafeArea(
       child: Scaffold(
         body: GestureDetector(
@@ -105,20 +111,25 @@ class _LoginScreenState extends State<LoginScreen>
                             child: Stack(children: [
                               InternationalPhoneNumberInput(
                                 onInputChanged: (PhoneNumber number) {
-                                  print(number.phoneNumber);
+                                  // phoneController.text =
+                                  //     number.phoneNumber as String;
                                 },
                                 onInputValidated: (bool value) {
-                                  print(value);
+                                  if (value == true) {
+                                    setState(() {
+                                      _checkValidate = value;
+                                    });
+                                  }
                                 },
                                 cursorColor: Colors.black,
                                 formatInput: false,
-                                selectorConfig: SelectorConfig(
+                                selectorConfig: const SelectorConfig(
                                   selectorType:
                                       PhoneInputSelectorType.BOTTOM_SHEET,
                                 ),
                                 inputDecoration: InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.only(bottom: 15, left: 0),
+                                  contentPadding: const EdgeInsets.only(
+                                      bottom: 15, left: 0),
                                   border: InputBorder.none,
                                   hintText: "Your phone number",
                                   hintStyle: TextStyle(
@@ -129,15 +140,12 @@ class _LoginScreenState extends State<LoginScreen>
                                 ignoreBlank: false,
                                 autoValidateMode: AutovalidateMode.disabled,
                                 selectorTextStyle:
-                                    TextStyle(color: Colors.black),
+                                    const TextStyle(color: Colors.black),
                                 initialValue: PhoneNumber(isoCode: 'VN'),
-                                textFieldController: controller,
+                                textFieldController: phoneController,
                                 // keyboardType: TextInputType.numberWithOptions(
                                 //     signed: true, decimal: true),
-                                inputBorder: OutlineInputBorder(),
-                                onSaved: (PhoneNumber number) {
-                                  print('On Saved: $number');
-                                },
+                                inputBorder: const OutlineInputBorder(),
                               ),
                               Positioned(
                                   left: 90,
@@ -166,27 +174,7 @@ class _LoginScreenState extends State<LoginScreen>
                     child: Padding(
                       padding: const EdgeInsets.all(20),
                       child: TextButton(
-                        onPressed: () async {
-                          print('+1 650 555-6789');
-                        
-                          await FirebaseAuth.instance.verifyPhoneNumber(
-                            phoneNumber: '+84${controller.text}',
-                            verificationCompleted:
-                                (PhoneAuthCredential credential) {},
-                            verificationFailed: (FirebaseAuthException e) {
-                              print('ssssssssssssssssssw2');
-                              print(e.message);
-                              throw Exception(e.message);
-                            },
-                            codeSent:
-                                (String verificationId, int? resendToken) {
-                              print('ssssssssssssssss');
-                              print(resendToken);
-                            },
-                            codeAutoRetrievalTimeout:
-                                (String verificationId) {},
-                          );
-                        },
+                        onPressed: logic.loginOrSignup,
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,
                         ),
