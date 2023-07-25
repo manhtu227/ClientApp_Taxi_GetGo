@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:clientapp_taxi_getgo/viewmodel/OTPViewModel.dart';
+import 'package:clientapp_taxi_getgo/providers/OTPViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 

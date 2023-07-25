@@ -1,12 +1,13 @@
+import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/services/googlemap/api_places.dart';
 import 'package:clientapp_taxi_getgo/widgets/ListPlace.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextField.dart';
 import 'package:clientapp_taxi_getgo/widgets/locationListTitle.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/location.dart';
 import '../../widgets/TextSizeL.dart';
@@ -20,23 +21,35 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController _currentLocation = TextEditingController();
+  FocusNode _currentFocus = FocusNode();
   TextEditingController _desLocation = TextEditingController();
-  List<Location> locations = [];
+  FocusNode _desFocus = FocusNode();
+  List<LocationModel> locations = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _currentLocation.addListener(onChange);
+    print('333333333333');
+    APIPlace.getCurrentLocation();
+    print(context.read<DirectionsViewModel>().currentLocation.coordinates);
+    _currentLocation.text =
+        context.read<DirectionsViewModel>().currentLocation.summary;
+    _desFocus.requestFocus();
+    _currentLocation.addListener(() {
+      onChange(_currentLocation.text);
+    });
+    _desLocation.addListener(() {
+      onChange(_desLocation.text);
+    });
   }
 
-  void onChange() async {
-    print('fffffffffff');
-    if (_currentLocation.text.length > 2) {
-      EasyDebounce.debounce('my-debouncer', Duration(milliseconds: 500),
+  void onChange(String text) async {
+    if (text.length > 2) {
+      print('hihuiiiiiiiiii');
+      EasyDebounce.debounce('my-debouncer', Duration(milliseconds: 200),
           () async {
-        locations = await APIPlace.getSuccession(_currentLocation.text);
-        setState(() {});
+        locations = await APIPlace.getSuccession(text);
       });
     } else
       locations = [];
@@ -44,15 +57,28 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
 // Hàm xử lý khi click vào LocationListTitle
-  void onLocationListTitleTap(Location location) {
-    setState(() {
+  void onLocationListTitleTap(LocationModel location) async {
+    final provider = context.read<DirectionsViewModel>();
+    if (_desFocus.hasFocus) {
+      _desLocation.text = location.summary;
+      await provider.updateDesLocation(location);
+      await provider.createPolylines();
+
+      Navigator.of(context).pushNamed(Routes.Detail);
+    }
+    if (_currentFocus.hasFocus) {
       _currentLocation.text = location.summary;
-      locations = [];
-    });
+      provider.updateCurrentLocation(location);
+      _desFocus.requestFocus();
+    }
+    locations = [];
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    print(context.read<DirectionsViewModel>().currentLocation.coordinates);
+    print(context.read<DirectionsViewModel>().currentLocation.title);
     double screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
@@ -109,6 +135,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     SizedBox(width: 16),
                     TextInput(
+                      focus: _currentFocus,
                       controller: _currentLocation,
                       hintText: "Enter pick-up ...",
                       iconHint: "currentlocation",
@@ -133,6 +160,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     SizedBox(width: 22),
                     TextInput(
+                      focus: _desFocus,
                       controller: _desLocation,
                       hintText: "Enter destination ...",
                       iconHint: "MarkerGrey",
@@ -140,11 +168,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                const Divider(
-                  thickness: 1,
-                  height: 8,
-                  color: Color(0xFFACAAAA),
-                ),
+
                 locations.isNotEmpty
                     ? LocationListTitle(
                         locations: locations,
@@ -153,7 +177,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     : Container(
                         child: Column(
                         children: [
-                          SizedBox(height: 20),
+                          // const Divider(
+                          //   thickness: 1,
+                          //   height: 8,
+                          //   color: Color.fromARGB(140, 172, 170, 170),
+                          // ),
+                          SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -177,12 +206,12 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
-                          const Divider(
-                            thickness: 1,
-                            height: 8,
-                            color: Color(0xFFACAAAA),
-                          ),
+                          // const SizedBox(height: 10),
+                          // const Divider(
+                          //   thickness: 1,
+                          //   height: 8,
+                          //   color: Color.fromARGB(140, 172, 170, 170),
+                          // ),
                           const SizedBox(height: 20),
                           ListPlace(color: const Color(0xfff1f3f5)),
                         ],
@@ -191,7 +220,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 // const Divider(
                 //   thickness: 1,
                 //   height: 8,
-                //   color: Color(0xFFACAAAA),
+                //   color: Color.fromARGB(140, 172, 170, 170),
                 // ),
                 // const SizedBox(height: 20),
               ],

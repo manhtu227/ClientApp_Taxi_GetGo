@@ -42,10 +42,13 @@ class ListServiceCar extends StatelessWidget {
             color: Color(0xfffffffff),
             borderRadius: BorderRadius.circular(13),
           ),
-          child: SvgPicture.asset(
-            icon,
-            // width: 58.77,
-            // height: 27.77,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: SvgPicture.asset(
+              icon,
+              // width: 20,
+              // height: 27.77,
+            ),
           ),
         ),
         SizedBox(

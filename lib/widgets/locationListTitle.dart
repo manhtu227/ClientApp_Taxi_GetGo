@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 class LocationListTitle extends StatelessWidget {
   LocationListTitle(
       {super.key, required this.locations, required this.onClick});
-  List<Location> locations;
+  List<LocationModel> locations;
   Function onClick;
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class LocationListTitle extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 5.0),
                   child: Text(
                     locations[index].title,
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 15,
@@ -44,6 +44,7 @@ class LocationListTitle extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
+                  maxLines: 1,
                   locations[index].summary,
                   style: const TextStyle(
                     fontSize: 13,

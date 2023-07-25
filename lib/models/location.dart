@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class Location {
+class LocationModel {
   String title;
   String summary;
-
-  Location(this.title, this.summary);
+  String placeID;
+  LatLng coordinates;
+  LocationModel(
+      {required this.title,
+      required this.summary,
+      required this.placeID,
+      this.coordinates = const LatLng(0, 0)});
 }

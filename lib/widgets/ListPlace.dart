@@ -43,8 +43,8 @@ class ListPlace extends StatelessWidget {
                         ),
                         SvgPicture.asset(
                           'assets/svgs/home.svg',
-                          width: 24,
-                          height: 24,
+                          // width: 24,
+                          // height: 24,
                         ),
                         const SizedBox(
                           width: 16,
@@ -92,8 +92,8 @@ class ListPlace extends StatelessWidget {
                         ),
                         SvgPicture.asset(
                           'assets/svgs/office.svg',
-                          width: 22,
-                          height: 22,
+                          width: 16,
+                          height: 16,
                         ),
                         const SizedBox(
                           width: 16,
@@ -141,8 +141,6 @@ class ListPlace extends StatelessWidget {
                         ),
                         SvgPicture.asset(
                           'assets/svgs/home.svg',
-                          width: 24,
-                          height: 24,
                         ),
                         const SizedBox(
                           width: 16,

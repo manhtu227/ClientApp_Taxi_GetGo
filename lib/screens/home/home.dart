@@ -1,8 +1,10 @@
+import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
 import 'package:clientapp_taxi_getgo/widgets/ListPlace.dart';
 import 'package:clientapp_taxi_getgo/widgets/ListServiceCar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../routes/routes.dart';
 
@@ -15,13 +17,23 @@ class _HomeScreenState extends State<HomeScreen> {
   final double coverHeight = 170;
   final double buttonHeight = 51;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final locationProvider = context.read<DirectionsViewModel>();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    locationProvider.updateLocationData();
+    // });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final top = coverHeight - buttonHeight / 2;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color(0xfff1f3f5),
       ),
       child: Column(

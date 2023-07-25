@@ -6,13 +6,16 @@ class TextInput extends StatefulWidget {
   String hintText;
   double width;
   TextEditingController controller;
+  FocusNode? focus = FocusNode();
 
-  TextInput(
-      {required this.controller,
-      required this.iconHint,
-      this.width = 0,
-      required this.hintText,
-      super.key});
+  TextInput({
+    required this.controller,
+    required this.iconHint,
+    this.focus, // Xóa từ khóa const ở đây
+    this.width = 0,
+    required this.hintText,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<TextInput> createState() => _TextInputState();
@@ -33,18 +36,18 @@ class _TextInputState extends State<TextInput> {
         borderRadius: BorderRadius.circular(13),
       ),
       child: TextFormField(
+        focusNode: widget.focus,
         controller: widget.controller,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(20),
+          contentPadding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
           hintText: widget.hintText,
           hintStyle: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w400,
-            height: 0.6666666667,
             color: Color(0x7f595555),
           ),
           suffixIcon: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(13),
             child: widget.iconHint != "none"
                 ? SvgPicture.asset(
                     'assets/svgs/${widget.iconHint}.svg',

@@ -1,9 +1,11 @@
+import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/TextField.dart';
 
@@ -20,11 +22,29 @@ class _DetailDistanceState extends State<DetailDistance> {
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
-            height: MediaQuery.of(context).size.height - 200,
+            height: MediaQuery.of(context).size.height -
+                MediaQuery.of(context).size.height / 2.6,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
                 MapScreen(),
+                Positioned(
+                    top: 20,
+                    left: 10,
+                    child: IconButton(
+                      onPressed: () {
+                        print('hsgg');
+                        print(context
+                            .read<DirectionsViewModel>()
+                            .currentLocation
+                            .coordinates);
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.black, // Icon color is black
+                      ),
+                    )),
                 Positioned(
                   // top: MediaQuery.of(context).size.height / 2,
                   left: 0,
