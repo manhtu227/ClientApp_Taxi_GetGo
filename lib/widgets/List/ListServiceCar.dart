@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ListServiceCar extends StatelessWidget {
@@ -36,8 +37,8 @@ class ListServiceCar extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 75,
-          width: 75,
+          height: ScreenUtil().setHeight(63),
+          width: ScreenUtil().setWidth(68),
           decoration: BoxDecoration(
             color: Color(0xfffffffff),
             borderRadius: BorderRadius.circular(13),
@@ -52,12 +53,12 @@ class ListServiceCar extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 11,
+          height: ScreenUtil().setHeight(11),
         ),
         Text(
           label,
           style: TextStyle(
-            fontSize: 13,
+            fontSize: ScreenUtil().setSp(9),
             fontWeight: FontWeight.w700,
             color: Color(0xff000000),
           ),

@@ -10,5 +10,5 @@ class LocationModel {
       {required this.title,
       required this.summary,
       required this.placeID,
-      this.coordinates = const LatLng(0, 0)});
+      this.coordinates = const LatLng(10.7625, 106.6823)});
 }

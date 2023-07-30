@@ -1,12 +1,15 @@
+import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
 import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/services/googlemap/api_places.dart';
-import 'package:clientapp_taxi_getgo/widgets/ListPlace.dart';
+import 'package:clientapp_taxi_getgo/widgets/List/ListPlace.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextField.dart';
 import 'package:clientapp_taxi_getgo/widgets/locationListTitle.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/location.dart';
@@ -50,6 +53,13 @@ class _SearchScreenState extends State<SearchScreen> {
       EasyDebounce.debounce('my-debouncer', Duration(milliseconds: 200),
           () async {
         locations = await APIPlace.getSuccession(text);
+        // locations = [
+        //   LocationModel(
+        //       title: 'Quận 1',
+        //       summary: 'Quận 1, Thành phố Hồ Chí Minh, Viet Nam',
+        //       placeID: 'hihii',
+        //       coordinates: const LatLng(10.7757, 106.7004))
+        // ];
       });
     } else
       locations = [];
@@ -62,8 +72,9 @@ class _SearchScreenState extends State<SearchScreen> {
     if (_desFocus.hasFocus) {
       _desLocation.text = location.summary;
       await provider.updateDesLocation(location);
-      await provider.createPolylines();
 
+      await provider
+          .createPolylines(context.read<CarTypeProvider>().updatePriceByType);
       Navigator.of(context).pushNamed(Routes.Detail);
     }
     if (_currentFocus.hasFocus) {
@@ -190,12 +201,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                 children: [
                                   Icon(
                                     Icons.bookmark,
-                                    size: 34,
+                                    size: 25,
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   SizedBox(width: 16),
                                   TextSizeL(
                                     name: "Save placed",
+                                    size: ScreenUtil().setSp(13),
                                   ),
                                 ],
                               ),

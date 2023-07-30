@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ListPlace extends StatelessWidget {
@@ -9,8 +10,8 @@ class ListPlace extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      height: 37,
-      width: screenWidth - 32,
+      height: ScreenUtil().setHeight(37),
+      width: screenWidth - ScreenUtil().setWidth(32),
       // margin: EdgeInsets.only(left: 16),
       child: ListView(
         scrollDirection: Axis.horizontal,
@@ -38,21 +39,21 @@ class ListPlace extends StatelessWidget {
                       // mainAxisAlignment:
                       //     MainAxisAlignment.spaceAround,
                       children: [
-                        const SizedBox(
-                          width: 16,
+                        SizedBox(
+                          width: ScreenUtil().setWidth(16),
                         ),
                         SvgPicture.asset(
                           'assets/svgs/home.svg',
                           // width: 24,
                           // height: 24,
                         ),
-                        const SizedBox(
-                          width: 16,
+                        SizedBox(
+                          width: ScreenUtil().setWidth(16),
                         ),
-                        const Text(
+                        Text(
                           'Home',
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: ScreenUtil().setWidth(10),
                             fontWeight: FontWeight.w600,
                             color: Color(0xff000000),
                           ),
@@ -72,7 +73,7 @@ class ListPlace extends StatelessWidget {
             ),
             child: Container(
               // padding: EdgeInsets.fromLTRB(18, 9, 28, 9),
-              margin: EdgeInsets.only(left: 16),
+              margin: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
               height: double.infinity,
               decoration: BoxDecoration(
                 color: color,
@@ -87,21 +88,21 @@ class ListPlace extends StatelessWidget {
                       // mainAxisAlignment:
                       //     MainAxisAlignment.spaceAround,
                       children: [
-                        const SizedBox(
-                          width: 16,
+                        SizedBox(
+                          width: ScreenUtil().setWidth(16),
                         ),
                         SvgPicture.asset(
                           'assets/svgs/office.svg',
-                          width: 16,
-                          height: 16,
+                          width: ScreenUtil().setWidth(16),
+                          height: ScreenUtil().setHeight(16),
                         ),
-                        const SizedBox(
-                          width: 16,
+                        SizedBox(
+                          width: ScreenUtil().setWidth(16),
                         ),
-                        const Text(
+                        Text(
                           'Office',
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: ScreenUtil().setSp(10),
                             fontWeight: FontWeight.w600,
                             color: Color(0xff000000),
                           ),
@@ -136,19 +137,19 @@ class ListPlace extends StatelessWidget {
                       // mainAxisAlignment:
                       //     MainAxisAlignment.spaceAround,
                       children: [
-                        const SizedBox(
-                          width: 16,
+                        SizedBox(
+                          width: ScreenUtil().setWidth(16),
                         ),
                         SvgPicture.asset(
                           'assets/svgs/home.svg',
                         ),
-                        const SizedBox(
-                          width: 16,
+                        SizedBox(
+                          width: ScreenUtil().setWidth(16),
                         ),
-                        const Text(
+                        Text(
                           'Home',
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: ScreenUtil().setSp(10),
                             fontWeight: FontWeight.w600,
                             color: Color(0xff000000),
                           ),

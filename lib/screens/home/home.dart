@@ -1,7 +1,8 @@
 import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
-import 'package:clientapp_taxi_getgo/widgets/ListPlace.dart';
-import 'package:clientapp_taxi_getgo/widgets/ListServiceCar.dart';
+import 'package:clientapp_taxi_getgo/widgets/List/ListPlace.dart';
+import 'package:clientapp_taxi_getgo/widgets/List/ListServiceCar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           // Image(image: AssetImage('assets/images/homebanner.png')),
           SizedBox(
-            height: 208,
+            height: ScreenUtil().setHeight(190),
             child: Stack(
               clipBehavior: Clip.none,
               children: [
@@ -52,8 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: coverHeight,
                 ),
                 Positioned(
-                  left: 16,
-                  right: 16,
+                  left: ScreenUtil().setWidth(16),
+                  right: ScreenUtil().setWidth(16),
                   top: top,
                   child: TextButton(
                     onPressed: () {
@@ -78,22 +79,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       child: Container(
-                        margin: EdgeInsets.only(left: 25, top: 2, right: 25),
+                        margin: EdgeInsets.only(
+                            left: ScreenUtil().setWidth(25),
+                            top: 2,
+                            right: ScreenUtil().setWidth(25)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               'Where can we take you to?',
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: ScreenUtil().setSp(13),
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff000000),
                               ),
                             ),
                             SvgPicture.asset(
                               'assets/svgs/marker.svg',
-                              width: 13,
-                              height: 17.64,
+                              // width: ScreenUtil().setWidth(13),
+                              // height: ScreenUtil().setHeight(17.64),
                             ),
                           ],
                         ),
@@ -104,24 +108,24 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          SizedBox(
-            height: 15,
-          ),
+          // SizedBox(
+          //   height: ScreenUtil().setHeight(15),
+          // ),
           Padding(
-            padding: const EdgeInsets.only(left: 16.0),
+            padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
             child: ListPlace(),
           ),
           SizedBox(
-            height: 15,
+            height: ScreenUtil().setHeight(15),
           ),
           ListServiceCar(),
           SizedBox(
-            height: 15,
+            height: ScreenUtil().setHeight(15),
           ),
           Container(
-            margin: EdgeInsets.only(left: 16),
-            width: screenWidth - 32,
-            height: 300,
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
+            width: screenWidth - ScreenUtil().setWidth(32),
+            height: ScreenUtil().setHeight(260),
             child: Image.asset(
               'assets/images/bannerHome.png',
               // fit: BoxFit.cover,

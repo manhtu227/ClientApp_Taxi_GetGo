@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 
 class ButtonSizeL extends StatelessWidget {
   final String name;
-  ButtonSizeL({required this.name, super.key});
+  final Function onTap;
+  ButtonSizeL({required this.onTap, required this.name, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: TextButton(
-        onPressed: () async {},
+        onPressed: () {
+          onTap();
+        },
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
         ),

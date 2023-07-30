@@ -11,6 +11,43 @@ import '../../models/directions.dart';
 class APIPlace {
   static final _dioInterceptorManager = DioInterceptorManager();
   static final Dio _dio = _dioInterceptorManager.dioInstance;
+  static Future<List<LocationModel>> getSuccession1(String input) async {
+    String bareURL = 'https://www.mapquestapi.com/search/v3/prediction';
+    final body = {
+      "key": '0XNzjc1tZ6kNX9TUezAsA0mXw3F39BhW',
+      "collection":
+          'address,airport,poi,postalCode,neighborhood,city,county,state,country',
+      "countryCode": 'VN',
+      'q': input
+    };
+    final response = await _dio.get(bareURL, queryParameters: body);
+    List<LocationModel> locations = [];
+    if (response.statusCode == 200) {
+      List<dynamic> result = response.data['results'];
+      print('ssssssssssss');
+      print('ssssssssssss');
+      print('ssssssssssss');
+      for (int i = 0; i < result.length; i++) {
+        print('i: $i');
+        print(result[i]);
+        String name = result[i]['name'];
+        String description = result[i]['displayString'];
+        String placeID = result[i]['id'];
+        LatLng coordinates = LatLng(
+            result[i]['place']['geometry']['coordinates'][1],
+            result[i]['place']['geometry']['coordinates'][0]);
+        print("neeee ba");
+        print(coordinates);
+        locations.add(LocationModel(
+            title: name,
+            summary: description,
+            placeID: placeID,
+            coordinates: coordinates));
+      }
+    }
+    return locations;
+  }
+
   static Future<List<LocationModel>> getSuccession(String input) async {
     String kPlace_API_Key = "AIzaSyBLAnygT3LzvYGdMD43t12_zw79CXC0O2w";
     String bareURL =
@@ -18,6 +55,8 @@ class APIPlace {
     String request =
         '$bareURL?input=$input&components=country:VN&key=$kPlace_API_Key';
     final response = await _dio.get(request);
+    print(response);
+    print('responseaa');
     if (response.statusCode == 200) {
       List<dynamic> predictions = response.data['predictions'];
       List<LocationModel> locations = [];
@@ -75,7 +114,33 @@ class APIPlace {
   //   }
   //   throw Exception('Request failed with status: ${response.statusCode}');
   // }
-
+  // static Future<Directions> getDirections(
+  //     {required LatLng origin, required LatLng destination}) async {
+  //   final url = 'https://www.mapquestapi.com/directions/v2/route';
+  //   String kPlace_API_Key = "0XNzjc1tZ6kNX9TUezAsA0mXw3F39BhW";
+  //   print(origin);
+  //   print(destination);
+  //   final body = {
+  //     "key": '0XNzjc1tZ6kNX9TUezAsA0mXw3F39BhW',
+  //     "from": '${origin.latitude},${origin.longitude}',
+  //     "to": '${destination.latitude},${destination.longitude}',
+  //   };
+  //   final response = await _dio.get(url, queryParameters: body);
+  //   print('helloq242');
+  //   print('helloq242');
+  //   print('helloq242');
+  //   print('helloq242');
+  //   print('helloq242');
+  //   print('helloq242');
+  //   print(response);
+  //   if (response.statusCode == 200) {
+  //     // Successful response
+  //     // TODO: Handle and display the response data as per your requirement
+  //     print(response.data);
+  //     return Directions.fromMap(response.data);
+  //   }
+  //   throw Exception('Request failed with status: ${response.statusCode}');
+  // }
   static Future<Directions> getDirections(
       {required LatLng origin, required LatLng destination}) async {
     final url = 'https://routes.googleapis.com/directions/v2:computeRoutes';

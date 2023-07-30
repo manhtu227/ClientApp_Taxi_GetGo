@@ -1,3 +1,6 @@
+import 'package:clientapp_taxi_getgo/models/CarType.dart';
+import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
+import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/IconText.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextField.dart';
@@ -7,10 +10,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
-class SelectCar extends StatelessWidget {
+class SelectCar extends StatefulWidget {
   SelectCar({super.key});
+
+  @override
+  State<SelectCar> createState() => _SelectCarState();
+}
+
+class _SelectCarState extends State<SelectCar> {
   TextEditingController _promo = TextEditingController();
+  late List<CarTypeModel> CarType;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    CarType = context.read<CarTypeProvider>().listCar;
+  }
+
+  void onTap() {
+    Navigator.of(context).pushNamed(Routes.SearchDriver);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +69,7 @@ class SelectCar extends StatelessWidget {
               color: Colors.white,
               width: double.infinity,
               padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
-              child: Text(
+              child: const Text(
                 "Select the vehicle category you want to ride.",
                 style: TextStyle(
                   fontSize: 15,
@@ -57,59 +78,64 @@ class SelectCar extends StatelessWidget {
                 ),
               ),
             ),
-            TypeCar(),
-            TypeCar(),
-            TypeCar(),
-            SizedBox(
-              height: 16,
+            Column(
+              children: CarType.map((carType) {
+                return TypeCar(type: carType);
+              }).toList(),
             ),
-            const Divider(
-              thickness: 1,
-              height: 8,
-              color: Color(0xFFACAAAA),
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Divider(
+                thickness: 1,
+                height: 8,
+                color: Color(0xFFACAAAA),
+              ),
             ),
-            SizedBox(
-              height: 16,
-            ),
-            Container(
-              width: double.infinity,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextSizeL(name: "Promo Code"),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextInput(
-                            controller: _promo,
-                            iconHint: "none",
-                            hintText: "Enter Promo Code",
-                            width: 300,
-                          ),
-                          SizedBox(
-                            height: 40,
-                            width: 40,
-                            child: FloatingActionButton(
-                              onPressed: () {},
-                              backgroundColor:
-                                  Color(0xfffa8d1d), // Màu nền của button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextSizeL(name: "Promo Code"),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextInput(
+                              controller: _promo,
+                              iconHint: "none",
+                              hintText: "Enter Promo Code",
+                              width: 270,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: FloatingActionButton(
+                                onPressed: () {},
+                                backgroundColor:
+                                    Color(0xfffa8d1d), // Màu nền của button
 
-                              child: Icon(
-                                Icons.add, // Biểu tượng dấu cộng
-                                size: 20,
-                                color: Colors.white, // Màu của biểu tượng
+                                child: Icon(
+                                  Icons.add, // Biểu tượng dấu cộng
+                                  size: 20,
+                                  color: Colors.white, // Màu của biểu tượng
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      )
-                    ]),
+                          ],
+                        )
+                      ]),
+                ),
               ),
             ),
             SizedBox(
@@ -141,7 +167,7 @@ class SelectCar extends StatelessWidget {
             SizedBox(
               height: 30,
             ),
-            ButtonSizeL(name: "Continue to order")
+            ButtonSizeL(name: "Continue to order", onTap: onTap)
           ])),
     ));
   }

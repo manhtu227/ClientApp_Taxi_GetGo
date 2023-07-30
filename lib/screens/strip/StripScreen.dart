@@ -1,6 +1,9 @@
+import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
 import 'package:clientapp_taxi_getgo/widgets/PlaceStrip.dart';
 import 'package:clientapp_taxi_getgo/widgets/SummaryDriver.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/TextSizeL.dart';
 import '../../widgets/map.dart';
@@ -13,7 +16,11 @@ class TripScreen extends StatelessWidget {
             body: SizedBox(
                 height: MediaQuery.of(context).size.height - 200,
                 child: Stack(clipBehavior: Clip.none, children: [
-                  MapScreen(),
+                  GoogleMapBuider(
+                          currentLocation: context
+                              .read<DirectionsViewModel>()
+                              .currentLocation)
+                      .build(),
                   Positioned(
                       // top: MediaQuery.of(context).size.height / 2,
                       left: 0,

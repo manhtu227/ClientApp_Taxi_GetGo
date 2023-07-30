@@ -1,8 +1,15 @@
+import 'package:clientapp_taxi_getgo/configs/config.dart';
+import 'package:clientapp_taxi_getgo/models/CarType.dart';
+import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+
+enum SingingCharacter { lafayette, jefferson }
 
 class TypeCar extends StatelessWidget {
-  const TypeCar({super.key});
+  CarTypeModel type;
+  TypeCar({required this.type, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +28,7 @@ class TypeCar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SvgPicture.asset(
-            'assets/svgs/Car.svg',
+            type.iconAsset,
           ),
           SizedBox(
             width: 12,
@@ -32,7 +39,7 @@ class TypeCar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "GoCar",
+                  type.title,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
@@ -45,7 +52,7 @@ class TypeCar extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "1-7 phút ",
+                      '${type.duration} ',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w400,
@@ -58,18 +65,18 @@ class TypeCar extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(2),
-                          color: Color(0xffd9d9d9),
+                          color: const Color(0xffd9d9d9),
                         ),
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.person,
                       color: Color(0xffd9d9d9),
                       size: 16,
                     ),
                     Text(
-                      " 4 chỗ",
-                      style: TextStyle(
+                      ' ${type.capacity}',
+                      style: const TextStyle( 
                         fontSize: 11,
                         fontWeight: FontWeight.w400,
                         color: Color(0xff000000),
@@ -81,13 +88,31 @@ class TypeCar extends StatelessWidget {
             ),
           ),
           Text(
-            '31.000 đ',
-            style: TextStyle(
+            Config.formatCurrency(type.price),
+            style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w700,
               color: Color(0xff3e4958),
             ),
           ),
+          Radio<String>(
+              activeColor: Theme.of(context).primaryColor,
+              fillColor:
+                  MaterialStatePropertyAll(Theme.of(context).primaryColor),
+              value: type.carType,
+              groupValue: context.watch<CarTypeProvider>().selectedCarType,
+              onChanged: (e) {
+                context.read<CarTypeProvider>().selectedCarType = e!;
+              }),
+          //  Radio<SingingCharacter>(
+          //   value: SingingCharacter.lafayette,
+          //   groupValue: _character,
+          //   onChanged: (SingingCharacter? value) {
+          //     setState(() {
+          //       _character = value;
+          //     });
+          //   },
+          // ),
         ],
       ),
     );

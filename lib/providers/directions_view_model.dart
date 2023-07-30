@@ -1,4 +1,5 @@
 import 'package:clientapp_taxi_getgo/models/location.dart';
+import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
 import 'package:clientapp_taxi_getgo/services/googlemap/api_places.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -9,7 +10,7 @@ import '../models/directions.dart';
 class DirectionsViewModel with ChangeNotifier {
   Directions _info = Directions(
     polylinePoints: [],
-    totalDistance: '0',
+    totalDistance: 0,
     totalDuration: '0',
   );
   LocationModel _currentLocation =
@@ -18,13 +19,13 @@ class DirectionsViewModel with ChangeNotifier {
       LocationModel(title: '', summary: '', placeID: '');
   LocationModel _myLocation =
       LocationModel(title: '', summary: '', placeID: '');
+  List<PointLatLng> get polylinePoints => _info.polylinePoints;
+  double get totalDistance => _info.totalDistance;
+  String get totalDuration => _info.totalDuration;
   LocationModel get myLocation => _myLocation;
   LocationModel get currentLocation => _currentLocation;
   LocationModel get desLocation => _desLocation;
 
-  List<PointLatLng> get polylinePoints => _info.polylinePoints;
-  String get totalDistance => _info.totalDistance;
-  String get totalDuration => _info.totalDuration;
   // update
 
   void updatePolylinePoints(List<PointLatLng> polylinePoints) {
@@ -32,7 +33,7 @@ class DirectionsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTotalDistance(String totalDistance) {
+  void updateTotalDistance(double totalDistance) {
     _info.totalDistance = totalDistance;
     notifyListeners();
   }
@@ -58,21 +59,35 @@ class DirectionsViewModel with ChangeNotifier {
 
   Future<void> updateDesLocation(LocationModel location) async {
     print(myLocation.coordinates);
+    // if (location.coordinates == const LatLng(0, 0))
     location.coordinates = await APIPlace.getLatLng(location.placeID);
     _desLocation = location;
     notifyListeners();
   }
 
-  Future<void> createPolylines() async {
+  Future<void> createPolylines(Function updatePrice) async {
     print(_currentLocation.coordinates);
     print(_desLocation.coordinates);
     print('neeeee');
     final directions = await APIPlace.getDirections(
         origin: _currentLocation.coordinates,
         destination: _desLocation.coordinates);
-    print('hehehhafabsfhasf');
-    print(directions.polylinePoints);
+    updatePrice(directions.totalDuration, directions.totalDistance);
+    Map<String, dynamic> map = {};
+    // print('hehehheheeaaa');
+    // String H = '';
+    // for (PointLatLng k in directions.polylinePoints) {
+    //   H += 'PointLatLng(${k.latitude.toString()},${k.longitude.toString()}),';
+    //   print(k);
+    // }
+    // print(H);
+    // _currentLocation.summary = H;
+    // _currentLocation.summary = directions.polylinePoints as String;
+    // print('hehehhafabsfhasf');
+    // print(directions.polylinePoints);
     _info = directions;
+    // _info = Directions.fromMap(map);
+
     notifyListeners();
   }
 

@@ -3,7 +3,9 @@ import 'package:clientapp_taxi_getgo/screens/auth/verify.dart';
 import 'package:clientapp_taxi_getgo/screens/distance/Distance.dart';
 import 'package:clientapp_taxi_getgo/screens/home/home.dart';
 import 'package:clientapp_taxi_getgo/screens/order/SelectCar.dart';
-import 'package:clientapp_taxi_getgo/screens/search/search_sreen.dart';
+import 'package:clientapp_taxi_getgo/screens/order/SelectPayment.dart';
+import 'package:clientapp_taxi_getgo/screens/search/search_des_sreen.dart';
+import 'package:clientapp_taxi_getgo/screens/search/search_driver_screen.dart';
 import 'package:clientapp_taxi_getgo/screens/strip/StripScreen.dart';
 import 'package:clientapp_taxi_getgo/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,8 @@ class Routes {
   static const String login = '/login';
   static const String order = '/order';
   static const String DriverArrive = '/DriverArrive';
+  static const String SearchDriver = '/SearchDriver';
+  static const String paymentMethod = '/SelectePayment';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -36,6 +40,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SelectCar());
       case DriverArrive:
         return MaterialPageRoute(builder: (_) => TripScreen());
+      case SearchDriver:
+        return MaterialPageRoute(builder: (_) => SearchDriverScreen());
+      case paymentMethod:
+        return MaterialPageRoute(builder: (_) => SelectPayment());
       default:
         return null;
     }

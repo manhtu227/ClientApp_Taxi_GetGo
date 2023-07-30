@@ -1,14 +1,19 @@
+import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
 import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/method_payment_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  runApp(const MyApp());
+  runApp(ScreenUtilInit(
+    designSize: const Size(360, 690),
+    builder: (context, _) => const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,6 +27,12 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: DirectionsViewModel(),
+        ),
+        ChangeNotifierProvider.value(
+          value: CarTypeProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: MethodPaymentViewModel(),
         ),
       ],
       child: MaterialApp(
