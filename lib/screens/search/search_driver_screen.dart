@@ -1,11 +1,19 @@
+import 'dart:convert';
+
+import 'package:clientapp_taxi_getgo/models/location.dart';
 import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/sockets/socketService.dart';
 import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
 import 'package:clientapp_taxi_getgo/widgets/LoadingPainter.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+
+import '../../services/apis/api_driver.dart';
 
 class SearchDriverScreen extends StatefulWidget {
   const SearchDriverScreen({super.key});
@@ -23,6 +31,9 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
+    context.read<SocketService>().socket.on('found-driver', (data) {});
+    context.read<SocketService>().getLocationDriver(context);
+
     _controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: 3),
@@ -49,6 +60,24 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    bookDriverApi();
+  }
+
+  void bookDriverApi() async {
+    final reponse = await ApiDriver.bookDriver(context);
+    if (reponse.statusCode == 200) {
+      reponse.data['user_id'] = 5;
+      print(
+          'reponse.data11111111111111111111111111111111111111111111111111111111111');
+      print(reponse.data);
+      context.read<SocketService>().userFindTrip(reponse.data);
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -56,6 +85,7 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
 
   @override
   Widget build(BuildContext context) {
+    print('hhhht');
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,

@@ -18,8 +18,10 @@ class MapScreen extends StatefulWidget {
   LocationModel? desLocation;
   List<PointLatLng> listPoint;
   List<LatLng> listDrive;
+  String icon;
   MapScreen(
       {required this.currentLocation,
+      required this.icon,
       this.desLocation,
       this.listPoint = const [],
       this.listDrive = const [],
@@ -80,7 +82,7 @@ class _MapScreenState extends State<MapScreen> {
   void onCreated(GoogleMapController controller) async {
     _controller.complete(controller);
     addMarker('current', widget.currentLocation.coordinates,
-        'assets/svgs/CurrentDetail.svg', 0);
+        widget.icon, 0);
     print('aaaaaaaaaaaaaaaaaaaaaa');
     for (LatLng point in widget.listDrive) {
       addMarker(const Uuid().v4(), point, 'assets/svgs/CarMap.svg',

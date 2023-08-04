@@ -1,5 +1,6 @@
 import 'package:clientapp_taxi_getgo/models/location.dart';
 import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/method_payment_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
@@ -26,6 +27,7 @@ class _DetailDistanceState extends State<DetailDistance> {
   late LocationModel _desLocation;
   late double _totalDistance;
   late List<PointLatLng> _listPoint;
+  late List<LatLng> _listDrive;
   @override
   void initState() {
     // TODO: implement initState
@@ -34,16 +36,11 @@ class _DetailDistanceState extends State<DetailDistance> {
     _desLocation = context.read<DirectionsViewModel>().desLocation;
     _totalDistance = context.read<DirectionsViewModel>().totalDistance;
     _listPoint = context.read<DirectionsViewModel>().polylinePoints;
+    _listDrive = context.read<DriverProvider>().listDriver;
   }
 
   @override
   Widget build(BuildContext context) {
-    List<LatLng> listDrive = [
-      LatLng(10.7586, 106.6830), // LatLng(10.74542, 106.73234)
-      LatLng(10.7586, 106.6830),
-      LatLng(10.7584, 106.6846),
-      LatLng(10.7584, 106.6846),
-    ];
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -65,7 +62,7 @@ class _DetailDistanceState extends State<DetailDistance> {
               child: GoogleMapBuider(currentLocation: _currentLocation)
                   .setDesLocation(_desLocation)
                   .setPolyline(_listPoint)
-                  .setListDrive(listDrive)
+                  .setListDrive(_listDrive)
                   .build(),
             ),
             Positioned(

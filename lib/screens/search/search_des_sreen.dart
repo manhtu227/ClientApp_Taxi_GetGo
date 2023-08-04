@@ -1,5 +1,6 @@
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
 import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/services/googlemap/api_places.dart';
 import 'package:clientapp_taxi_getgo/widgets/List/ListPlace.dart';
@@ -33,9 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('333333333333');
-    APIPlace.getCurrentLocation();
-    print(context.read<DirectionsViewModel>().currentLocation.coordinates);
+    // APIPlace.getCurrentLocation();
     _currentLocation.text =
         context.read<DirectionsViewModel>().currentLocation.summary;
     _desFocus.requestFocus();
@@ -75,6 +74,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
       await provider
           .createPolylines(context.read<CarTypeProvider>().updatePriceByType);
+      await context
+          .read<DriverProvider>()
+          .updatelistDriver(provider.currentLocation.coordinates);
       Navigator.of(context).pushNamed(Routes.Detail);
     }
     if (_currentFocus.hasFocus) {

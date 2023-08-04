@@ -38,6 +38,15 @@ class CarTypeProvider with ChangeNotifier {
 
   String get selectedCarType => _selectedCarType;
   List<CarTypeModel> get listCar => _listCar;
+  double get price {
+    for (final car in _listCar) {
+      if (_selectedCarType == car.carType) {
+        return car.price * 1000;
+      }
+    }
+    return 0;
+  }
+
   set selectedCarType(String type) {
     _selectedCarType = type;
     notifyListeners();

@@ -1,5 +1,8 @@
+import 'package:clientapp_taxi_getgo/providers/sockets/socketService.dart';
+import 'package:clientapp_taxi_getgo/screens/history/MyBooking.dart';
 import 'package:clientapp_taxi_getgo/screens/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TabsScreen extends StatefulWidget {
   @override
@@ -13,7 +16,7 @@ class _TabsScreenState extends State<TabsScreen> {
       'title': 'Home',
     },
     {
-      'page': HomeScreen(),
+      'page': MyBooking(),
       'title': 'History',
     },
     {
@@ -25,10 +28,11 @@ class _TabsScreenState extends State<TabsScreen> {
       'title': 'profile',
     },
   ];
-  int _selectedPageIndex = 0;
+  int _selectedPageIndex = 1;
   @override
   void initState() {
     super.initState();
+    context.read<SocketService>().connectserver();
   }
 
   void _selectPage(int index) {
@@ -61,7 +65,7 @@ class _TabsScreenState extends State<TabsScreen> {
               BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: const Icon(Icons.punch_clock),
-                label: 'Setting',
+                label: 'History',
               ),
               BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,

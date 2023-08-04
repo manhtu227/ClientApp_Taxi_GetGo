@@ -4,14 +4,15 @@ import 'package:dio/dio.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/directions.dart';
 
 class APIPlace {
   static final _dioInterceptorManager = DioInterceptorManager();
   static final Dio _dio = _dioInterceptorManager.dioInstance;
-  static Future<List<LocationModel>> getSuccession1(String input) async {
+  static Future<List<LocationModel>> getSuccession1(
+      String input, String icon) async {
     String bareURL = 'https://www.mapquestapi.com/search/v3/prediction';
     final body = {
       "key": '0XNzjc1tZ6kNX9TUezAsA0mXw3F39BhW',
@@ -24,20 +25,13 @@ class APIPlace {
     List<LocationModel> locations = [];
     if (response.statusCode == 200) {
       List<dynamic> result = response.data['results'];
-      print('ssssssssssss');
-      print('ssssssssssss');
-      print('ssssssssssss');
       for (int i = 0; i < result.length; i++) {
-        print('i: $i');
-        print(result[i]);
         String name = result[i]['name'];
         String description = result[i]['displayString'];
         String placeID = result[i]['id'];
         LatLng coordinates = LatLng(
             result[i]['place']['geometry']['coordinates'][1],
             result[i]['place']['geometry']['coordinates'][0]);
-        print("neeee ba");
-        print(coordinates);
         locations.add(LocationModel(
             title: name,
             summary: description,
@@ -192,17 +186,19 @@ class APIPlace {
     throw Exception('Request failed with status: ${response.statusCode}');
   }
 
-  static Future<LatLng> getCurrentLocation() async {
-    try {
-      await Permission.location.request();
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      LatLng location = LatLng(position.latitude, position.longitude);
-      return location;
-    } catch (e) {
-      throw Exception('Request failed with status: $e}');
-    }
-  }
+  // static Future<LatLng> getCurrentLocation() async {
+  //   try {
+  //     await Permission.location.request();
+  //     Position position = await Geolocator.getCurrentPosition(
+  //         desiredAccuracy: LocationAccuracy.high);
+  //     print('ydddđfffffffff');
+  //     print(position.accuracy);
+  //     LatLng location = LatLng(position.latitude, position.longitude);
+  //     return location;
+  //   } catch (e) {
+  //     throw Exception('Request failed with status: $e}');
+  //   }
+  // }
 
   static Future<LocationModel> getAddressFromLatLng(LatLng latLng) async {
     LocationModel location =
@@ -212,7 +208,7 @@ class APIPlace {
         latLng.latitude,
         latLng.longitude,
       );
-      if (placemarks != null && placemarks.isNotEmpty) {
+      if (placemarks.isNotEmpty) {
         Placemark placemark = placemarks.first;
         location.title = placemark.subAdministrativeArea as String;
         location.summary =

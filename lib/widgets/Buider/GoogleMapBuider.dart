@@ -8,8 +8,14 @@ class GoogleMapBuider {
   LocationModel? _desLocation;
   List<PointLatLng> _listPoint = [];
   List<LatLng> _listDrive = [];
+  String _icon = "assets/svgs/CurrentDetail.svg";
   GoogleMapBuider({required LocationModel currentLocation})
       : _currentLocation = currentLocation;
+
+  GoogleMapBuider updateIconCurrent(String icon) {
+    _icon = icon;
+    return this;
+  }
 
   GoogleMapBuider setDesLocation(LocationModel location) {
     _desLocation = location;
@@ -28,6 +34,7 @@ class GoogleMapBuider {
 
   MapScreen build() {
     return MapScreen(
+      icon: _icon,
       currentLocation: _currentLocation,
       desLocation: _desLocation,
       listPoint: _listPoint,

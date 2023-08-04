@@ -8,6 +8,7 @@ class PlaceStrip extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,11 +44,11 @@ class PlaceStrip extends StatelessWidget {
                   ],
                 ),
               ),
-              SvgPicture.asset(
-                'assets/svgs/edit.svg',
-                // width: 13,
-                // height: 17.64,
-              ),
+              // SvgPicture.asset(
+              //   'assets/svgs/edit.svg',
+              //   // width: 13,
+              //   // height: 17.64,
+              // ),
             ],
           ),
           Padding(
@@ -92,11 +93,11 @@ class PlaceStrip extends StatelessWidget {
                   ],
                 ),
               ),
-              SvgPicture.asset(
-                'assets/svgs/edit.svg',
-                // width: 13,
-                // height: 17.64,
-              ),
+              // SvgPicture.asset(
+              //   'assets/svgs/edit.svg',
+              //   // width: 13,
+              //   // height: 17.64,
+              // ),
             ],
           ),
         ],
