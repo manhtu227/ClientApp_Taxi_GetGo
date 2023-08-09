@@ -1,6 +1,7 @@
 import 'package:clientapp_taxi_getgo/models/location.dart';
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
 import 'package:clientapp_taxi_getgo/services/googlemap/api_places.dart';
+import 'package:clientapp_taxi_getgo/services/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,6 +15,7 @@ class DirectionsViewModel with ChangeNotifier {
     totalDistance: 0,
     totalDuration: '0',
   );
+  String statusTrip = '';
   LocationModel _currentLocation =
       LocationModel(title: '', summary: '', placeID: '');
   LocationModel _desLocation = LocationModel(
@@ -24,13 +26,15 @@ class DirectionsViewModel with ChangeNotifier {
   LocationModel _myLocation =
       LocationModel(title: '', summary: '', placeID: '');
   LocationModel _driverLocation =
-      LocationModel(title: '', summary: '', role: 'driver');
+      LocationModel(title: '', summary: '', status: '');
   List<PointLatLng> get polylinePoints => _info.polylinePoints;
   double get totalDistance => _info.totalDistance;
   String get totalDuration => _info.totalDuration;
   LocationModel get myLocation => _myLocation;
+  LocationModel get driverLocation => _driverLocation;
   LocationModel get currentLocation => _currentLocation;
   LocationModel get desLocation => _desLocation;
+  Directions get info => _info;
 
   // update
 
@@ -59,13 +63,19 @@ class DirectionsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateDriverLocation(LatLng location, double heading) async {
+  void updateDriverLocation(
+      LatLng location, double heading, String status) async {
     // print('hi');
     // print(location);
     // if (location.placeID != '') {
     //   location.coordinates = await APIPlace.getLatLng(location.placeID);
     // }
-    _driverLocation = LocationModel(title: '', summary: '',coordinates: location,heading: heading);
+    _driverLocation = LocationModel(
+        title: '',
+        summary: '',
+        coordinates: location,
+        heading: heading,
+        status: status);
     notifyListeners();
   }
 
@@ -91,7 +101,6 @@ class DirectionsViewModel with ChangeNotifier {
         origin: _currentLocation.coordinates,
         destination: _desLocation.coordinates);
     updatePrice(directions.totalDuration, directions.totalDistance);
-    Map<String, dynamic> map = {};
     // print('hehehheheeaaa');
     // String H = '';
     // for (PointLatLng k in directions.polylinePoints) {
@@ -109,18 +118,46 @@ class DirectionsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updatePolylines(LatLng current, LatLng des) async {
+    // _info.polylinePoints .sublist(10);
+    print('cout<< nè:' +
+        _info.polylinePoints
+            .contains(PointLatLng(current.latitude, current.longitude))
+            .toString());
+    print('cout<< nè:  ' +
+        _info.polylinePoints
+            .contains(PointLatLng(des.latitude, des.longitude))
+            .toString());
+    print('cout<< nè: ' +
+        PointLatLng(current.latitude, current.longitude).toString());
+    print('cout<< nè: ' + _info.polylinePoints.toString());
+    print('cout<< veeeeeeeee');
+    final directions =
+        await APIPlace.getDirections(origin: current, destination: des);
+    print('cout<< ' + directions.polylinePoints.toString());
+    // if (_driverLocation.status == 'comming' &&
+    //     directions.totalDistance <= 0.5) {
+    //   Notifications show = new Notifications();
+    //   show.showNotification("Tài xế sắp đến");
+    // }
+    _info = directions;
+    // _info = Directions.fromMap(map);
+
+    notifyListeners();
+  }
+
   Future<void> updateLocationData() async {
     print('heeeeeeeeeee');
     try {
       Location location = Location();
       location.getLocation().then((location) async {
         _myLocation = await APIPlace.getAddressFromLatLng(
-            LatLng(location.latitude!, location.longitude!));
+            location.latitude!, location.longitude!);
       });
       location.onLocationChanged.listen((newLocation) async {
         _myLocation = await APIPlace.getAddressFromLatLng(
-            LatLng(newLocation.latitude!, newLocation.longitude!));
-        notifyListeners();
+            newLocation.latitude!, newLocation.longitude!);
+        // notifyListeners();
       });
     } catch (e) {
       throw Exception('Request failed with status: $e}');

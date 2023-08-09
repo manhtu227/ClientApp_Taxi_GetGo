@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/CNTT/KienTrucPhanMem/New folder/ClientApp_Taxi_GetGo/build/windows/_deps/nuget-subbuild"
+    "cmake.sourceDirectory": "D:/CNTT/KienTrucPhanMem/New folder/ClientApp_Taxi_GetGo/build/windows/_deps/nuget-subbuild",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

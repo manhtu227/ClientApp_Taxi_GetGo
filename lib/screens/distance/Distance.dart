@@ -123,7 +123,7 @@ class _DetailDistanceState extends State<DetailDistance> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextSizeL(
-                            name: "Distance",
+                            name: "Khoảng cách",
                             size: ScreenUtil().setSp(15),
                           ),
                           Text(

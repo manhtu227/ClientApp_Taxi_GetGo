@@ -35,111 +35,113 @@ class _HomeScreenState extends State<HomeScreen> {
     final top = coverHeight - buttonHeight / 2;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color(0xfff1f3f5),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Image(image: AssetImage('assets/images/homebanner.png')),
-          SizedBox(
-            height: ScreenUtil().setHeight(190),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Image.asset(
-                  'assets/images/homebanner.png',
-                  // fit: BoxFit.cover,
-                  // width: coverHeight,
-                  height: coverHeight,
-                ),
-                Positioned(
-                  left: ScreenUtil().setWidth(16),
-                  right: ScreenUtil().setWidth(16),
-                  top: top,
-                  child: TextButton(
-                    onPressed: () {
-                      context
-                          .read<DirectionsViewModel>()
-                          .updateCurrentLocation(locationProvider.myLocation);
-                      Navigator.of(context).pushNamed(Routes.search);
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                    ),
-                    child: Container(
-                      // width: screenWidth - 32,
-                      width: double.infinity,
-                      height: buttonHeight,
-                      decoration: BoxDecoration(
-                        color: Color(0xffffffff),
-                        borderRadius: BorderRadius.circular(13),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x14000000),
-                            offset: Offset(0, 4),
-                            blurRadius: 2,
-                          ),
-                        ],
+    return SingleChildScrollView(
+      child: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          color: Color(0xfff1f3f5),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image(image: AssetImage('assets/images/homebanner.png')),
+            SizedBox(
+              height: ScreenUtil().setHeight(190),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Image.asset(
+                    'assets/images/homebanner.png',
+                    // fit: BoxFit.cover,
+                    // width: coverHeight,
+                    height: coverHeight,
+                  ),
+                  Positioned(
+                    left: ScreenUtil().setWidth(16),
+                    right: ScreenUtil().setWidth(16),
+                    top: top,
+                    child: TextButton(
+                      onPressed: () {
+                        context
+                            .read<DirectionsViewModel>()
+                            .updateCurrentLocation(locationProvider.myLocation);
+                        Navigator.of(context).pushNamed(Routes.search);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
                       ),
                       child: Container(
-                        margin: EdgeInsets.only(
-                            left: ScreenUtil().setWidth(25),
-                            top: 2,
-                            right: ScreenUtil().setWidth(25)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Where can we take you to?',
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(13),
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff000000),
-                              ),
-                            ),
-                            SvgPicture.asset(
-                              'assets/svgs/marker.svg',
-                              // width: ScreenUtil().setWidth(13),
-                              // height: ScreenUtil().setHeight(17.64),
+                        // width: screenWidth - 32,
+                        width: double.infinity,
+                        height: buttonHeight,
+                        decoration: BoxDecoration(
+                          color: Color(0xffffffff),
+                          borderRadius: BorderRadius.circular(13),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0x14000000),
+                              offset: Offset(0, 4),
+                              blurRadius: 2,
                             ),
                           ],
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              left: ScreenUtil().setWidth(25),
+                              top: 2,
+                              right: ScreenUtil().setWidth(25)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Bạn muốn tới đâu?',
+                                style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(13),
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff000000),
+                                ),
+                              ),
+                              SvgPicture.asset(
+                                'assets/svgs/marker.svg',
+                                // width: ScreenUtil().setWidth(13),
+                                // height: ScreenUtil().setHeight(17.64),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          // SizedBox(
-          //   height: ScreenUtil().setHeight(15),
-          // ),
-          Padding(
-            padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
-            child: ListPlace(),
-          ),
-          SizedBox(
-            height: ScreenUtil().setHeight(15),
-          ),
-          ListServiceCar(),
-          SizedBox(
-            height: ScreenUtil().setHeight(15),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
-            width: screenWidth - ScreenUtil().setWidth(32),
-            height: ScreenUtil().setHeight(260),
-            child: Image.asset(
-              'assets/images/bannerHome.png',
-              // fit: BoxFit.cover,
-              // width: coverHeight,
-              // height: coverHeight,
+            // SizedBox(
+            //   height: ScreenUtil().setHeight(15),
+            // ),
+            Padding(
+              padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
+              child: ListPlace(),
             ),
-          ),
-        ],
+            SizedBox(
+              height: ScreenUtil().setHeight(15),
+            ),
+            ListServiceCar(),
+            SizedBox(
+              height: ScreenUtil().setHeight(15),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
+              width: screenWidth - ScreenUtil().setWidth(32),
+              height: ScreenUtil().setHeight(260),
+              child: Image.asset(
+                'assets/images/bannerHome.png',
+                // fit: BoxFit.cover,
+                // width: coverHeight,
+                // height: coverHeight,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

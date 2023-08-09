@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:clientapp_taxi_getgo/models/location.dart';
 import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/sockets/socketService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,11 +19,13 @@ class MapScreen extends StatefulWidget {
   LocationModel? desLocation;
   List<PointLatLng> listPoint;
   List<LatLng> listDrive;
+  Function? pickup;
   String icon;
   MapScreen(
       {required this.currentLocation,
       required this.icon,
       this.desLocation,
+      this.pickup,
       this.listPoint = const [],
       this.listDrive = const [],
       Key? key})
@@ -35,12 +38,34 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
-
+  Timer? _timer;
   Map<String, Marker> _marker = {};
   @override
   void initState() {
     super.initState();
     _loadMapStyle();
+    context.read<SocketService>().socket.on('get-location-driver', (data) {
+      if (context.read<DirectionsViewModel>().driverLocation.status ==
+          'comming') {
+        context.read<DirectionsViewModel>().updateDriverLocation(
+            LatLng(data['lat'] / 1, data['lng'] / 1),
+            data['heading'] / 1 ?? 0,
+            'comming');
+        addMarker('current', LatLng(data['lat'] / 1, data['lng'] / 1),
+            widget.icon, widget.currentLocation.heading);
+        context.read<DirectionsViewModel>().updatePolylines(
+            LatLng(data['lat'] / 1, data['lng'] / 1),
+            context.read<DirectionsViewModel>().currentLocation.coordinates);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.future.then((GoogleMapController controller) {
+      controller.dispose();
+    });
+    super.dispose();
   }
 
   Future<void> _loadMapStyle() async {
@@ -49,17 +74,30 @@ class _MapScreenState extends State<MapScreen> {
     controller.setMapStyle(style);
   }
 
+  void getCurrentLocation() async {}
   @override
   Widget build(BuildContext context) {
-    // Thêm dòng sau để lấy tọa độ từ polylinePoints của bạn
-
     return GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: CameraPosition(
         target: widget.currentLocation.coordinates,
-        zoom: 14,
+        zoom: widget.pickup != null ? 16 : 14,
+        bearing: 90.0,
       ),
       onMapCreated: onCreated,
+      onCameraMove: (CameraPosition? position) {
+        // Hủy timer nếu đã tồn tại
+        if (_timer != null) {
+          _timer!.cancel();
+        }
+
+        // Bắt đầu timer mới
+        _timer = Timer(Duration(seconds: 2), () {
+          if (widget.pickup != null && position != null) {
+            widget.pickup!(position);
+          }
+        });
+      },
       markers: _marker.values.toSet(),
       compassEnabled: false,
       zoomControlsEnabled: false,
@@ -81,23 +119,18 @@ class _MapScreenState extends State<MapScreen> {
 
   void onCreated(GoogleMapController controller) async {
     _controller.complete(controller);
-    addMarker('current', widget.currentLocation.coordinates,
-        widget.icon, 0);
+    addMarker('current', widget.currentLocation.coordinates, widget.icon,
+        widget.currentLocation.heading);
     print('aaaaaaaaaaaaaaaaaaaaaa');
     for (LatLng point in widget.listDrive) {
       addMarker(const Uuid().v4(), point, 'assets/svgs/CarMap.svg',
           Random().nextDouble() * 360 + 1);
     }
     if (widget.desLocation != null) addPolylineAndFitMap();
-    // else {
-    //   print('dd')
-    //   addMarkerPicture(
-    //       'current', widget.currentLocation, 'assets/svgs/manhtu.png');
-    // }
   }
 
   Future<void> addPolylineAndFitMap() async {
-    addMarker('marker', widget.desLocation!.coordinates!,
+    addMarker('marker', widget.desLocation!.coordinates,
         'assets/svgs/DesDetail.svg', 0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       List<LatLng> points = widget.listPoint.map((e) {
@@ -110,9 +143,7 @@ class _MapScreenState extends State<MapScreen> {
 
   Future<void> _setMapFitToTour(List<LatLng> points) async {
     if (points.isEmpty) return;
-
     final GoogleMapController controller = await _controller.future;
-
     double minLat =
         points.reduce((a, b) => a.latitude < b.latitude ? a : b).latitude;
     double maxLat =

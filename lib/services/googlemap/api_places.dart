@@ -5,7 +5,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:permission_handler/permission_handler.dart';
-
 import '../../models/directions.dart';
 
 class APIPlace {
@@ -200,14 +199,18 @@ class APIPlace {
   //   }
   // }
 
-  static Future<LocationModel> getAddressFromLatLng(LatLng latLng) async {
-    LocationModel location =
-        LocationModel(title: '', summary: '', placeID: '', coordinates: latLng);
+  static Future<LocationModel> getAddressFromLatLng(
+      double latitude, double longitude) async {
+    // print("cout<<" + latLng.toString());
+    LocationModel location = LocationModel(
+        title: '',
+        summary: '',
+        placeID: '',
+        coordinates: LatLng(latitude, longitude));
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
-        latLng.latitude,
-        latLng.longitude,
-      );
+          latitude, longitude,
+          localeIdentifier: "vn");
       if (placemarks.isNotEmpty) {
         Placemark placemark = placemarks.first;
         location.title = placemark.subAdministrativeArea as String;

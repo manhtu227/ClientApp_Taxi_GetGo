@@ -18,7 +18,7 @@ class SocketService with ChangeNotifier {
 //         token: tk
 //     }
 // })
-  void connectserver() {
+  void connectserver(BuildContext context) {
     // String tk =
     //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicGhvbmUiOiIrODQ0NDQ0NDQ0NDQiLCJ0eXBlIjoiVXNlcl9WaXAiLCJpYXQiOjE2OTA5NjM0NzksImV4cCI6MTY5MjA0MzQ3OX0.o0kfUy4iiG5kyYoB3ea8URXpISHenDkopQdlKvwtNeU";
 
@@ -30,6 +30,9 @@ class SocketService with ChangeNotifier {
     _socket.onConnect(
       (data) {
         _socket.emit('user-login', {"user_id": 5});
+        userFoundDriver(context);
+        handleTripUpdate(context);
+        // getLocationDriver(context);
         print("connect " + _socket.id.toString());
       },
     );
@@ -52,26 +55,48 @@ class SocketService with ChangeNotifier {
   }
 
   void userFoundDriver(BuildContext context) {
-    _socket.on('found-driver', (data) {
-      Navigator.of(context).pushNamed(Routes.DriverArrive);
-      
+    _socket.on('found-driver', (data) async {
+      context.read<DirectionsViewModel>().updateDriverLocation(
+          LatLng(data['lat'] / 1, data['lng'] / 1),
+          data['heading'] / 1,
+          'comming');
+      await context.read<DirectionsViewModel>().updatePolylines(
+          LatLng(data['lat'] / 1, data['lng'] / 1),
+          context.read<DirectionsViewModel>().currentLocation.coordinates);
+      Navigator.of(context).pushNamed(Routes.DriverArrive,
+          arguments: {'name': 'Driver is Arriving..', 'check': true});
+      // Navigator.of(context).pushNamed(Routes.DriverArrive);
     });
   }
 
-  void getLocationDriver(BuildContext context) {
-    print('12451241');
-    print('12345678');
-    print('12345678');
-    print('12345678');
-    _socket.on('get-location-driver', (data) {
-      // print(data);
-      // print(data['heading'] is double);
-      // print(data['heading'] is int);
-      // print(data['heading'] is num);
-      final jsonData = jsonDecode(data);
-      context.read<DirectionsViewModel>().updateDriverLocation(
-          LatLng(data['lat'], data['lng']),
-          data['heading']??0);
+  void handleTripUpdate(BuildContext context) {
+    _socket.on('trip-update', (data) async {
+      if (data['status'] == "Driving") {
+        await context.read<DirectionsViewModel>().updatePolylines(
+            context.read<DirectionsViewModel>().driverLocation.coordinates,
+            context.read<DirectionsViewModel>().currentLocation.coordinates);
+        Navigator.of(context).pushNamed(Routes.DriverArrive,
+            arguments: {'name': 'Trip to Destination', 'check': false});
+      }
     });
   }
+
+  // void getLocationDriver(BuildContext context) {
+  //   _socket.on('get-location-driver', (data) {
+  //     // String? currentRoute = ModalRoute.of(context)?.settings.name;
+  //     print('cout<< ' +
+  //         context.read<DirectionsViewModel>().driverLocation.status);
+  //     if (context.read<DirectionsViewModel>().driverLocation.status ==
+  //         'comming') {
+  //       print("cout<< socket tao nè");
+  //       context.read<DirectionsViewModel>().updateDriverLocation(
+  //           LatLng(data['lat'] / 1, data['lng'] / 1),
+  //           data['heading'] / 1 ?? 0,
+  //           'comming');
+  //       context.read<DirectionsViewModel>().updatePolylines(
+  //           LatLng(data['lat'] / 1, data['lng'] / 1),
+  //           context.read<DirectionsViewModel>().currentLocation.coordinates);
+  //     }
+  //   });
+  // }
 }

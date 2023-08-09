@@ -31,9 +31,6 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    context.read<SocketService>().socket.on('found-driver', (data) {});
-    context.read<SocketService>().getLocationDriver(context);
-
     _controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: 3),
@@ -61,7 +58,6 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     bookDriverApi();
   }
@@ -69,10 +65,6 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
   void bookDriverApi() async {
     final reponse = await ApiDriver.bookDriver(context);
     if (reponse.statusCode == 200) {
-      reponse.data['user_id'] = 5;
-      print(
-          'reponse.data11111111111111111111111111111111111111111111111111111111111');
-      print(reponse.data);
       context.read<SocketService>().userFindTrip(reponse.data);
     }
   }
@@ -85,7 +77,8 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
 
   @override
   Widget build(BuildContext context) {
-    print('hhhht');
+    print('cout<<'+context.read<DirectionsViewModel>().currentLocation.coordinates.toString());
+    print('cout<<'+context.read<DirectionsViewModel>().currentLocation.title.toString());
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,

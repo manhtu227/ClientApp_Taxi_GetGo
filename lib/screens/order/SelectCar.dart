@@ -44,7 +44,7 @@ class _SelectCarState extends State<SelectCar> {
         elevation: 0,
         leadingWidth: 30,
         title: const Text(
-          'Select car',
+          'Chọn loại xe',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -62,114 +62,116 @@ class _SelectCarState extends State<SelectCar> {
           },
         ),
       ),
-      body: Container(
-          width: double.infinity,
-          color: Color(0xfff1f3f5),
-          child: Column(children: [
-            Container(
-              color: Colors.white,
-              width: double.infinity,
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
-              child: const Text(
-                "Select the vehicle category you want to ride.",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xdb000000),
-                ),
-              ),
-            ),
-            Column(
-              children: CarType.map((carType) {
-                return TypeCar(type: carType);
-              }).toList(),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Divider(
-                thickness: 1,
-                height: 8,
-                color: Color(0xFFACAAAA),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Container(
+      body: SingleChildScrollView(
+        child: Container(
+            width: double.infinity,
+            color: Color(0xfff1f3f5),
+            child: Column(children: [
+              Container(
+                color: Colors.white,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
+                child: const Text(
+                  "Select the vehicle category you want to ride.",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xdb000000),
+                  ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextSizeL(name: "Promo Code"),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextInput(
-                              controller: _promo,
-                              iconHint: "none",
-                              hintText: "Enter Promo Code",
-                              width: 270,
-                            ),
-                            SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: FloatingActionButton(
-                                onPressed: () {},
-                                backgroundColor:
-                                    Color(0xfffa8d1d), // Màu nền của button
-
-                                child: Icon(
-                                  Icons.add, // Biểu tượng dấu cộng
-                                  size: 20,
-                                  color: Colors.white, // Màu của biểu tượng
+              ),
+              Column(
+                children: CarType.map((carType) {
+                  return TypeCar(type: carType);
+                }).toList(),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Divider(
+                  thickness: 1,
+                  height: 8,
+                  color: Color(0xFFACAAAA),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextSizeL(name: "Promo Code"),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextInput(
+                                controller: _promo,
+                                iconHint: "none",
+                                hintText: "Enter Promo Code",
+                                width: 270,
+                              ),
+                              SizedBox(
+                                height: 40,
+                                width: 40,
+                                child: FloatingActionButton(
+                                  onPressed: () {},
+                                  backgroundColor:
+                                      Color(0xfffa8d1d), // Màu nền của button
+      
+                                  child: Icon(
+                                    Icons.add, // Biểu tượng dấu cộng
+                                    size: 20,
+                                    color: Colors.white, // Màu của biểu tượng
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        )
-                      ]),
+                            ],
+                          )
+                        ]),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 16),
-              height: 66,
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(14)),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    IconText(
-                      icon: "km",
-                      text: "4 km",
-                    ),
-                    IconText(
-                      icon: "clock",
-                      text: "4 mins",
-                    ),
-                    IconText(
-                      icon: "money",
-                      text: "31.000 đ",
-                    ),
-                  ]),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            ButtonSizeL(name: "Continue to order", onTap: onTap)
-          ])),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                height: 66,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    color: Colors.white, borderRadius: BorderRadius.circular(14)),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconText(
+                        icon: "km",
+                        text: "4 km",
+                      ),
+                      IconText(
+                        icon: "clock",
+                        text: "4 mins",
+                      ),
+                      IconText(
+                        icon: "money",
+                        text: "31.000 đ",
+                      ),
+                    ]),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              ButtonSizeL(name: "Continue to order", onTap: onTap)
+            ])),
+      ),
     ));
   }
 }

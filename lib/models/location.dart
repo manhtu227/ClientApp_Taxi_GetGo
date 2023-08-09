@@ -7,12 +7,12 @@ class LocationModel {
   String placeID;
   LatLng coordinates;
   double heading;
-  String role;
+  String status;
   LocationModel(
       {required this.title,
       required this.summary,
       this.placeID = '',
       this.heading = 0,
       this.coordinates = const LatLng(10.7454, 106.7323),
-      this.role = 'client'});
+      this.status = 'client'});
 }

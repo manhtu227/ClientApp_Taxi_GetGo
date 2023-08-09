@@ -14,19 +14,19 @@ class ListServiceCar extends StatelessWidget {
         children: [
           _buildCarType(
             icon: 'assets/svgs/taxi.svg',
-            label: 'Taxi',
+            label: 'Ô tô',
           ),
           _buildCarType(
             icon: 'assets/svgs/bike.svg',
-            label: 'Bike',
+            label: 'Xe máy',
           ),
           _buildCarType(
             icon: 'assets/svgs/airpotTaxi.svg',
-            label: 'Airport Taxi',
+            label: 'Ô tô sân bay',
           ),
           _buildCarType(
             icon: 'assets/svgs/shipper.svg',
-            label: 'Shipper',
+            label: 'Giao hàng',
           ),
         ],
       ),

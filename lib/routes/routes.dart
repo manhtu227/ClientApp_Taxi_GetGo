@@ -39,7 +39,7 @@ class Routes {
       case order:
         return MaterialPageRoute(builder: (_) => SelectCar());
       case DriverArrive:
-        return MaterialPageRoute(builder: (_) => TripScreen());
+        return MaterialPageRoute(builder: (_) => TripScreen(),settings: settings);
       case SearchDriver:
         return MaterialPageRoute(builder: (_) => SearchDriverScreen());
       case paymentMethod:

@@ -1,6 +1,7 @@
 import 'package:clientapp_taxi_getgo/providers/sockets/socketService.dart';
 import 'package:clientapp_taxi_getgo/screens/history/MyBooking.dart';
 import 'package:clientapp_taxi_getgo/screens/home/home.dart';
+import 'package:clientapp_taxi_getgo/services/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,11 +29,11 @@ class _TabsScreenState extends State<TabsScreen> {
       'title': 'profile',
     },
   ];
-  int _selectedPageIndex = 1;
+  int _selectedPageIndex = 0;
   @override
   void initState() {
     super.initState();
-    context.read<SocketService>().connectserver();
+    context.read<SocketService>().connectserver(context);
   }
 
   void _selectPage(int index) {

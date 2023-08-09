@@ -37,7 +37,7 @@ class ApiDriver {
       "is_scheduled": false,
       "price": context.read<CarTypeProvider>().price,
       "is_paid": false,
-      "payment_method":
+      "paymentMethod":
           context.read<MethodPaymentViewModel>().selectedMethodType
     };
     Response response = await _dio.post(

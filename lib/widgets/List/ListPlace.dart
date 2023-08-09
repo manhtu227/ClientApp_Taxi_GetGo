@@ -51,7 +51,7 @@ class ListPlace extends StatelessWidget {
                           width: ScreenUtil().setWidth(16),
                         ),
                         Text(
-                          'Home',
+                          'Nhà riêng',
                           style: TextStyle(
                             fontSize: ScreenUtil().setWidth(10),
                             fontWeight: FontWeight.w600,
@@ -100,7 +100,7 @@ class ListPlace extends StatelessWidget {
                           width: ScreenUtil().setWidth(16),
                         ),
                         Text(
-                          'Office',
+                          'Công ty',
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(10),
                             fontWeight: FontWeight.w600,
