@@ -37,8 +37,7 @@ class ApiDriver {
       "is_scheduled": false,
       "price": context.read<CarTypeProvider>().price,
       "is_paid": false,
-      "paymentMethod":
-          context.read<MethodPaymentViewModel>().selectedMethodType
+      "paymentMethod": context.read<MethodPaymentViewModel>().selectedMethodType
     };
     Response response = await _dio.post(
       RoutePathApi.bookDriver,
@@ -47,7 +46,7 @@ class ApiDriver {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization':
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicGhvbmUiOiIrODQ1NTU1NTU1NTUiLCJ0eXBlIjoiVXNlciIsImlhdCI6MTY5MTAzMjI1OCwiZXhwIjoxNjkyMTEyMjU4fQ.Q51Tb1OdLLLa2OEBGRs86VSTjUtilL0QGp0Xf3jh4qw",
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicGhvbmUiOiIrODQ1NTU1NTU1NTUiLCJ0eXBlIjoiVXNlciIsImlhdCI6MTY5MjI1MjQ0MywiZXhwIjoxNjkzMzMyNDQzfQ.sJOKZYa8tLqnMu1umUSqdZxReEKTtMQ4eE7R_v_VMUo",
       }),
     );
     print('1111111111111111ne');

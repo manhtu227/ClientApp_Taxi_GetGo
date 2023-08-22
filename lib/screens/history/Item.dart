@@ -26,7 +26,7 @@ class _ItemState extends State<Item> {
         ),
         child: Column(
           children: [
-            const SummaryDriver(),
+            SummaryDriver(),
             const Padding(
               padding: EdgeInsets.only(top: 16),
               child: Divider(

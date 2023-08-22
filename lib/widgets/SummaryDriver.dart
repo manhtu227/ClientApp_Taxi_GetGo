@@ -2,7 +2,7 @@ import 'package:clientapp_taxi_getgo/widgets/IconText.dart';
 import 'package:flutter/material.dart';
 
 class SummaryDriver extends StatelessWidget {
-  const SummaryDriver({super.key});
+  SummaryDriver({super.key});
 
   @override
   Widget build(BuildContext context) {

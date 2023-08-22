@@ -51,6 +51,7 @@ class SocketService with ChangeNotifier {
   }
 
   void userFindTrip(Map<String, dynamic> data) {
+    print("cout<< " + data["trip_info"].toString());
     _socket.emit('user-find-trip', data["trip_info"]);
   }
 
@@ -77,6 +78,28 @@ class SocketService with ChangeNotifier {
             context.read<DirectionsViewModel>().currentLocation.coordinates);
         Navigator.of(context).pushNamed(Routes.DriverArrive,
             arguments: {'name': 'Trip to Destination', 'check': false});
+      } else if (data['status'] == "Done") {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Custom Dialog'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('This is a custom dialog.'),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Close'),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
       }
     });
   }

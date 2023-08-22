@@ -64,7 +64,10 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
 
   void bookDriverApi() async {
     final reponse = await ApiDriver.bookDriver(context);
+    print('qqqqqqqqqq');
+    print(reponse.statusCode);
     if (reponse.statusCode == 200) {
+      print('qqqqqqqqqq111111');
       context.read<SocketService>().userFindTrip(reponse.data);
     }
   }
@@ -77,8 +80,14 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
 
   @override
   Widget build(BuildContext context) {
-    print('cout<<'+context.read<DirectionsViewModel>().currentLocation.coordinates.toString());
-    print('cout<<'+context.read<DirectionsViewModel>().currentLocation.title.toString());
+    print('cout<<' +
+        context
+            .read<DirectionsViewModel>()
+            .currentLocation
+            .coordinates
+            .toString());
+    print('cout<<' +
+        context.read<DirectionsViewModel>().currentLocation.title.toString());
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
@@ -152,11 +161,11 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
                     alignment: Alignment.center,
                     children: [
                       // Tấm ảnh ở giữa
-                      Image.asset(
-                        'assets/images/manhtu.png',
-                        width: 100,
-                        height: 100,
-                      ),
+                      // Image.asset(
+                      //   'assets/images/manhtu.png',
+                      //   width: 100,
+                      //   height: 100,
+                      // ),
                       // Các đường tròn ở ngoài
                       for (int i = 0; i < _animationsRadius.length; i++)
                         CustomPaint(

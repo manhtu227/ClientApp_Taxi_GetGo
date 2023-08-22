@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PlaceStrip extends StatelessWidget {
-  const PlaceStrip({super.key});
+  PlaceStrip({super.key});
 
   @override
   Widget build(BuildContext context) {

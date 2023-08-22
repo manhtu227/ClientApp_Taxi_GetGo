@@ -4,6 +4,7 @@ import 'package:clientapp_taxi_getgo/screens/distance/Distance.dart';
 import 'package:clientapp_taxi_getgo/screens/home/home.dart';
 import 'package:clientapp_taxi_getgo/screens/order/SelectCar.dart';
 import 'package:clientapp_taxi_getgo/screens/order/SelectPayment.dart';
+import 'package:clientapp_taxi_getgo/screens/ratting/rating.dart';
 import 'package:clientapp_taxi_getgo/screens/search/search_des_sreen.dart';
 import 'package:clientapp_taxi_getgo/screens/search/search_driver_screen.dart';
 import 'package:clientapp_taxi_getgo/screens/strip/StripScreen.dart';
@@ -19,6 +20,7 @@ class Routes {
   static const String order = '/order';
   static const String DriverArrive = '/DriverArrive';
   static const String SearchDriver = '/SearchDriver';
+  static const String rating = '/rating';
   static const String paymentMethod = '/SelectePayment';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -31,6 +33,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SearchScreen());
       case Detail:
         return MaterialPageRoute(builder: (_) => DetailDistance());
+      case rating:
+        return MaterialPageRoute(builder: (_) => RatingScreen());
       case verify:
         return MaterialPageRoute(
           builder: (_) => VerifyOTP(),

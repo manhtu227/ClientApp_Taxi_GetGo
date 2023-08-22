@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:clientapp_taxi_getgo/providers/OTPViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class VerifyOTP extends StatefulWidget {
   const VerifyOTP({super.key});
@@ -23,12 +24,44 @@ class _VerifyOTPState extends State<VerifyOTP> {
     startCountdown();
   }
 
+  String verificationId = "";
+  void verifyOtpAndSignIn(String enteredOtp) async {
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: enteredOtp,
+    );
+
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      print('User signed in: ${userCredential.user?.uid}');
+    } catch (e) {
+      print('Sign in failed: $e');
+    }
+  }
+
+  void sendOTP(String phone) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phone,
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {
+        print('ssssssssssssssssssw2');
+        print(e);
+        // throw Exception(e.message);
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        verificationId = verificationId;
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Lấy giá trị data ở đây sau khi đã hoàn thành initState()
-    data = ModalRoute.of(context)?.settings.arguments as Map<String, Object>;
-
+    data = ModalRoute.of(context)!.settings.arguments as Map<String, Object>;
+    sendOTP('+84${data['phone'] as String}');
     viewModel = VerifyOTPViewModel(data['check'] == true);
   }
 
@@ -103,7 +136,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                           ),
                         ),
                         TextSpan(
-                          text: data['phone'] as String,
+                          text: '0${data['phone'] as String}',
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
