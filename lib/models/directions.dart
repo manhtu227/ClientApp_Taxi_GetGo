@@ -40,6 +40,7 @@ class Directions {
     print(data['polyline']['encodedPolyline']);
     print(distance);
     print(duration);
+    print("cout<< nè m,a ${data['polyline']['encodedPolyline'] is String}");
     return Directions(
       polylinePoints:
           PolylinePoints().decodePolyline(data['polyline']['encodedPolyline']),

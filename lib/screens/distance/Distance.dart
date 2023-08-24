@@ -49,7 +49,7 @@ class _DetailDistanceState extends State<DetailDistance> {
             child: Stack(
           clipBehavior: Clip.none,
           children: [
-            Container(
+            SizedBox(
               // color: Colors.red,
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
@@ -58,7 +58,7 @@ class _DetailDistanceState extends State<DetailDistance> {
               top: 0,
               right: 0,
               left: 0,
-              bottom: 200,
+              bottom: MediaQuery.of(context).size.height / 3.1,
               child: GoogleMapBuider(currentLocation: _currentLocation)
                   .setDesLocation(_desLocation)
                   .setPolyline(_listPoint)

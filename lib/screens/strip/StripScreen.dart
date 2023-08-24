@@ -36,9 +36,9 @@ class _TripScreenState extends State<TripScreen> {
   // }
   @override
   Widget build(BuildContext context) {
-    Map<String, Object> data = {'name': 'Trip to Destination', 'check': false};
-//   Map<String, Object> data =
-    // ModalRoute.of(context)?.settings.arguments as Map<String, Object>;
+    // Map<String, Object> data = {'name': 'Trip to Destination', 'check': false};
+    Map<String, Object> data =
+        ModalRoute.of(context)?.settings.arguments as Map<String, Object>;
     print('cout<<' + data.toString());
     return SafeArea(
       child: Scaffold(
@@ -47,8 +47,8 @@ class _TripScreenState extends State<TripScreen> {
           child: SlidingUpPanel(
             parallaxEnabled: true,
             parallaxOffset: .5,
-            minHeight: 180,
-            maxHeight: 400,
+            minHeight: data['check'] == false ? 180 : 260,
+            maxHeight: data['check'] == false ? 360 : 260,
             body:
                 // Container(
                 //   // color: Colors.red,
@@ -58,18 +58,35 @@ class _TripScreenState extends State<TripScreen> {
                 Selector<DirectionsViewModel, List<PointLatLng>>(
                     selector: (context, setting) => setting.polylinePoints,
                     builder: (context, polylinePoints, child) {
-                      return GoogleMapBuider(
-                              currentLocation: context
-                                  .read<DirectionsViewModel>()
-                                  .driverLocation)
-                          .updateIconCurrent("assets/svgs/CarMap.svg")
-                          .setDesLocation(data['check'] == true
-                              ? context
-                                  .read<DirectionsViewModel>()
-                                  .currentLocation
-                              : context.read<DirectionsViewModel>().desLocation)
-                          .setPolyline(polylinePoints)
-                          .build();
+                      return Stack(
+                          // height: 300,
+                          children: [
+                            SizedBox(
+                              // color: Colors.red,
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              left: 0,
+                              bottom: data['check'] == false ? 180 : 260,
+                              child: GoogleMapBuider(
+                                      currentLocation: context
+                                          .read<DirectionsViewModel>()
+                                          .driverLocation)
+                                  .updateIconCurrent("assets/svgs/CarMap.svg")
+                                  .setDesLocation(data['check'] == true
+                                      ? context
+                                          .read<DirectionsViewModel>()
+                                          .currentLocation
+                                      : context
+                                          .read<DirectionsViewModel>()
+                                          .desLocation)
+                                  .setPolyline(polylinePoints)
+                                  .build(),
+                            ),
+                          ]);
                     }),
             panelBuilder: (controller) => Container(
               padding: EdgeInsets.all(16),
@@ -114,107 +131,63 @@ class _TripScreenState extends State<TripScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  const Divider(
-                    thickness: 1,
-                    height: 8,
-                    color: Color(0xFFACAAAA),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  PlaceStrip(),
+                  data['check'] == false
+                      ? Column(
+                          children: [
+                            const Divider(
+                              thickness: 1,
+                              height: 8,
+                              color: Color(0xFFACAAAA),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            PlaceStrip(),
+                          ],
+                        )
+                      : const SizedBox(),
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                            color: Theme.of(context).primaryColor),
-                        child: Icon(
-                          Icons.close,
-                          size: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                // title: Text('Custom Dialog'),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      37.0), // Điều chỉnh bán kính của góc
+                  data['check'] == true
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(50)),
+                                  color: Theme.of(context).primaryColor),
+                              child: const Icon(
+                                Icons.close,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50)),
+                                    color: Theme.of(context).primaryColor),
+                                child: Icon(
+                                  Icons.message,
+                                  size: 20,
+                                  color: Colors.white,
                                 ),
-                                content: SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 2.5,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Image.asset(
-                                          'assets/images/ArrivedSucces.png'),
-                                      const SizedBox(
-                                        height: 26,
-                                      ),
-                                      const Text(
-                                        'Bạn đã đến đích',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                          color: Color(0xff1e1e1e),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      const Text(
-                                        'Hẹn gặp lại các bạn ở chuyến tiếp theo :)',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: Color(0xff151b27),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 60),
-                                      ButtonSizeL(
-                                          onTap: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          name: 'OK')
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                              color: Theme.of(context).primaryColor),
-                          child: Icon(
-                            Icons.message,
-                            size: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : SizedBox(),
                 ],
               ),
             ),

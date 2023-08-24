@@ -45,17 +45,24 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _loadMapStyle();
     context.read<SocketService>().socket.on('get-location-driver', (data) {
+      print('cout<< $data');
+      print('cout<< ${data["directions"]}');
       if (context.read<DirectionsViewModel>().driverLocation.status ==
-          'comming') {
+              'comming' &&
+          mounted &&
+          data["directions"] != '') {
         context.read<DirectionsViewModel>().updateDriverLocation(
             LatLng(data['lat'] / 1, data['lng'] / 1),
             data['heading'] / 1 ?? 0,
             'comming');
         addMarker('current', LatLng(data['lat'] / 1, data['lng'] / 1),
-            widget.icon, widget.currentLocation.heading);
-        context.read<DirectionsViewModel>().updatePolylines(
-            LatLng(data['lat'] / 1, data['lng'] / 1),
-            context.read<DirectionsViewModel>().currentLocation.coordinates);
+            widget.icon, data['heading']);
+        final directionsData = data["directions"];
+        print(data["directions"] is String);
+        if (directionsData != '' && directionsData is String) {
+          widget.listPoint = PolylinePoints().decodePolyline(directionsData);
+        }
+        // context.read<DirectionsViewModel>().updatePolylines1(directionsData);
       }
     });
   }
@@ -77,43 +84,73 @@ class _MapScreenState extends State<MapScreen> {
   void getCurrentLocation() async {}
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      mapType: MapType.normal,
-      initialCameraPosition: CameraPosition(
-        target: widget.currentLocation.coordinates,
-        zoom: widget.pickup != null ? 16 : 14,
-        bearing: 90.0,
-      ),
-      onMapCreated: onCreated,
-      onCameraMove: (CameraPosition? position) {
-        // Hủy timer nếu đã tồn tại
-        if (_timer != null) {
-          _timer!.cancel();
-        }
-
-        // Bắt đầu timer mới
-        _timer = Timer(Duration(seconds: 2), () {
-          if (widget.pickup != null && position != null) {
-            widget.pickup!(position);
-          }
-        });
-      },
-      markers: _marker.values.toSet(),
-      compassEnabled: false,
-      zoomControlsEnabled: false,
-      myLocationEnabled: true,
-      myLocationButtonEnabled: widget.desLocation != null ? true : false,
-      polylines: {
-        if (widget.listPoint.isNotEmpty)
-          Polyline(
-            polylineId: const PolylineId('overview_polyline'),
-            color: Theme.of(context).primaryColor,
-            width: 4,
-            points: widget.listPoint.map((e) {
-              return LatLng(e.latitude, e.longitude);
-            }).toList(),
+    return Stack(
+      children: [
+        GoogleMap(
+          mapType: MapType.normal,
+          initialCameraPosition: CameraPosition(
+            target: widget.currentLocation.coordinates,
+            zoom: widget.pickup != null ? 16 : 14,
+            bearing: 90.0,
           ),
-      },
+          onMapCreated: onCreated,
+          onCameraMove: (CameraPosition? position) {
+            // Hủy timer nếu đã tồn tại
+            if (_timer != null) {
+              _timer!.cancel();
+            }
+
+            // Bắt đầu timer mới
+            _timer = Timer(Duration(seconds: 2), () {
+              if (widget.pickup != null && position != null) {
+                widget.pickup!(position);
+              }
+            });
+          },
+          markers: _marker.values.toSet(),
+          compassEnabled: false,
+          zoomControlsEnabled: false,
+          // myLocationEnabled: true,
+          myLocationButtonEnabled: widget.desLocation != null ? true : false,
+          polylines: {
+            if (widget.listPoint.isNotEmpty)
+              Polyline(
+                polylineId: const PolylineId('overview_polyline'),
+                color: Theme.of(context).primaryColor,
+                width: 4,
+                points: widget.listPoint.map((e) {
+                  return LatLng(e.latitude, e.longitude);
+                }).toList(),
+              ),
+          },
+        ),
+        Positioned(
+          bottom: 45.0,
+          right: 16.0,
+          child: ElevatedButton(
+            onPressed: () {
+              if (widget.desLocation != null) {
+                List<LatLng> points = widget.listPoint.map((e) {
+                  return LatLng(e.latitude, e.longitude);
+                }).toList();
+                _setMapFitToTour(points);
+              } else {
+                _moveCameraToLocation(widget.currentLocation.coordinates);
+              }
+            },
+            child: Icon(Icons.my_location),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).primaryColor,
+              padding: EdgeInsets.all(0), // Điều này sẽ loại bỏ padding tự động
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(10), // Điều này tạo nút hình vuông
+              ),
+              minimumSize: Size(45, 45), // Kích thước tối thiểu của nút
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -189,6 +226,12 @@ class _MapScreenState extends State<MapScreen> {
     final bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
 
     return BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
+  }
+
+  void _moveCameraToLocation(LatLng location) async {
+    GoogleMapController mapController = await _controller.future;
+    mapController.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: location, zoom: 15)));
   }
 
   Future<void> addMarkerPicture(

@@ -161,11 +161,11 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
                     alignment: Alignment.center,
                     children: [
                       // Tấm ảnh ở giữa
-                      // Image.asset(
-                      //   'assets/images/manhtu.png',
-                      //   width: 100,
-                      //   height: 100,
-                      // ),
+                      Image.asset(
+                        'assets/images/manhtu.png',
+                        width: 100,
+                        height: 100,
+                      ),
                       // Các đường tròn ở ngoài
                       for (int i = 0; i < _animationsRadius.length; i++)
                         CustomPaint(

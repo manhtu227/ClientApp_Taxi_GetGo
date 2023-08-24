@@ -1,8 +1,23 @@
+import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
-class PlaceStrip extends StatelessWidget {
+class PlaceStrip extends StatefulWidget {
   PlaceStrip({super.key});
+
+  @override
+  State<PlaceStrip> createState() => _PlaceStripState();
+}
+
+class _PlaceStripState extends State<PlaceStrip> {
+  late DirectionsViewModel providerTrip;
+  @override
+  void initState() {
+    // TODO: implement initState
+    providerTrip = context.read<DirectionsViewModel>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +38,19 @@ class PlaceStrip extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
-                      'Chuk Chuk',
-                      style: TextStyle(
+                      providerTrip.currentLocation.title,
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: Color(0xff3e4958),
                       ),
                     ),
-                    SizedBox(height: 6),
+                    const SizedBox(height: 6),
                     Text(
-                      '277 Nguyễn Văn Cừ, Quận 5 TPHCM',
-                      style: TextStyle(
+                      providerTrip.currentLocation.summary,
+                      style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: Color(0xff97adb6),
@@ -72,19 +87,19 @@ class PlaceStrip extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
-                      'Chuk Chuk',
-                      style: TextStyle(
+                      providerTrip.desLocation.title,
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: Color(0xff3e4958),
                       ),
                     ),
-                    SizedBox(height: 6),
+                    const SizedBox(height: 6),
                     Text(
-                      '277 Nguyễn Văn Cừ, Quận 5 TPHCM',
-                      style: TextStyle(
+                      providerTrip.desLocation.summary,
+                      style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: Color(0xff97adb6),

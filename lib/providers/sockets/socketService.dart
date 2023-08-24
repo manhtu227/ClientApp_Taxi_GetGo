@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:clientapp_taxi_getgo/configs/api_config.dart';
 import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
+import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
+import 'package:clientapp_taxi_getgo/widgets/dialogSuccess.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -61,9 +64,12 @@ class SocketService with ChangeNotifier {
           LatLng(data['lat'] / 1, data['lng'] / 1),
           data['heading'] / 1,
           'comming');
+      print("cout<< cho chet :${data["driver_info"]}");
+      print("cout<< cho chet :$data");
       await context.read<DirectionsViewModel>().updatePolylines(
           LatLng(data['lat'] / 1, data['lng'] / 1),
           context.read<DirectionsViewModel>().currentLocation.coordinates);
+      await context.read<DriverProvider>().updateDriver(data["driver_info"]);
       Navigator.of(context).pushNamed(Routes.DriverArrive,
           arguments: {'name': 'Driver is Arriving..', 'check': true});
       // Navigator.of(context).pushNamed(Routes.DriverArrive);
@@ -72,34 +78,16 @@ class SocketService with ChangeNotifier {
 
   void handleTripUpdate(BuildContext context) {
     _socket.on('trip-update', (data) async {
+      print("cout<< cho vy : ${data['status']}");
+      print("cout<< cho vy : ${data}");
       if (data['status'] == "Driving") {
-        await context.read<DirectionsViewModel>().updatePolylines(
-            context.read<DirectionsViewModel>().driverLocation.coordinates,
-            context.read<DirectionsViewModel>().currentLocation.coordinates);
+        context
+            .read<DirectionsViewModel>()
+            .updatePolylines1(data["directions"]);
         Navigator.of(context).pushNamed(Routes.DriverArrive,
-            arguments: {'name': 'Trip to Destination', 'check': false});
+            arguments: {'name': 'Đang đi tới đích', 'check': false});
       } else if (data['status'] == "Done") {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Custom Dialog'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('This is a custom dialog.'),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Close'),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
+        DialogMessage.show(context);
       }
     });
   }

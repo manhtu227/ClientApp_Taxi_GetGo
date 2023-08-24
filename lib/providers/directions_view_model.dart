@@ -120,18 +120,7 @@ class DirectionsViewModel with ChangeNotifier {
 
   Future<void> updatePolylines(LatLng current, LatLng des) async {
     // _info.polylinePoints .sublist(10);
-    print('cout<< nè:' +
-        _info.polylinePoints
-            .contains(PointLatLng(current.latitude, current.longitude))
-            .toString());
-    print('cout<< nè:  ' +
-        _info.polylinePoints
-            .contains(PointLatLng(des.latitude, des.longitude))
-            .toString());
-    print('cout<< nè: ' +
-        PointLatLng(current.latitude, current.longitude).toString());
-    print('cout<< nè: ' + _info.polylinePoints.toString());
-    print('cout<< veeeeeeeee');
+
     final directions =
         await APIPlace.getDirections(origin: current, destination: des);
     print('cout<< ' + directions.polylinePoints.toString());
@@ -142,6 +131,12 @@ class DirectionsViewModel with ChangeNotifier {
     // }
     _info = directions;
     // _info = Directions.fromMap(map);
+
+    notifyListeners();
+  }
+
+  Future<void> updatePolylines1(String directions) async {
+    _info.polylinePoints = PolylinePoints().decodePolyline(directions);
 
     notifyListeners();
   }
