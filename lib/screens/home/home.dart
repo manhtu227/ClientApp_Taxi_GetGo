@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SingleChildScrollView(
       child: Container(
         width: double.infinity,
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           color: Color(0xfff1f3f5),
         ),
@@ -46,15 +47,15 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             // Image(image: AssetImage('assets/images/homebanner.png')),
             SizedBox(
-              height: ScreenUtil().setHeight(190),
+              // height: ScreenUtil().setHeight(190),
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
                   Image.asset(
                     'assets/images/homebanner.png',
-                    // fit: BoxFit.cover,
+                    fit: BoxFit.cover,
                     // width: coverHeight,
-                    height: coverHeight,
+                    // height: coverHeight,
                   ),
                   Positioned(
                     left: ScreenUtil().setWidth(16),
@@ -115,9 +116,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            // SizedBox(
-            //   height: ScreenUtil().setHeight(15),
-            // ),
+            SizedBox(
+              height: ScreenUtil().setHeight(buttonHeight / 2),
+            ),
             Padding(
               padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
               child: ListPlace(),

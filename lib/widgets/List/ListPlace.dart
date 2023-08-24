@@ -9,7 +9,7 @@ class ListPlace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
+    return SizedBox(
       height: ScreenUtil().setHeight(37),
       width: screenWidth - ScreenUtil().setWidth(32),
       // margin: EdgeInsets.only(left: 16),
