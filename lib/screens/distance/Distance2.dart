@@ -1,5 +1,5 @@
 import 'package:clientapp_taxi_getgo/models/location.dart';
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextSizeL.dart';
@@ -30,10 +30,10 @@ class _DetailDistanceState extends State<DetailDistance> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _currentLocation = context.read<DirectionsViewModel>().currentLocation;
-    _desLocation = context.read<DirectionsViewModel>().desLocation;
-    _totalDistance = context.read<DirectionsViewModel>().totalDistance;
-    _listPoint = context.read<DirectionsViewModel>().polylinePoints;
+    _currentLocation = context.read<TripsViewModel>().currentLocation;
+    _desLocation = context.read<TripsViewModel>().desLocation;
+    _totalDistance = context.read<TripsViewModel>().totalDistance;
+    _listPoint = context.read<TripsViewModel>().polylinePoints;
   }
 
   @override
@@ -68,7 +68,7 @@ class _DetailDistanceState extends State<DetailDistance> {
                 onPressed: () {
                   print('hsgg');
                   print(context
-                      .read<DirectionsViewModel>()
+                      .read<TripsViewModel>()
                       .currentLocation
                       .coordinates);
                   Navigator.of(context).popUntil((route) => route.isFirst);

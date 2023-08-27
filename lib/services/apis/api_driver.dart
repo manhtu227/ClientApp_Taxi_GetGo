@@ -1,7 +1,7 @@
 import 'package:clientapp_taxi_getgo/configs/route_path_api.dart';
 import 'package:clientapp_taxi_getgo/models/location.dart';
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/method_payment_view_model.dart';
 import 'package:clientapp_taxi_getgo/services/DioInterceptorManager.dart';
 import 'package:dio/dio.dart';
@@ -21,7 +21,7 @@ class ApiDriver {
   }
 
   static Future<Response> bookDriver(BuildContext context) async {
-    final location = context.read<DirectionsViewModel>();
+    final location = context.read<TripsViewModel>();
     print('heehehee');
     Map<String, dynamic> data = {
       "start": {
@@ -41,6 +41,29 @@ class ApiDriver {
     };
     Response response = await _dio.post(
       RoutePathApi.bookDriver,
+      data: data,
+      options: Options(headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization':
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicGhvbmUiOiIrODQ1NTU1NTU1NTUiLCJ0eXBlIjoiVXNlciIsImlhdCI6MTY5MjI1MjQ0MywiZXhwIjoxNjkzMzMyNDQzfQ.sJOKZYa8tLqnMu1umUSqdZxReEKTtMQ4eE7R_v_VMUo",
+      }),
+    );
+    print('1111111111111111ne');
+    print(response);
+    return response;
+  }
+
+  static Future<Response> ratingTrip(
+      BuildContext context, double rating) async {
+    final trip = context.read<TripsViewModel>();
+    print('heehehee');
+    Map<String, dynamic> data = {
+      "trip_id": trip.tripId,
+      "star": rating.toString()
+    };
+    Response response = await _dio.post(
+      RoutePathApi.rateTrip,
       data: data,
       options: Options(headers: {
         'Content-Type': 'application/json',

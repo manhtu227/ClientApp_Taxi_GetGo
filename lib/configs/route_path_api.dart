@@ -9,4 +9,5 @@ class RoutePathApi {
   static const String getAllDriver =
       '${ApiConfig.baseUrl}/v1/location/localdriver';
   static const String bookDriver = '${ApiConfig.baseUrl}/v1/booking/users';
+  static const String rateTrip = '${ApiConfig.baseUrl}/v1/trips/rate';
 }

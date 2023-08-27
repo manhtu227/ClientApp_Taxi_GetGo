@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/services/googlemap/api_places.dart';
@@ -35,17 +35,17 @@ class _SearchScreenState extends State<SearchScreen> {
   List<LocationModel> locations = [];
   bool checkPickUp = false;
   int pick = 1;
-  late DirectionsViewModel _provider;
+  late TripsViewModel _provider;
   Timer? _timer;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _provider = context.read<DirectionsViewModel>();
+    _provider = context.read<TripsViewModel>();
     // APIPlace.getCurrentLocation();
     _currentLocation.text =
-        context.read<DirectionsViewModel>().currentLocation.summary;
+        context.read<TripsViewModel>().currentLocation.summary;
     _desFocus.requestFocus();
     _currentLocation.addListener(() {
       onChange(_currentLocation.text);
@@ -212,9 +212,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       child: GoogleMapBuider(
-                              currentLocation: context
-                                  .read<DirectionsViewModel>()
-                                  .myLocation)
+                              currentLocation:
+                                  context.read<TripsViewModel>().myLocation)
                           .setPickUp(onPickUp)
                           .build(),
                     )

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:clientapp_taxi_getgo/models/location.dart';
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/sockets/socketService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -47,11 +47,10 @@ class _MapScreenState extends State<MapScreen> {
     context.read<SocketService>().socket.on('get-location-driver', (data) {
       print('cout<< $data');
       print('cout<< ${data["directions"]}');
-      if (context.read<DirectionsViewModel>().driverLocation.status ==
-              'comming' &&
+      if (context.read<TripsViewModel>().driverLocation.status == 'comming' &&
           mounted &&
           data["directions"] != '') {
-        context.read<DirectionsViewModel>().updateDriverLocation(
+        context.read<TripsViewModel>().updateDriverLocation(
             LatLng(data['lat'] / 1, data['lng'] / 1),
             data['heading'] / 1 ?? 0,
             'comming');

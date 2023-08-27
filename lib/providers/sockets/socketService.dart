@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:clientapp_taxi_getgo/configs/api_config.dart';
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
@@ -55,20 +55,22 @@ class SocketService with ChangeNotifier {
 
   void userFindTrip(Map<String, dynamic> data) {
     print("cout<< " + data["trip_info"].toString());
+
     _socket.emit('user-find-trip', data["trip_info"]);
   }
 
   void userFoundDriver(BuildContext context) {
     _socket.on('found-driver', (data) async {
-      context.read<DirectionsViewModel>().updateDriverLocation(
+      context.read<TripsViewModel>().updateDriverLocation(
           LatLng(data['lat'] / 1, data['lng'] / 1),
           data['heading'] / 1,
           'comming');
+      context.read<TripsViewModel>().updateTripID(data['trip_id']);
       print("cout<< cho chet :${data["driver_info"]}");
       print("cout<< cho chet :$data");
-      await context.read<DirectionsViewModel>().updatePolylines(
+      await context.read<TripsViewModel>().updatePolylines(
           LatLng(data['lat'] / 1, data['lng'] / 1),
-          context.read<DirectionsViewModel>().currentLocation.coordinates);
+          context.read<TripsViewModel>().currentLocation.coordinates);
       await context.read<DriverProvider>().updateDriver(data["driver_info"]);
       Navigator.of(context).pushNamed(Routes.DriverArrive,
           arguments: {'name': 'Driver is Arriving..', 'check': true});
@@ -81,9 +83,7 @@ class SocketService with ChangeNotifier {
       print("cout<< cho vy : ${data['status']}");
       print("cout<< cho vy : ${data}");
       if (data['status'] == "Driving") {
-        context
-            .read<DirectionsViewModel>()
-            .updatePolylines1(data["directions"]);
+        context.read<TripsViewModel>().updatePolylines1(data["directions"]);
         Navigator.of(context).pushNamed(Routes.DriverArrive,
             arguments: {'name': 'Đang đi tới đích', 'check': false});
       } else if (data['status'] == "Done") {

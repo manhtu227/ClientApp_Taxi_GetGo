@@ -1,7 +1,9 @@
 import 'package:clientapp_taxi_getgo/configs/configDev.dart';
 import 'package:clientapp_taxi_getgo/models/directions.dart';
 import 'package:clientapp_taxi_getgo/models/location.dart';
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
+import 'package:clientapp_taxi_getgo/routes/routes.dart';
+import 'package:clientapp_taxi_getgo/services/apis/api_driver.dart';
 import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/PlaceStrip.dart';
@@ -23,6 +25,7 @@ class RatingScreen extends StatefulWidget {
 
 class _RatingScreenState extends State<RatingScreen> {
   late RenderBox renderbox;
+  double rate = 5;
   @override
   void initState() {
     // TODO: implement initState
@@ -58,7 +61,7 @@ class _RatingScreenState extends State<RatingScreen> {
                 // ),
                 GoogleMapBuider(
                         currentLocation:
-                            context.read<DirectionsViewModel>().myLocation)
+                            context.read<TripsViewModel>().myLocation)
                     .build(),
             panelBuilder: (controller) => Container(
               padding: EdgeInsets.all(16),
@@ -147,6 +150,9 @@ class _RatingScreenState extends State<RatingScreen> {
                       color: Theme.of(context).primaryColor,
                     ),
                     onRatingUpdate: (rating) {
+                      setState(() {
+                        rate = rating;
+                      });
                       print(rating);
                     },
                   ),
@@ -161,7 +167,13 @@ class _RatingScreenState extends State<RatingScreen> {
                   const SizedBox(
                     height: 12,
                   ),
-                  ButtonSizeL(onTap: () {}, name: "Submit"),
+                  ButtonSizeL(
+                      onTap: () {
+                        print('cout<<   sssss');
+                        // ApiDriver.ratingTrip(context, rate);
+                        Navigator.of(context).pushReplacementNamed(Routes.home);
+                      },
+                      name: "Submit"),
                 ],
               ),
             ),

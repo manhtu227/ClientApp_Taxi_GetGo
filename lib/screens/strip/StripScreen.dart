@@ -1,7 +1,7 @@
 import 'package:clientapp_taxi_getgo/configs/configDev.dart';
 import 'package:clientapp_taxi_getgo/models/directions.dart';
 import 'package:clientapp_taxi_getgo/models/location.dart';
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/PlaceStrip.dart';
@@ -55,7 +55,7 @@ class _TripScreenState extends State<TripScreen> {
                 //   height: MediaQuery.of(context).size.height,
                 //   width: MediaQuery.of(context).size.width,
                 // ),
-                Selector<DirectionsViewModel, List<PointLatLng>>(
+                Selector<TripsViewModel, List<PointLatLng>>(
                     selector: (context, setting) => setting.polylinePoints,
                     builder: (context, polylinePoints, child) {
                       return Stack(
@@ -73,15 +73,15 @@ class _TripScreenState extends State<TripScreen> {
                               bottom: data['check'] == false ? 180 : 260,
                               child: GoogleMapBuider(
                                       currentLocation: context
-                                          .read<DirectionsViewModel>()
+                                          .read<TripsViewModel>()
                                           .driverLocation)
                                   .updateIconCurrent("assets/svgs/CarMap.svg")
                                   .setDesLocation(data['check'] == true
                                       ? context
-                                          .read<DirectionsViewModel>()
+                                          .read<TripsViewModel>()
                                           .currentLocation
                                       : context
-                                          .read<DirectionsViewModel>()
+                                          .read<TripsViewModel>()
                                           .desLocation)
                                   .setPolyline(polylinePoints)
                                   .build(),

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:clientapp_taxi_getgo/models/location.dart';
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/sockets/socketService.dart';
 import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
 import 'package:clientapp_taxi_getgo/widgets/LoadingPainter.dart';
@@ -81,13 +81,9 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
   @override
   Widget build(BuildContext context) {
     print('cout<<' +
-        context
-            .read<DirectionsViewModel>()
-            .currentLocation
-            .coordinates
-            .toString());
+        context.read<TripsViewModel>().currentLocation.coordinates.toString());
     print('cout<<' +
-        context.read<DirectionsViewModel>().currentLocation.title.toString());
+        context.read<TripsViewModel>().currentLocation.title.toString());
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
@@ -122,7 +118,7 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
             width: MediaQuery.of(context).size.width,
             child: GoogleMapBuider(
                     currentLocation:
-                        context.read<DirectionsViewModel>().currentLocation)
+                        context.read<TripsViewModel>().currentLocation)
                 .build(),
           ),
           Positioned(

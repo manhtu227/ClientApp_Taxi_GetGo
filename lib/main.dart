@@ -1,5 +1,5 @@
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/method_payment_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/sockets/socketService.dart';
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          value: DirectionsViewModel(),
+          value: TripsViewModel(),
         ),
         ChangeNotifierProvider.value(
           value: CarTypeProvider(),

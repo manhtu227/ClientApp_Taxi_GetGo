@@ -1,4 +1,4 @@
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +11,11 @@ class PlaceStrip extends StatefulWidget {
 }
 
 class _PlaceStripState extends State<PlaceStrip> {
-  late DirectionsViewModel providerTrip;
+  late TripsViewModel providerTrip;
   @override
   void initState() {
     // TODO: implement initState
-    providerTrip = context.read<DirectionsViewModel>();
+    providerTrip = context.read<TripsViewModel>();
     super.initState();
   }
 

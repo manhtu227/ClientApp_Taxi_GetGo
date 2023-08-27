@@ -9,13 +9,14 @@ import 'package:location/location.dart';
 
 import '../models/directions.dart';
 
-class DirectionsViewModel with ChangeNotifier {
+class TripsViewModel with ChangeNotifier {
   Directions _info = Directions(
     polylinePoints: [],
     totalDistance: 0,
     totalDuration: '0',
   );
   String statusTrip = '';
+  int _idTrip = 0;
   LocationModel _currentLocation =
       LocationModel(title: '', summary: '', placeID: '');
   LocationModel _desLocation = LocationModel(
@@ -28,6 +29,7 @@ class DirectionsViewModel with ChangeNotifier {
   LocationModel _driverLocation =
       LocationModel(title: '', summary: '', status: '');
   List<PointLatLng> get polylinePoints => _info.polylinePoints;
+  int get tripId => _idTrip;
   double get totalDistance => _info.totalDistance;
   String get totalDuration => _info.totalDuration;
   LocationModel get myLocation => _myLocation;
@@ -35,8 +37,10 @@ class DirectionsViewModel with ChangeNotifier {
   LocationModel get currentLocation => _currentLocation;
   LocationModel get desLocation => _desLocation;
   Directions get info => _info;
-
   // update
+  void updateTripID(int id) {
+    _idTrip = id;
+  }
 
   void updatePolylinePoints(List<PointLatLng> polylinePoints) {
     _info.polylinePoints = polylinePoints;

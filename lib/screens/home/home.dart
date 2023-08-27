@@ -1,5 +1,5 @@
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
-import 'package:clientapp_taxi_getgo/providers/directions_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/widgets/List/ListPlace.dart';
 import 'package:clientapp_taxi_getgo/widgets/List/ListServiceCar.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +18,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final double coverHeight = 170;
   final double buttonHeight = 51;
-  late DirectionsViewModel locationProvider;
+  late TripsViewModel locationProvider;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    locationProvider = context.read<DirectionsViewModel>();
+    locationProvider = context.read<TripsViewModel>();
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     locationProvider.updateLocationData();
 
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: TextButton(
                       onPressed: () {
                         context
-                            .read<DirectionsViewModel>()
+                            .read<TripsViewModel>()
                             .updateCurrentLocation(locationProvider.myLocation);
                         Navigator.of(context).pushNamed(Routes.search);
                       },
@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(
-              height: ScreenUtil().setHeight(buttonHeight / 2),
+              height: ScreenUtil().setHeight(buttonHeight / 1.5),
             ),
             Padding(
               padding: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
