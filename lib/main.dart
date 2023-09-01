@@ -3,6 +3,7 @@ import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/method_payment_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/sockets/socketService.dart';
+import 'package:clientapp_taxi_getgo/providers/userViewModel.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: SocketService(),
+        ),
+        ChangeNotifierProvider.value(
+          value: UserViewModel(),
         ),
       ],
       child: MaterialApp(

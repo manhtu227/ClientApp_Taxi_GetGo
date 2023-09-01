@@ -28,6 +28,11 @@ class TripsViewModel with ChangeNotifier {
       LocationModel(title: '', summary: '', placeID: '');
   LocationModel _driverLocation =
       LocationModel(title: '', summary: '', status: '');
+  bool _isSchedule = false;
+  DateTime _dateSchedule = DateTime.now();
+
+  bool get schedule => _isSchedule;
+  DateTime get dateSchedule => _dateSchedule;
   List<PointLatLng> get polylinePoints => _info.polylinePoints;
   int get tripId => _idTrip;
   double get totalDistance => _info.totalDistance;
@@ -37,6 +42,13 @@ class TripsViewModel with ChangeNotifier {
   LocationModel get currentLocation => _currentLocation;
   LocationModel get desLocation => _desLocation;
   Directions get info => _info;
+
+  void setShedule(bool isSchedule, DateTime schedule) {
+    _isSchedule = isSchedule;
+    _dateSchedule = schedule;
+    notifyListeners(); // Thông báo cho các người nghe (listeners) về sự thay đổi
+  }
+
   // update
   void updateTripID(int id) {
     _idTrip = id;

@@ -67,7 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void onChange(String text) async {
     if (text.length > 2) {
-      Timer(Duration(seconds: 2), () async {
+      Timer(Duration(seconds: 1), () async {
         locations = await APIPlace.getSuccession(text);
       });
     } else

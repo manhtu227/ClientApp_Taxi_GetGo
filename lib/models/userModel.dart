@@ -4,6 +4,8 @@ class UserModel {
   String phone;
   String email;
   String id;
+  String type;
+  String? token;
   String gender;
   String? birthDate;
   String? address;
@@ -22,8 +24,10 @@ class UserModel {
     required this.phone,
     required this.email,
     required this.id,
+    required this.type,
     required this.gender,
     this.birthDate,
+    this.token,
     this.address,
     this.typeCar,
     this.idCard,

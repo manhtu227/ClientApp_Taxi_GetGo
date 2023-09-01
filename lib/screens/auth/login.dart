@@ -16,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
   final TextEditingController phoneController =
-      TextEditingController(text: "774441684");
+      TextEditingController(text: "555555555");
   late AnimationController _animationController;
   late Animation<Offset> _animation;
   bool _isKeyboardOpen = false;

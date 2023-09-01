@@ -16,6 +16,7 @@ class DriverProvider with ChangeNotifier {
     birthDate: "??/??/????",
     typeCar: "xe 4 bánh",
     idCard: "59 - 74A -976237890146",
+    type: 'driver',
     descriptionCar:
         "mecedes màu đen có 4 cái cữa, có 4 bánh xe, có 4 chỗ, có tay lái, có phanh xe và có đứa ngáo ngáo tên Tú lái nó",
   );

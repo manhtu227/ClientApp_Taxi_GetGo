@@ -162,7 +162,9 @@ class _VerifyOTPState extends State<VerifyOTP> {
                   // submittedPinTheme: submittedPinTheme,
                   showCursor: true,
                   onCompleted: (value) {
-                    viewModel.onCompleted('84${data['phone']}', value, context);
+                    print("kkk: +84${data['phone']}");
+                    viewModel.onCompleted(
+                        '+84${data['phone']}', value, context);
                   },
                 ),
               ),

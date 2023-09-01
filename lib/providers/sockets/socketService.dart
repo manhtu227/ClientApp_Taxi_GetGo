@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:clientapp_taxi_getgo/configs/api_config.dart';
 import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/userViewModel.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/dialogSuccess.dart';
@@ -32,7 +33,7 @@ class SocketService with ChangeNotifier {
             .setQuery({'username': 'loc'}).build());
     _socket.onConnect(
       (data) {
-        _socket.emit('user-login', {"user_id": 5});
+        _socket.emit('user-login', {"user_id": context.read<UserViewModel>().user.id});
         userFoundDriver(context);
         handleTripUpdate(context);
         // getLocationDriver(context);

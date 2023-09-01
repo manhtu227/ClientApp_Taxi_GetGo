@@ -32,9 +32,10 @@ class ApiDriver {
       "end": {
         "lat": location.desLocation.coordinates.latitude,
         "lng": location.desLocation.coordinates.longitude,
-        "place": location.desLocation.summary
+        "place": location.desLocation.summary,
       },
-      "is_scheduled": false,
+      "is_scheduled": location.schedule,
+      "scheduled_time": location.dateSchedule,
       "price": context.read<CarTypeProvider>().price,
       "is_paid": false,
       "paymentMethod": context.read<MethodPaymentViewModel>().selectedMethodType

@@ -7,7 +7,6 @@ class LoginLogic {
     required this.phoneNumber,
     required this.context,
   });
-  
 
   void sendOTP(String phone) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
@@ -43,7 +42,7 @@ class LoginLogic {
     print('heeeeeeeee');
     print(phoneNumber.text);
     final checkReponse = await ApiAuth.checkPhone('84${phoneNumber.text}');
-    print(checkReponse['error']);
+    print(checkReponse);
     if (checkReponse['statusCode'] == 500) {
       sendOTP('+84${phoneNumber.text}');
       Navigator.of(context).pushNamed(Routes.verify, arguments: {
@@ -57,7 +56,7 @@ class LoginLogic {
         'title': 'Hello,',
         'summary':
             'Enter the password to log in to account \nwith the phone number ',
-        'phone': '0${phoneNumber.text}',
+        'phone': phoneNumber.text,
         'check': true
       });
     }

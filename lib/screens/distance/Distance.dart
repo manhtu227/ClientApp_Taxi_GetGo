@@ -2,11 +2,14 @@ import 'package:clientapp_taxi_getgo/models/location.dart';
 import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/method_payment_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/userViewModel.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
+import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/IconText.dart';
 import 'package:clientapp_taxi_getgo/widgets/List/ListTranport.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextSizeL.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,6 +31,9 @@ class _DetailDistanceState extends State<DetailDistance> {
   late double _totalDistance;
   late List<PointLatLng> _listPoint;
   late List<LatLng> _listDrive;
+  DateTime now = DateTime.now();
+  DateTime dateSchedule = DateTime.now();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,6 +43,82 @@ class _DetailDistanceState extends State<DetailDistance> {
     _totalDistance = context.read<TripsViewModel>().totalDistance;
     _listPoint = context.read<TripsViewModel>().polylinePoints;
     _listDrive = context.read<DriverProvider>().listDriver;
+  }
+
+  void _showDialog(Widget child) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => Container(
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        height: 350,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextSizeL(name: 'Chọn thời gian đón'),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Divider(
+                thickness: 1,
+                height: 8,
+                color: Color(0xFFACAAAA),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+                height: 216,
+                // padding: const EdgeInsets.only(top: 6.0),
+                // The Bottom margin is provided to align the popup above the system
+                // navigation bar.
+                margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                // Provide a background color for the popup.
+                // Use a SafeArea widget to avoid system overlaps.
+                child: child),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ButtonSizeL(
+                onTap: () {
+                  bool isWithinOneHour = dateSchedule.isAfter(
+                          DateTime.now().subtract(Duration(hours: 1))) &&
+                      dateSchedule
+                          .isBefore(DateTime.now().add(Duration(hours: 1)));
+                  if (isWithinOneHour) {
+                    print('cout<ssssheelllllllllo');
+                    now = DateTime.now();
+
+                    context
+                        .read<TripsViewModel>()
+                        .setShedule(false, DateTime.now());
+                  } else {
+                    print('cout<ssssheel2');
+
+                    now = dateSchedule;
+                    context
+                        .read<TripsViewModel>()
+                        .setShedule(true, dateSchedule);
+                  }
+                  Navigator.of(context).pop();
+                },
+                name: "Xác nhận",
+                height: 40,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -176,7 +258,38 @@ class _DetailDistanceState extends State<DetailDistance> {
                                   3, // Độ dày của đường kẻ dọc (tùy chọn)
                             ),
                           ),
-                          IconText(icon: "note", text: "Note"),
+                          context.read<UserViewModel>().user.type == "User_vip"
+                              ? InkWell(
+                                  onTap: () {
+                                    _showDialog(
+                                      CupertinoDatePicker(
+                                        initialDateTime: now,
+                                        use24hFormat: true,
+                                        // minuteInterval: 1,
+                                        // This is called when the user changes the dateTime.
+                                        onDateTimeChanged:
+                                            (DateTime newDateTime) {
+                                          setState(
+                                              () => dateSchedule = newDateTime);
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: IconText(
+                                      icon: "schedule", text: "Hẹn giờ"))
+                              : const SizedBox(),
+                          context.read<UserViewModel>().user.type == "User_vip"
+                              ? const SizedBox(
+                                  height: 20,
+                                  child: VerticalDivider(
+                                    color:
+                                        Colors.grey, // Màu sắc của đường kẻ dọc
+                                    thickness:
+                                        3, // Độ dày của đường kẻ dọc (tùy chọn)
+                                  ),
+                                )
+                              : const SizedBox(),
+                          IconText(icon: "note", text: "Ghi chú"),
                         ],
                       ),
                     ),
