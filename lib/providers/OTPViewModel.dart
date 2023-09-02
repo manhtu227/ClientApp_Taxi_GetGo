@@ -8,8 +8,8 @@ class VerifyOTPViewModel extends ChangeNotifier {
     otpStrategy = check ? LoginStrategy() : VerifyStrategy();
   }
 
-  void onCompleted(String phone, String password,BuildContext ctx) {
-    otpStrategy?.onCompleted(phone,password,ctx);
+  void onCompleted(String phone, String password,String? name,String? email,BuildContext ctx) {
+    otpStrategy?.onCompleted(phone,password,name,email,ctx);
   }
 
   // Các hàm và logic khác trong ViewModel nếu có

@@ -16,6 +16,17 @@ class ApiAuth {
     return response.data;
   }
 
+  static Future<Map<String, dynamic>> signup(
+      String phone, String password, String name, String email) async {
+    Response response = await _dio.post(RoutePathApi.signup, data: {
+      'phone': phone,
+      'password': password,
+      'name': name,
+      'email': email
+    });
+    return response.data;
+  }
+
   static Future<Map<String, dynamic>> checkPhone(String phone) async {
     try {
       final response = await _dio
@@ -37,17 +48,17 @@ class ApiAuth {
     }
   }
 
-  static Future<Map<String, dynamic>> signup(
-      String phone, String password) async {
-    try {
-      final response = await _dio.post(RoutePathApi.signup,
-          data: {"phone": phone, "password": password});
-      return response.data;
-    } catch (error) {
-      // throw(error);
-      rethrow;
-    }
-  }
+  // static Future<Map<String, dynamic>> signup(
+  //     String phone, String password) async {
+  //   try {
+  //     final response = await _dio.post(RoutePathApi.signup,
+  //         data: {"phone": phone, "password": password});
+  //     return response.data;
+  //   } catch (error) {
+  //     // throw(error);
+  //     rethrow;
+  //   }
+  // }
 
   static Future<Response> forgotPassword(String data) async {
     try {

@@ -19,10 +19,11 @@ class UserViewModel with ChangeNotifier {
   );
   List<LatLng> _listDriver = [];
   Future<void> updateUser(Map<String, dynamic> data) async {
-    _user.avatar = data["avatar"];
+    _user.avatar =
+        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcellphones.com.vn%2Fsforum%2Fthu-thuat-vi-tri-va-goc-bi-kip-chup-anh-dep-bang-smartphone-khong-the-bo-qua&psig=AOvVaw1SS8z_712EUkvv3L_E8yao&ust=1693721893843000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCMiP5fGji4EDFQAAAAAdAAAAABAE";
     _user.name = data["name"];
     _user.phone = data["phone"];
-    _user.id = data["id"];
+    _user.id = data["id"].toString();
     _user.token = data["accessToken"];
     notifyListeners();
   }

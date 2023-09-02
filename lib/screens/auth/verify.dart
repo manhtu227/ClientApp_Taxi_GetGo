@@ -16,7 +16,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
   int remainingTime = 60;
   late Timer timer;
   late VerifyOTPViewModel viewModel; // Khởi tạo ViewModel
-  late Map<String, Object> data;
+  late Map<String, Object?> data;
   @override
   void initState() {
     super.initState();
@@ -60,7 +60,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Lấy giá trị data ở đây sau khi đã hoàn thành initState()
-    data = ModalRoute.of(context)!.settings.arguments as Map<String, Object>;
+    data = ModalRoute.of(context)!.settings.arguments as Map<String, Object?>;
     sendOTP('+84${data['phone'] as String}');
     viewModel = VerifyOTPViewModel(data['check'] == true);
   }
@@ -163,8 +163,17 @@ class _VerifyOTPState extends State<VerifyOTP> {
                   showCursor: true,
                   onCompleted: (value) {
                     print("kkk: +84${data['phone']}");
+                    // if (data['email'] == '') {
+                    //   viewModel.onCompleted(
+                    //       '+84${data['phone']}', value, null, null, context);
+                    // } else {
                     viewModel.onCompleted(
-                        '+84${data['phone']}', value, context);
+                        '+84${data['phone']}',
+                        value,
+                        data['name'] as String?,
+                        data['email'] as String?,
+                        context);
+                    // }
                   },
                 ),
               ),
@@ -172,7 +181,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
             const SizedBox(
               height: 20,
             ),
-            if (data['check'] != true) ...[
+            if (data['check'] != true && data['email'] == null) ...[
               Center(
                 child: Text(
                   "Resend code",

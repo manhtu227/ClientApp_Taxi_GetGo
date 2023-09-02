@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen>
       child: Scaffold(
         body: GestureDetector(
           onTap: () {
-            FocusScope.of(context).unfocus();
+            // FocusScope.of(context).unfocus();
           },
           child: Stack(
             children: [
@@ -115,11 +115,11 @@ class _LoginScreenState extends State<LoginScreen>
                                   //     number.phoneNumber as String;
                                 },
                                 onInputValidated: (bool value) {
-                                  if (value == true) {
-                                    setState(() {
-                                      _checkValidate = value;
-                                    });
-                                  }
+                                  // if (value == true) {
+                                  setState(() {
+                                    _checkValidate = value;
+                                  });
+                                  // }
                                 },
                                 cursorColor: Colors.black,
                                 formatInput: false,
@@ -174,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen>
                     child: Padding(
                       padding: const EdgeInsets.all(20),
                       child: TextButton(
-                        onPressed: logic.loginOrSignup,
+                        onPressed: !_checkValidate ? null : logic.loginOrSignup,
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,
                         ),
@@ -182,7 +182,9 @@ class _LoginScreenState extends State<LoginScreen>
                           width: 378,
                           height: 45,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
+                            color: !_checkValidate
+                                ? Colors.grey
+                                : Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(13),
                           ),
                           child: const Center(

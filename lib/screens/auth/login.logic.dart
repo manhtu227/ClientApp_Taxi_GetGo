@@ -49,6 +49,8 @@ class LoginLogic {
         'title': 'OTP code verification',
         'summary': 'GetGo has sent you a 6-digit OTP to \nyour phone number ',
         'phone': phoneNumber.text,
+        'email': null,
+        'name': null,
         'check': false
       });
     } else {
@@ -56,6 +58,8 @@ class LoginLogic {
         'title': 'Hello,',
         'summary':
             'Enter the password to log in to account \nwith the phone number ',
+        'email': null,
+        'name': null,
         'phone': phoneNumber.text,
         'check': true
       });
