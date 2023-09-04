@@ -13,7 +13,7 @@ class LocationListTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 400,
-      height: 250,
+      height: 300,
       child: ListView.builder(
         itemCount: locations.length,
         itemBuilder: (context, index) {

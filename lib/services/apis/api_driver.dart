@@ -35,11 +35,12 @@ class ApiDriver {
         "place": location.desLocation.summary,
       },
       "is_scheduled": location.schedule,
-      "scheduled_time": location.dateSchedule,
+      "schedule_time": location.dateSchedule.toString(),
       "price": context.read<CarTypeProvider>().price,
       "is_paid": false,
       "paymentMethod": context.read<MethodPaymentViewModel>().selectedMethodType
     };
+    print('cout<<<<<$data');
     Response response = await _dio.post(
       RoutePathApi.bookDriver,
       data: data,
@@ -47,7 +48,7 @@ class ApiDriver {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization':
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicGhvbmUiOiIrODQ1NTU1NTU1NTUiLCJ0eXBlIjoiVXNlciIsImlhdCI6MTY5MjI1MjQ0MywiZXhwIjoxNjkzMzMyNDQzfQ.sJOKZYa8tLqnMu1umUSqdZxReEKTtMQ4eE7R_v_VMUo",
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicGhvbmUiOiIrODQ1NTU1NTU1NTUiLCJ0eXBlIjoiVXNlciIsImlhdCI6MTY5MzM3OTY0MywiZXhwIjoxNjk0NDU5NjQzfQ.cIz8vzmHl0KZYWXjW-cdeduW2ucJ8WDwVxgleaKbV44",
       }),
     );
     print('1111111111111111ne');
@@ -59,18 +60,13 @@ class ApiDriver {
       BuildContext context, double rating) async {
     final trip = context.read<TripsViewModel>();
     print('heehehee');
-    Map<String, dynamic> data = {
-      "trip_id": trip.tripId,
-      "star": rating.toString()
-    };
+    Map<String, dynamic> data = {"trip_id": trip.tripId, "star": rating};
     Response response = await _dio.post(
       RoutePathApi.rateTrip,
       data: data,
       options: Options(headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization':
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicGhvbmUiOiIrODQ1NTU1NTU1NTUiLCJ0eXBlIjoiVXNlciIsImlhdCI6MTY5MjI1MjQ0MywiZXhwIjoxNjkzMzMyNDQzfQ.sJOKZYa8tLqnMu1umUSqdZxReEKTtMQ4eE7R_v_VMUo",
       }),
     );
     print('1111111111111111ne');

@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Inter',
         ),
         // home: MapScreen(),
-        initialRoute: Routes.login,
+        initialRoute: Routes.home,
         onGenerateRoute: Routes.generateRoute,
       ),
     );

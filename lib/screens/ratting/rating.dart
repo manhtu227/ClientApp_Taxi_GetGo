@@ -1,6 +1,7 @@
 import 'package:clientapp_taxi_getgo/configs/configDev.dart';
 import 'package:clientapp_taxi_getgo/models/directions.dart';
 import 'package:clientapp_taxi_getgo/models/location.dart';
+import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/services/apis/api_driver.dart';
@@ -26,10 +27,13 @@ class RatingScreen extends StatefulWidget {
 class _RatingScreenState extends State<RatingScreen> {
   late RenderBox renderbox;
   double rate = 5;
+  late DriverProvider providerDriver;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    providerDriver = context.read<DriverProvider>();
     // onChange();
   }
 
@@ -102,7 +106,13 @@ class _RatingScreenState extends State<RatingScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  SummaryDriver(),
+                  SummaryDriver(
+                      nameCar: providerDriver.driver.nameCar!,
+                      license_plate: providerDriver.driver.license_plate!,
+                      avatar: providerDriver.driver.avatar,
+                      rating: providerDriver.driver.rating.toString(),
+                      name: providerDriver.driver.name),
+                  // SummaryDriver(this.rate=providerDriver.driver.rating.toString()),
                   const SizedBox(
                     height: 16,
                   ),
@@ -170,7 +180,7 @@ class _RatingScreenState extends State<RatingScreen> {
                   ButtonSizeL(
                       onTap: () {
                         print('cout<<   sssss');
-                        // ApiDriver.ratingTrip(context, rate);
+                        ApiDriver.ratingTrip(context, rate);
                         Navigator.of(context).pushReplacementNamed(Routes.home);
                       },
                       name: "Submit"),

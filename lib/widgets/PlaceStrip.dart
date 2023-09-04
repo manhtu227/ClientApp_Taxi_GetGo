@@ -3,21 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-class PlaceStrip extends StatefulWidget {
-  PlaceStrip({super.key});
-
-  @override
-  State<PlaceStrip> createState() => _PlaceStripState();
-}
-
-class _PlaceStripState extends State<PlaceStrip> {
-  late TripsViewModel providerTrip;
-  @override
-  void initState() {
-    // TODO: implement initState
-    providerTrip = context.read<TripsViewModel>();
-    super.initState();
-  }
+class PlaceStrip extends StatelessWidget {
+  String start;
+  String end;
+  PlaceStrip({super.key, required this.start, required this.end});
 
   @override
   Widget build(BuildContext context) {
@@ -40,20 +29,11 @@ class _PlaceStripState extends State<PlaceStrip> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      providerTrip.currentLocation.title,
+                      start,
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: Color(0xff3e4958),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      providerTrip.currentLocation.summary,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff97adb6),
                       ),
                     ),
                   ],
@@ -89,20 +69,11 @@ class _PlaceStripState extends State<PlaceStrip> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      providerTrip.desLocation.title,
+                      end,
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: Color(0xff3e4958),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      providerTrip.desLocation.summary,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff97adb6),
                       ),
                     ),
                   ],

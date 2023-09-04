@@ -41,7 +41,7 @@ class LoginLogic {
   void loginOrSignup() async {
     print('heeeeeeeee');
     print(phoneNumber.text);
-    final checkReponse = await ApiAuth.checkPhone('84${phoneNumber.text}');
+    final checkReponse = await ApiAuth.checkPhone('+84${phoneNumber.text}');
     print(checkReponse);
     if (checkReponse['statusCode'] == 500) {
       sendOTP('+84${phoneNumber.text}');

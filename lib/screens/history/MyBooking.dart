@@ -2,6 +2,7 @@ import 'package:clientapp_taxi_getgo/models/CarType.dart';
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/screens/history/ListItem.dart';
+import 'package:clientapp_taxi_getgo/services/apis/api_history.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/IconText.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextField.dart';
@@ -23,10 +24,47 @@ class MyBooking extends StatefulWidget {
 
 class _MyBookingState extends State<MyBooking> with TickerProviderStateMixin {
   late final TabController _tabController;
+  List<dynamic> _tripsDone = [];
+  List<dynamic> _tripsCancel = [];
+  List<dynamic> _trips = [];
+  void fetchData() async {
+    try {
+      print('sao rồi');
+
+      Map<String, dynamic> newData = await ApiHistory.getAllHistory(4);
+      // if(newData["trip"])
+      List<dynamic> tripsDone = newData["trip"]
+          .where((trip) => trip["status"] == "Done")
+          .toList() as List<dynamic>;
+      List<dynamic> tripsCancel = newData["trip"]
+          .where((trip) => trip["status"] == "Cancel")
+          .toList() as List<dynamic>;
+      List<dynamic> trips = newData["trip"]
+          .where((trip) =>
+              trip["status"] != "Cancel" &&
+              trip["status"] != "Done" &&
+              trip["status"] != "Pending")
+          .toList() as List<dynamic>;
+      // Map<String, dynamic> newDataDetail = await _apiReport.getDetail(context);
+      setState(() {
+        print('dsddddd');
+        print(tripsDone);
+        _tripsDone = tripsDone;
+        _tripsCancel = tripsCancel;
+        _trips = trips;
+      });
+    } catch (e) {
+      print('lỗi rồi');
+      // Handle error
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    fetchData();
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -118,13 +156,21 @@ class _MyBookingState extends State<MyBooking> with TickerProviderStateMixin {
         color: Color(0xfff1f3f5),
         child: TabBarView(
           controller: _tabController,
-          children: const <Widget>[
-            ListItem(),
-            Center(
-              child: Text("It's rainy here"),
+          children: <Widget>[
+            SingleChildScrollView(
+              child: ListItem(
+                trips: _trips,
+              ),
             ),
-            Center(
-              child: Text("It's sunny here"),
+            SingleChildScrollView(
+              child: ListItem(
+                trips: _tripsDone,
+              ),
+            ),
+            SingleChildScrollView(
+              child: ListItem(
+                trips: _tripsCancel,
+              ),
             ),
           ],
         ),

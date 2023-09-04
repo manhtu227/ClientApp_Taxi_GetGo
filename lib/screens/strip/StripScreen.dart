@@ -1,6 +1,7 @@
 import 'package:clientapp_taxi_getgo/configs/configDev.dart';
 import 'package:clientapp_taxi_getgo/models/directions.dart';
 import 'package:clientapp_taxi_getgo/models/location.dart';
+import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
@@ -22,9 +23,15 @@ class TripScreen extends StatefulWidget {
 
 class _TripScreenState extends State<TripScreen> {
   late RenderBox renderbox;
+  late DriverProvider providerDriver;
+  late TripsViewModel providerTrip;
+
   @override
   void initState() {
     // TODO: implement initState
+    providerDriver = context.read<DriverProvider>();
+    providerTrip = context.read<TripsViewModel>();
+
     super.initState();
     // onChange();
   }
@@ -127,7 +134,12 @@ class _TripScreenState extends State<TripScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  SummaryDriver(),
+                  SummaryDriver(
+                      nameCar: providerDriver.driver.nameCar!,
+                      license_plate: providerDriver.driver.license_plate!,
+                      avatar: providerDriver.driver.avatar,
+                      rating: providerDriver.driver.rating.toString(),
+                      name: providerDriver.driver.name),
                   const SizedBox(
                     height: 16,
                   ),
@@ -142,7 +154,9 @@ class _TripScreenState extends State<TripScreen> {
                             const SizedBox(
                               height: 16,
                             ),
-                            PlaceStrip(),
+                            PlaceStrip(
+                                start: providerTrip.currentLocation.summary,
+                                end: providerTrip.desLocation.summary)
                           ],
                         )
                       : const SizedBox(),

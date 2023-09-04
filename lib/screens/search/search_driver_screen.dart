@@ -12,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:slide_to_act/slide_to_act.dart';
 
 import '../../services/apis/api_driver.dart';
 
@@ -175,72 +176,90 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
               },
             ),
           ),
-          Positioned(
+        //   Positioned(
+        //     bottom: 10,
+        //     right: 50,
+        //     left: 50,
+        //     child: Container(
+        //       // width: MediaQuery.of(context).size.width - 40,
+        //       // padding: EdgeInsets.symmetric(vertical: 10),
+        //       // margin: EdgeInsets.symmetric(horizontal: 20),
+        //       decoration: BoxDecoration(
+        //         color: Colors.white,
+        //         borderRadius: BorderRadius.circular(13),
+        //       ),
+        //       child: Dismissible(
+        //         key: UniqueKey(),
+        //         direction: DismissDirection.startToEnd, // Kéo từ trái qua phải
+        //         background: Container(
+        //           // color: Colors.green, // Màu nền khi kéo qua trái
+        //           alignment: Alignment.centerLeft,
+        //           decoration: BoxDecoration(
+        //             color: Colors.white,
+        //             borderRadius: BorderRadius.circular(13),
+        //           ),
+        //           // padding: EdgeInsets.symmetric(horizontal: 20.0),
+        //           child: Icon(
+        //             Icons.check,
+        //             color: Colors.white,
+        //           ),
+        //         ),
+        //         confirmDismiss: (direction) async {
+        //           return await showDialog(
+        //             context: context,
+        //             builder: (context) => AlertDialog(
+        //               title: Text('Xác nhận'),
+        //               content: Text('message'),
+        //               actions: [
+        //                 TextButton(
+        //                   onPressed: () => Navigator.pop(context, true),
+        //                   child: Text('Xác nhận'),
+        //                 ),
+        //                 TextButton(
+        //                   onPressed: () => Navigator.pop(context, false),
+        //                   child: Text('Hủy bỏ'),
+        //                 ),
+        //               ],
+        //             ),
+        //           );
+        //         },
+        //         onDismissed: (direction) {
+        //           if (direction == DismissDirection.startToEnd) {
+        //             // Thực hiện hành động khi xác nhận
+        //           }
+        //         },
+        //         child: ListTile(
+        //           leading: FloatingActionButton(
+        //             onPressed: () {
+        //               // Xử lý sự kiện khi nút FAB được nhấn
+        //               print('Floating Action Button pressed!');
+        //             },
+        //             child: Icon(Icons.close), // Icon hiển thị trên nút FAB
+        //             backgroundColor:
+        //                 Theme.of(context).primaryColor, // Màu nền của nút FAB
+        //           ),
+        //           title: Text('Kéo qua trái để hủy bỏ'),
+        //         ),
+        //       ),
+        //     ),
+        //   )
+         Positioned(
             bottom: 10,
             right: 50,
             left: 50,
-            child: Container(
-              // width: MediaQuery.of(context).size.width - 40,
-              // padding: EdgeInsets.symmetric(vertical: 10),
-              // margin: EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(13),
-              ),
-              child: Dismissible(
-                key: UniqueKey(),
-                direction: DismissDirection.startToEnd, // Kéo từ trái qua phải
-                background: Container(
-                  // color: Colors.green, // Màu nền khi kéo qua trái
-                  alignment: Alignment.centerLeft,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(13),
-                  ),
-                  // padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.white,
-                  ),
-                ),
-                confirmDismiss: (direction) async {
-                  return await showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Xác nhận'),
-                      content: Text('message'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: Text('Xác nhận'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: Text('Hủy bỏ'),
-                        ),
-                      ],
-                    ),
-                  );
+            child: SlideAction(
+                borderRadius: 10,
+                height: 55,
+                sliderButtonIconPadding: 10,
+                innerColor: Colors.white,
+                outerColor: Theme.of(context).primaryColor,
+                text: 'Hủy chuyến đi',
+                onSubmit: () {
+                  // SocketService.handleTripUpdate(context, 'Done');
+                  // Navigator.of(context).pushNamedAndRemoveUntil(
+                  //     Routes.detailedTrip, (route) => false);
                 },
-                onDismissed: (direction) {
-                  if (direction == DismissDirection.startToEnd) {
-                    // Thực hiện hành động khi xác nhận
-                  }
-                },
-                child: ListTile(
-                  leading: FloatingActionButton(
-                    onPressed: () {
-                      // Xử lý sự kiện khi nút FAB được nhấn
-                      print('Floating Action Button pressed!');
-                    },
-                    child: Icon(Icons.close), // Icon hiển thị trên nút FAB
-                    backgroundColor:
-                        Theme.of(context).primaryColor, // Màu nền của nút FAB
-                  ),
-                  title: Text('Kéo qua trái để hủy bỏ'),
-                ),
               ),
-            ),
           )
         ],
       ),
