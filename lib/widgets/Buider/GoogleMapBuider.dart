@@ -9,7 +9,7 @@ class GoogleMapBuider {
   List<PointLatLng> _listPoint = [];
   List<LatLng> _listDrive = [];
   Function? _pickup;
-  String _icon = "assets/svgs/CurrentDetail.svg";
+  String _icon = "assets/images/CurrentDetail.png";
   GoogleMapBuider({required LocationModel currentLocation})
       : _currentLocation = currentLocation;
 
@@ -41,7 +41,7 @@ class GoogleMapBuider {
   MapScreen build() {
     return MapScreen(
       icon: _icon,
-      pickup:  _pickup,
+      pickup: _pickup,
       currentLocation: _currentLocation,
       desLocation: _desLocation,
       listPoint: _listPoint,

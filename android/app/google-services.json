@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "410792468487",
+    "firebase_url": "https://taxi-getgo-default-rtdb.firebaseio.com",
     "project_id": "taxi-getgo",
     "storage_bucket": "taxi-getgo.appspot.com"
   },
@@ -37,6 +38,13 @@
             {
               "client_id": "410792468487-bunc941l598jba360qt58ss51mupfdh2.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "410792468487-247t6kptfiahsn1lpptf1itvak15r7kf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.clientappTaxiGetgo"
+              }
             }
           ]
         }

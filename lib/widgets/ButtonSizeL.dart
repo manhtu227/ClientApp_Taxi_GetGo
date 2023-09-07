@@ -4,8 +4,15 @@ class ButtonSizeL extends StatelessWidget {
   final String name;
   final Function onTap;
   double height;
+  double? fontSize;
+  double width;
   ButtonSizeL(
-      {required this.onTap, required this.name, this.height = 50, super.key});
+      {required this.onTap,
+      required this.name,
+      this.height = 50,
+      this.width = 378,
+      this.fontSize = 19,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,7 @@ class ButtonSizeL extends StatelessWidget {
         padding: EdgeInsets.zero,
       ),
       child: Container(
-        width: 378,
+        width: width,
         height: height,
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
@@ -26,8 +33,10 @@ class ButtonSizeL extends StatelessWidget {
         child: Center(
           child: Text(
             name,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 19, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold),
           ),
         ),
       ),

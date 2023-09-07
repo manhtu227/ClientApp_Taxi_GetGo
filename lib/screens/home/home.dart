@@ -2,6 +2,7 @@ import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
 import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/widgets/List/ListPlace.dart';
 import 'package:clientapp_taxi_getgo/widgets/List/ListServiceCar.dart';
+import 'package:clientapp_taxi_getgo/widgets/dialogSchedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -130,15 +131,20 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: ScreenUtil().setHeight(15),
             ),
-            Container(
-              margin: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
-              width: screenWidth - ScreenUtil().setWidth(32),
-              height: ScreenUtil().setHeight(260),
-              child: Image.asset(
-                'assets/images/bannerHome.png',
-                // fit: BoxFit.cover,
-                // width: coverHeight,
-                // height: coverHeight,
+            InkWell(
+              onTap: () {
+                DialogSchedule.show(context);
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
+                width: screenWidth - ScreenUtil().setWidth(32),
+                height: ScreenUtil().setHeight(260),
+                child: Image.asset(
+                  'assets/images/bannerHome.png',
+                  // fit: BoxFit.cover,
+                  // width: coverHeight,
+                  // height: coverHeight,
+                ),
               ),
             ),
           ],

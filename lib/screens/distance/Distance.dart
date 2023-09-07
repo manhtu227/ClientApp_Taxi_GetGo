@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/TextField.dart';
@@ -33,6 +34,7 @@ class _DetailDistanceState extends State<DetailDistance> {
   late List<LatLng> _listDrive;
   DateTime now = DateTime.now();
   DateTime dateSchedule = DateTime.now();
+  bool checkSchedule = false;
 
   @override
   void initState() {
@@ -94,8 +96,9 @@ class _DetailDistanceState extends State<DetailDistance> {
                           DateTime.now().subtract(Duration(hours: 1))) &&
                       dateSchedule
                           .isBefore(DateTime.now().add(Duration(hours: 1)));
-                  if (isWithinOneHour) {
+                  if (!isWithinOneHour) {
                     print('cout<ssssheelllllllllo');
+                    checkSchedule = false;
                     now = DateTime.now();
 
                     context
@@ -103,12 +106,14 @@ class _DetailDistanceState extends State<DetailDistance> {
                         .setShedule(false, DateTime.now());
                   } else {
                     print('cout<ssssheel2');
+                    checkSchedule = true;
 
                     now = dateSchedule;
                     context
                         .read<TripsViewModel>()
                         .setShedule(true, dateSchedule);
                   }
+                  setState(() {});
                   Navigator.of(context).pop();
                 },
                 name: "Xác nhận",
@@ -295,35 +300,48 @@ class _DetailDistanceState extends State<DetailDistance> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextButton(
-                        onPressed: () {
-                          print('a');
-                          print('ssssssssss');
-                          print('lllllllllllllllllllllll');
-                          Navigator.of(context).pushNamed(Routes.order);
-                        },
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                        ),
-                        child: Container(
-                          width: 378,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(35),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Continue to order',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: ScreenUtil().setSp(13),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                      child: ButtonSizeL(
+                          onTap: () {
+                            print('a');
+                            print('ssssssssss');
+                            print('lllllllllllllllllllllll');
+                            Navigator.of(context).pushNamed(Routes.order);
+                          },
+                          name: checkSchedule
+                              ? 'Đặt trước - ${DateFormat('dd/MM, HH:mm').format(dateSchedule)}'
+                              : 'Tiếp tục thanh toán'),
+                    )
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //   child: TextButton(
+                    //     onPressed: () {
+                    //       print('a');
+                    //       print('ssssssssss');
+                    //       print('lllllllllllllllllllllll');
+                    //       Navigator.of(context).pushNamed(Routes.order);
+                    //     },
+                    //     style: TextButton.styleFrom(
+                    //       padding: EdgeInsets.zero,
+                    //     ),
+                    //     child: Container(
+                    //       width: 378,
+                    //       height: 50,
+                    //       decoration: BoxDecoration(
+                    //         color: Theme.of(context).primaryColor,
+                    //         borderRadius: BorderRadius.circular(35),
+                    //       ),
+                    //       child: Center(
+                    //         child: Text(
+                    //           'Continue to order',
+                    //           style: TextStyle(
+                    //               color: Colors.white,
+                    //               fontSize: ScreenUtil().setSp(13),
+                    //               fontWeight: FontWeight.bold),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

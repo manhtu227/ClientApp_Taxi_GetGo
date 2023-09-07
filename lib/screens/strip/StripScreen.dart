@@ -74,6 +74,17 @@ class _TripScreenState extends State<TripScreen> {
                               width: MediaQuery.of(context).size.width,
                             ),
                             Positioned(
+                                child: IconButton(
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: Colors.black, // Icon color is black
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                // Handle back button press here
+                              },
+                            )),
+                            Positioned(
                               top: 0,
                               right: 0,
                               left: 0,
@@ -82,7 +93,7 @@ class _TripScreenState extends State<TripScreen> {
                                       currentLocation: context
                                           .read<TripsViewModel>()
                                           .driverLocation)
-                                  .updateIconCurrent("assets/svgs/CarMap.svg")
+                                  .updateIconCurrent("assets/images/CarMap.png")
                                   .setDesLocation(data['check'] == true
                                       ? context
                                           .read<TripsViewModel>()

@@ -1,8 +1,12 @@
 import 'dart:convert';
 
+import 'package:clientapp_taxi_getgo/models/directions.dart';
 import 'package:clientapp_taxi_getgo/models/location.dart';
+import 'package:clientapp_taxi_getgo/models/tripModel.dart';
+import 'package:clientapp_taxi_getgo/providers/list_trip_model.dart';
 import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/sockets/socketService.dart';
+import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
 import 'package:clientapp_taxi_getgo/widgets/LoadingPainter.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextSizeL.dart';
@@ -65,11 +69,25 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
 
   void bookDriverApi() async {
     final reponse = await ApiDriver.bookDriver(context);
+    final location = context.read<TripsViewModel>();
+
     print('qqqqqqqqqq');
     print(reponse.statusCode);
     if (reponse.statusCode == 200) {
       print('qqqqqqqqqq111111');
-      context.read<SocketService>().userFindTrip(reponse.data);
+      location.updateCheckActive(true);
+      context.read<ListTripViewModel>().addTrip(TripModel(
+          info: Directions(
+              polylinePoints: location.polylinePoints,
+              totalDistance: location.totalDistance,
+              totalDuration: location.totalDuration),
+          statusTrip: location.statusTrip,
+          idTrip: reponse.data['trip_info']['trip_id'],
+          currentLocation: location.currentLocation,
+          desLocation: location.desLocation,
+          // driverLocation: driverLocation,
+          isSchedule: location.schedule,
+          dateSchedule: location.dateSchedule));
     }
   }
 
@@ -176,90 +194,89 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
               },
             ),
           ),
-        //   Positioned(
-        //     bottom: 10,
-        //     right: 50,
-        //     left: 50,
-        //     child: Container(
-        //       // width: MediaQuery.of(context).size.width - 40,
-        //       // padding: EdgeInsets.symmetric(vertical: 10),
-        //       // margin: EdgeInsets.symmetric(horizontal: 20),
-        //       decoration: BoxDecoration(
-        //         color: Colors.white,
-        //         borderRadius: BorderRadius.circular(13),
-        //       ),
-        //       child: Dismissible(
-        //         key: UniqueKey(),
-        //         direction: DismissDirection.startToEnd, // Kéo từ trái qua phải
-        //         background: Container(
-        //           // color: Colors.green, // Màu nền khi kéo qua trái
-        //           alignment: Alignment.centerLeft,
-        //           decoration: BoxDecoration(
-        //             color: Colors.white,
-        //             borderRadius: BorderRadius.circular(13),
-        //           ),
-        //           // padding: EdgeInsets.symmetric(horizontal: 20.0),
-        //           child: Icon(
-        //             Icons.check,
-        //             color: Colors.white,
-        //           ),
-        //         ),
-        //         confirmDismiss: (direction) async {
-        //           return await showDialog(
-        //             context: context,
-        //             builder: (context) => AlertDialog(
-        //               title: Text('Xác nhận'),
-        //               content: Text('message'),
-        //               actions: [
-        //                 TextButton(
-        //                   onPressed: () => Navigator.pop(context, true),
-        //                   child: Text('Xác nhận'),
-        //                 ),
-        //                 TextButton(
-        //                   onPressed: () => Navigator.pop(context, false),
-        //                   child: Text('Hủy bỏ'),
-        //                 ),
-        //               ],
-        //             ),
-        //           );
-        //         },
-        //         onDismissed: (direction) {
-        //           if (direction == DismissDirection.startToEnd) {
-        //             // Thực hiện hành động khi xác nhận
-        //           }
-        //         },
-        //         child: ListTile(
-        //           leading: FloatingActionButton(
-        //             onPressed: () {
-        //               // Xử lý sự kiện khi nút FAB được nhấn
-        //               print('Floating Action Button pressed!');
-        //             },
-        //             child: Icon(Icons.close), // Icon hiển thị trên nút FAB
-        //             backgroundColor:
-        //                 Theme.of(context).primaryColor, // Màu nền của nút FAB
-        //           ),
-        //           title: Text('Kéo qua trái để hủy bỏ'),
-        //         ),
-        //       ),
-        //     ),
-        //   )
-         Positioned(
+          //   Positioned(
+          //     bottom: 10,
+          //     right: 50,
+          //     left: 50,
+          //     child: Container(
+          //       // width: MediaQuery.of(context).size.width - 40,
+          //       // padding: EdgeInsets.symmetric(vertical: 10),
+          //       // margin: EdgeInsets.symmetric(horizontal: 20),
+          //       decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         borderRadius: BorderRadius.circular(13),
+          //       ),
+          //       child: Dismissible(
+          //         key: UniqueKey(),
+          //         direction: DismissDirection.startToEnd, // Kéo từ trái qua phải
+          //         background: Container(
+          //           // color: Colors.green, // Màu nền khi kéo qua trái
+          //           alignment: Alignment.centerLeft,
+          //           decoration: BoxDecoration(
+          //             color: Colors.white,
+          //             borderRadius: BorderRadius.circular(13),
+          //           ),
+          //           // padding: EdgeInsets.symmetric(horizontal: 20.0),
+          //           child: Icon(
+          //             Icons.check,
+          //             color: Colors.white,
+          //           ),
+          //         ),
+          //         confirmDismiss: (direction) async {
+          //           return await showDialog(
+          //             context: context,
+          //             builder: (context) => AlertDialog(
+          //               title: Text('Xác nhận'),
+          //               content: Text('message'),
+          //               actions: [
+          //                 TextButton(
+          //                   onPressed: () => Navigator.pop(context, true),
+          //                   child: Text('Xác nhận'),
+          //                 ),
+          //                 TextButton(
+          //                   onPressed: () => Navigator.pop(context, false),
+          //                   child: Text('Hủy bỏ'),
+          //                 ),
+          //               ],
+          //             ),
+          //           );
+          //         },
+          //         onDismissed: (direction) {
+          //           if (direction == DismissDirection.startToEnd) {
+          //             // Thực hiện hành động khi xác nhận
+          //           }
+          //         },
+          //         child: ListTile(
+          //           leading: FloatingActionButton(
+          //             onPressed: () {
+          //               // Xử lý sự kiện khi nút FAB được nhấn
+          //               print('Floating Action Button pressed!');
+          //             },
+          //             child: Icon(Icons.close), // Icon hiển thị trên nút FAB
+          //             backgroundColor:
+          //                 Theme.of(context).primaryColor, // Màu nền của nút FAB
+          //           ),
+          //           title: Text('Kéo qua trái để hủy bỏ'),
+          //         ),
+          //       ),
+          //     ),
+          //   )
+          Positioned(
             bottom: 10,
             right: 50,
             left: 50,
             child: SlideAction(
-                borderRadius: 10,
-                height: 55,
-                sliderButtonIconPadding: 10,
-                innerColor: Colors.white,
-                outerColor: Theme.of(context).primaryColor,
-                text: 'Hủy chuyến đi',
-                onSubmit: () {
-                  // SocketService.handleTripUpdate(context, 'Done');
-                  // Navigator.of(context).pushNamedAndRemoveUntil(
-                  //     Routes.detailedTrip, (route) => false);
-                },
-              ),
+              borderRadius: 10,
+              height: 55,
+              sliderButtonIconPadding: 10,
+              innerColor: Colors.white,
+              outerColor: Theme.of(context).primaryColor,
+              text: 'Hủy chuyến đi',
+              onSubmit: () {
+                SocketService().cancelTrip;
+                Navigator.of(context).pushReplacementNamed(Routes.home);
+              },
+            ),
           )
         ],
       ),

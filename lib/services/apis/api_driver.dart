@@ -34,6 +34,8 @@ class ApiDriver {
         "lng": location.desLocation.coordinates.longitude,
         "place": location.desLocation.summary,
       },
+      "distance":location.info.totalDistance,
+      "duration":location.info.totalDuration,
       "is_scheduled": location.schedule,
       "schedule_time": location.dateSchedule.toString(),
       "price": context.read<CarTypeProvider>().price,

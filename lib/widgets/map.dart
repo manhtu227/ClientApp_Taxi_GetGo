@@ -54,7 +54,7 @@ class _MapScreenState extends State<MapScreen> {
             LatLng(data['lat'] / 1, data['lng'] / 1),
             data['heading'] / 1 ?? 0,
             'comming');
-        addMarker('current', LatLng(data['lat'] / 1, data['lng'] / 1),
+        addMarkerPicture('current', LatLng(data['lat'] / 1, data['lng'] / 1),
             widget.icon, data['heading']);
         final directionsData = data["directions"];
         print(data["directions"] is String);
@@ -155,19 +155,19 @@ class _MapScreenState extends State<MapScreen> {
 
   void onCreated(GoogleMapController controller) async {
     _controller.complete(controller);
-    addMarker('current', widget.currentLocation.coordinates, widget.icon,
+    addMarkerPicture('current', widget.currentLocation.coordinates, widget.icon,
         widget.currentLocation.heading);
     print('aaaaaaaaaaaaaaaaaaaaaa');
     for (LatLng point in widget.listDrive) {
-      addMarker(const Uuid().v4(), point, 'assets/svgs/CarMap.svg',
+      addMarkerPicture(const Uuid().v4(), point, 'assets/images/CarMap.png',
           Random().nextDouble() * 360 + 1);
     }
     if (widget.desLocation != null) addPolylineAndFitMap();
   }
 
   Future<void> addPolylineAndFitMap() async {
-    addMarker('marker', widget.desLocation!.coordinates,
-        'assets/svgs/DesDetail.svg', 0);
+    addMarkerPicture('marker', widget.desLocation!.coordinates,
+        'assets/images/DesDetail.png', 0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       List<LatLng> points = widget.listPoint.map((e) {
         return LatLng(e.latitude, e.longitude);
@@ -236,40 +236,41 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> addMarkerPicture(
       String id, LatLng location, String assetName, double rotate) async {
     // BitmapDescriptor.fromAssetImage(configuration, assetName)
-    BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(200, 200)),
-      assetName,
-    ).then((icon) {
-      var marker = Marker(
-        markerId: MarkerId(id),
-        position: location,
-        infoWindow: const InfoWindow(
-          title: 'End Point',
-          snippet: 'End Marker',
-        ),
-        icon: icon,
-        rotation: rotate,
-      );
-      _marker[id] = marker;
-      setState(() {});
-    });
+    if (mounted) {
+      BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(size: Size(100, 100)),
+        assetName,
+      ).then((icon) {
+        var marker = Marker(
+          markerId: MarkerId(id),
+          position: location,
+          infoWindow: const InfoWindow(
+            title: 'End Point',
+            snippet: 'End Marker',
+          ),
+          icon: icon,
+          rotation: rotate,
+        );
+        _marker[id] = marker;
+        setState(() {});
+      });
+    }
   }
-
-  Future<void> addMarker(
-      String id, LatLng location, String assetName, double rotate) async {
-    BitmapDescriptor svgIcon =
-        await getBitmapDescriptorFromSvgAsset(assetName, const Size(40, 40));
-    var marker = Marker(
-      markerId: MarkerId(id),
-      position: location,
-      infoWindow: const InfoWindow(
-        title: 'End Point',
-        snippet: 'End Marker',
-      ),
-      icon: svgIcon,
-      rotation: rotate,
-    );
-    _marker[id] = marker;
-    setState(() {});
-  }
+  // Future<void> addMarker(
+  //     String id, LatLng location, String assetName, double rotate) async {
+  //   BitmapDescriptor svgIcon =
+  //       await getBitmapDescriptorFromSvgAsset(assetName, const Size(40, 40));
+  //   var marker = Marker(
+  //     markerId: MarkerId(id),
+  //     position: location,
+  //     infoWindow: const InfoWindow(
+  //       title: 'End Point',
+  //       snippet: 'End Marker',
+  //     ),
+  //     icon: svgIcon,
+  //     rotation: rotate,
+  //   );
+  //   _marker[id] = marker;
+  //   setState(() {});
+  // }
 }

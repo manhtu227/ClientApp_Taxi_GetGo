@@ -2,7 +2,7 @@ import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:flutter/material.dart';
 
-class DialogMessage {
+class DialogSchedule {
   static show(BuildContext context) {
     showDialog(
       context: context,
@@ -23,7 +23,7 @@ class DialogMessage {
                   height: 26,
                 ),
                 const Text(
-                  'Bạn đã đến đích',
+                  'Yêu cầu đặt trước thành công',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20,
@@ -35,7 +35,7 @@ class DialogMessage {
                   height: 16,
                 ),
                 const Text(
-                  'Hẹn gặp lại các bạn ở chuyến tiếp theo :)',
+                  'Getgo sẽ gửi thông báo đến bạn khi có tài xế nhận chuyến',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
@@ -43,19 +43,24 @@ class DialogMessage {
                   ),
                 ),
                 const SizedBox(height: 60),
-                ButtonSizeL(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    name: 'OK')
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ButtonSizeL(
+                      onTap: () {},
+                      fontSize: 14,
+                      name: 'Xem Chuyến đi',
+                      width: 150,
+                    ),
+                    ButtonSizeL(
+                        onTap: () {}, name: 'OK', fontSize: 14, width: 100),
+                  ],
+                )
               ],
             ),
           ),
         );
       },
-    ).then((value) {
-      Navigator.of(context).pushReplacementNamed(Routes.rating);
-    });
-    ;
+    );
   }
 }

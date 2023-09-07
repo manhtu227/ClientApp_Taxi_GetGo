@@ -37,5 +37,6 @@ class UserModel {
     this.nameCar,
     this.rating,
     this.number_of_trips,
+    this.successResult
   });
 }

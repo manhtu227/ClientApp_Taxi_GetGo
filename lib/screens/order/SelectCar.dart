@@ -1,5 +1,9 @@
 import 'package:clientapp_taxi_getgo/models/CarType.dart';
+import 'package:clientapp_taxi_getgo/models/directions.dart';
+import 'package:clientapp_taxi_getgo/models/tripModel.dart';
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
+import 'package:clientapp_taxi_getgo/providers/list_trip_model.dart';
+import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/services/apis/api_driver.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
@@ -7,6 +11,7 @@ import 'package:clientapp_taxi_getgo/widgets/IconText.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextField.dart';
 import 'package:clientapp_taxi_getgo/widgets/TextSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/TypeCar.dart';
+import 'package:clientapp_taxi_getgo/widgets/dialogSchedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -30,8 +35,37 @@ class _SelectCarState extends State<SelectCar> {
     CarType = context.read<CarTypeProvider>().listCar;
   }
 
-  void onTap() {
-    Navigator.of(context).pushNamed(Routes.SearchDriver);
+  Future<void> bookDriverApi() async {
+    final reponse = await ApiDriver.bookDriver(context);
+    final location = context.read<TripsViewModel>();
+
+    print('qqqqqqqqqq');
+    print(reponse.statusCode);
+    if (reponse.statusCode == 200) {
+      print('qqqqqqqqqq111111');
+      context.read<ListTripViewModel>().addTrip(TripModel(
+          info: Directions(
+              polylinePoints: location.polylinePoints,
+              totalDistance: location.totalDistance,
+              totalDuration: location.totalDuration),
+          statusTrip: location.statusTrip,
+          idTrip: reponse.data['trip_info']['trip_id'],
+          currentLocation: location.currentLocation,
+          desLocation: location.desLocation,
+          // driverLocation: driverLocation,
+          isSchedule: location.schedule,
+          dateSchedule: location.dateSchedule));
+    }
+  }
+
+  void onTap() async {
+    if (context.read<TripsViewModel>().schedule) {
+      await bookDriverApi();
+      Navigator.of(context).pushReplacementNamed(Routes.home);
+      DialogSchedule.show(context);
+    } else {
+      Navigator.of(context).pushNamed(Routes.SearchDriver);
+    }
   }
 
   @override
@@ -126,7 +160,7 @@ class _SelectCarState extends State<SelectCar> {
                                   onPressed: () {},
                                   backgroundColor:
                                       Color(0xfffa8d1d), // Màu nền của button
-      
+
                                   child: Icon(
                                     Icons.add, // Biểu tượng dấu cộng
                                     size: 20,
@@ -148,7 +182,8 @@ class _SelectCarState extends State<SelectCar> {
                 height: 66,
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                    color: Colors.white, borderRadius: BorderRadius.circular(14)),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(14)),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

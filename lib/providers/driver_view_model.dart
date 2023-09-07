@@ -34,7 +34,7 @@ class DriverProvider with ChangeNotifier {
     _driver.license_plate =
         data["driver_info"]["driver_vehicle"]["license_plate"];
     _driver.nameCar = data["driver_info"]["driver_vehicle"]["name"];
-    _driver.rating = data["statics"]["starResult"];
+    _driver.rating = data["statics"]["starResult"]/1;
     _driver.number_of_trips = data["statics"]["number_of_trips"];
     _driver.successResult = data["statics"]["successResult"];
     print("cout<< may ne: $_driver");

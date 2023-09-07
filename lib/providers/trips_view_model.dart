@@ -1,11 +1,14 @@
 import 'package:clientapp_taxi_getgo/models/location.dart';
+import 'package:clientapp_taxi_getgo/models/tripModel.dart';
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
+import 'package:clientapp_taxi_getgo/providers/list_trip_model.dart';
 import 'package:clientapp_taxi_getgo/services/googlemap/api_places.dart';
 import 'package:clientapp_taxi_getgo/services/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 import '../models/directions.dart';
 
@@ -24,14 +27,18 @@ class TripsViewModel with ChangeNotifier {
       summary: '',
       placeID: '',
       coordinates: LatLng(10.7757, 106.7004));
-  LocationModel _myLocation =
-      LocationModel(title: '', summary: '', placeID: '');
+
   LocationModel _driverLocation =
       LocationModel(title: '', summary: '', status: '');
   bool _isSchedule = false;
+  bool _checkActive = false;
+
   DateTime _dateSchedule = DateTime.now();
 
+  LocationModel _myLocation =
+      LocationModel(title: '', summary: '', placeID: '');
   bool get schedule => _isSchedule;
+  bool get checkActive => _checkActive;
   DateTime get dateSchedule => _dateSchedule;
   List<PointLatLng> get polylinePoints => _info.polylinePoints;
   int get tripId => _idTrip;
@@ -49,9 +56,20 @@ class TripsViewModel with ChangeNotifier {
     notifyListeners(); // Thông báo cho các người nghe (listeners) về sự thay đổi
   }
 
+  void updateCheckActive(bool check) {
+    _checkActive = check;
+  }
+
   // update
-  void updateTripID(int id) {
+  void updateTripID(int id, BuildContext context) {
     _idTrip = id;
+    TripModel trip = context.read<ListTripViewModel>().tripByID(id);
+    _info = trip.info;
+    statusTrip = trip.statusTrip;
+    _currentLocation = trip.currentLocation;
+    _desLocation = trip.desLocation;
+    _isSchedule = trip.isSchedule;
+    _dateSchedule = trip.dateSchedule;
   }
 
   void updatePolylinePoints(List<PointLatLng> polylinePoints) {
@@ -176,5 +194,24 @@ class TripsViewModel with ChangeNotifier {
     // _myLocation = await APIPlace.getAddressFromLatLng(currentLocation);
     // _currentLocation = _myLocation;
     // notifyListeners();
+  }
+
+  void reset() {
+    _info = Directions(
+      polylinePoints: [],
+      totalDistance: 0,
+      totalDuration: '0',
+    );
+    statusTrip = '';
+    _idTrip = 0;
+    _currentLocation = LocationModel(title: '', summary: '', placeID: '');
+    _desLocation = LocationModel(
+        title: '',
+        summary: '',
+        placeID: '',
+        coordinates: LatLng(10.7757, 106.7004));
+
+    _driverLocation = LocationModel(title: '', summary: '', status: '');
+    _dateSchedule = DateTime.now();
   }
 }

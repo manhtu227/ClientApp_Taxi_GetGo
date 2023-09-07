@@ -1,6 +1,10 @@
 import 'dart:convert';
 
 import 'package:clientapp_taxi_getgo/configs/api_config.dart';
+import 'package:clientapp_taxi_getgo/models/directions.dart';
+import 'package:clientapp_taxi_getgo/models/location.dart';
+import 'package:clientapp_taxi_getgo/models/tripModel.dart';
+import 'package:clientapp_taxi_getgo/providers/list_trip_model.dart';
 import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/userViewModel.dart';
@@ -33,9 +37,12 @@ class SocketService with ChangeNotifier {
             .setQuery({'username': 'loc'}).build());
     _socket.onConnect(
       (data) {
-        _socket.emit('user-login', {"user_id": context.read<UserViewModel>().user.id});
+        _socket.emit(
+            'user-login', {"user_id": context.read<UserViewModel>().user.id});
         userFoundDriver(context);
         handleTripUpdate(context);
+        scheduleStart(context);
+        reconectSocket(context);
         // getLocationDriver(context);
         print("connect " + _socket.id.toString());
       },
@@ -60,15 +67,91 @@ class SocketService with ChangeNotifier {
     _socket.emit('user-find-trip', data["trip_info"]);
   }
 
+  TripModel getTrip(Map<String, dynamic> data, bool check) {
+    return TripModel(
+      info: Directions(
+          polylinePoints: [],
+          totalDistance:
+              check ? data['distance'] : double.parse(data['distance']),
+          totalDuration: data['duration']),
+      statusTrip: data['status'],
+      idTrip: check ? data['trip_id'] : data['id'],
+      currentLocation: LocationModel(
+        title: 'Điểm đi',
+        summary: data['start']['place'],
+        coordinates: LatLng(
+          data['start']['lat'],
+          data['start']['lng'],
+        ),
+      ),
+      desLocation: LocationModel(
+        title: 'Điểm đi',
+        summary: data['end']['place'],
+        coordinates: LatLng(
+          data['end']['lat'],
+          data['end']['lng'],
+        ),
+      ),
+      // driverLocation: driverLocation,
+      isSchedule: data['is_scheduled'],
+      dateSchedule:DateTime.parse(data['schedule_time']), // DateTime.now()
+    );
+  }
+
+  void reconectSocket(BuildContext context) {
+    _socket.on('user-reconnect', (data) {
+      print('cin>>1 ${data}');
+      print('cin>>2 ${data['schedule']}');
+      final providerTrip = context.read<TripsViewModel>();
+      if (data['active'] != null) {
+        TripModel add = getTrip(data['active'], true);
+        context.read<ListTripViewModel>().addTrip(add);
+        context
+            .read<ListTripViewModel>()
+            .updateDriverWithTrip(add.idTrip, data['active']['driver']);
+        providerTrip.updateTripID(data['active']['trip_id'], context);
+        providerTrip.updateDriverLocation(
+            LatLng(data['active']['driver']['location']['lat'] / 1,
+                data['active']['driver']['location']['lng'] / 1),
+            data['active']['driver']['location']['heading'] / 1,
+            'comming');
+        providerTrip.updateCheckActive(true);
+        context.read<DriverProvider>().updateDriver(data['active']['driver']);
+      }
+      print('cin>> ${(data['schedule']).length}');
+      if (data['schedule'].length != 0) {
+        for (Map<String, dynamic> tripSchedule in data['schedule']) {
+          print('cin>> $tripSchedule');
+          TripModel add = getTrip(tripSchedule, false);
+          context.read<ListTripViewModel>().addTrip(add);
+          if (tripSchedule['driver'] != null) {
+            context.read<ListTripViewModel>().updateDriverWithTrip(
+                tripSchedule['id'], tripSchedule['driver']);
+          }
+        }
+      }
+    });
+  }
+
+  void userFoundDriverSchedule(BuildContext context) {
+    _socket.on('found-driver-schedule', (data) {});
+  }
+
   void userFoundDriver(BuildContext context) {
     _socket.on('found-driver', (data) async {
+      // if (data["is_scheduled"]) {
+      //   context
+      //       .read<ListTripViewModel>()
+      //       .updateDriverWithTrip(data["trip_id"], data["driver_info"]);
+      // } else {
+      context.read<TripsViewModel>().updateTripID(data['trip_id'], context);
       context.read<TripsViewModel>().updateDriverLocation(
           LatLng(data['lat'] / 1, data['lng'] / 1),
           data['heading'] / 1,
           'comming');
-      context.read<TripsViewModel>().updateTripID(data['trip_id']);
       print("cout<< cho chet :${data["driver_info"]}");
       print("cout<< cho chet :$data");
+
       await context.read<TripsViewModel>().updatePolylines(
           LatLng(data['lat'] / 1, data['lng'] / 1),
           context.read<TripsViewModel>().currentLocation.coordinates);
@@ -76,6 +159,31 @@ class SocketService with ChangeNotifier {
       Navigator.of(context).pushNamed(Routes.DriverArrive,
           arguments: {'name': 'Driver is Arriving..', 'check': true});
       // Navigator.of(context).pushNamed(Routes.DriverArrive);
+      // }
+    });
+  }
+
+  void scheduleStart(BuildContext context) {
+    _socket.on('schedule-start', (data) async {
+      final providerTrip = context.read<TripsViewModel>();
+      final providerListTrip = context.read<ListTripViewModel>();
+      print('print( $data)');
+      providerTrip.updateTripID(data['trip_id'], context);
+      await context.read<DriverProvider>().updateDriver(data['driver_info']);
+      await providerTrip.updatePolylines(
+          LatLng(data['location']['lat'] / 1, data['location']['lng'] / 1),
+          providerListTrip
+              .tripByID(data['trip_id'])
+              .currentLocation
+              .coordinates);
+      providerTrip.updateDriverLocation(
+          LatLng(data['location']['lat'] / 1, data['location']['lng'] / 1),
+          data['location']['heading'] / 1,
+          'comming');
+      providerListTrip.updateDriverWithTrip(
+          data["trip_id"], data['driver_info']);
+      Navigator.of(context).pushNamed(Routes.DriverArrive,
+          arguments: {'name': 'Driver is Arriving..', 'check': true});
     });
   }
 
@@ -88,9 +196,14 @@ class SocketService with ChangeNotifier {
         Navigator.of(context).pushNamed(Routes.DriverArrive,
             arguments: {'name': 'Đang đi tới đích', 'check': false});
       } else if (data['status'] == "Done") {
+        context.read<TripsViewModel>().updateCheckActive(false);
         DialogMessage.show(context);
       }
     });
+  }
+
+  void cancelTrip(int trip_id) {
+    _socket.emit("user-cancel-trip", {trip_id: trip_id});
   }
 
   // void getLocationDriver(BuildContext context) {
