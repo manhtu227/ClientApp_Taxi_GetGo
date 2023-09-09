@@ -97,7 +97,7 @@ class _MyAppState extends State<MyApp> {
           fontFamily: 'Inter',
         ),
         // home: MapScreen(),
-        initialRoute: Routes.home,
+        initialRoute: Routes.login,
         onGenerateRoute: Routes.generateRoute,
       ),
     );

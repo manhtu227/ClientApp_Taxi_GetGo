@@ -49,13 +49,14 @@ class _MapScreenState extends State<MapScreen> {
       print('cout<< ${data["directions"]}');
       if (context.read<TripsViewModel>().driverLocation.status == 'comming' &&
           mounted &&
-          data["directions"] != '') {
+          data["directions"] != '' &&
+          data["directions"] != null) {
         context.read<TripsViewModel>().updateDriverLocation(
             LatLng(data['lat'] / 1, data['lng'] / 1),
             data['heading'] / 1 ?? 0,
             'comming');
         addMarkerPicture('current', LatLng(data['lat'] / 1, data['lng'] / 1),
-            widget.icon, data['heading']);
+            widget.icon, data['heading'] / 1);
         final directionsData = data["directions"];
         print(data["directions"] is String);
         if (directionsData != '' && directionsData is String) {

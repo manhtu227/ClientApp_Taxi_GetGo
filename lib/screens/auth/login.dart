@@ -116,8 +116,9 @@ class _LoginScreenState extends State<LoginScreen>
                                 },
                                 onInputValidated: (bool value) {
                                   // if (value == true) {
+                                  print(value);
                                   setState(() {
-                                    _checkValidate = value;
+                                    _checkValidate = true;
                                   });
                                   // }
                                 },

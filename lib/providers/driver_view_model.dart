@@ -25,6 +25,7 @@ class DriverProvider with ChangeNotifier {
     print('cout<< may ne: ${data}');
     print('cout<< may ne: ${data["statics"]["successResult"]}');
     _driver.avatar = data["driver_info"]["avatar"];
+    _driver.id = data["driver_info"]["id"].toString();
     _driver.name = data["driver_info"]["name"];
     _driver.phone = data["driver_info"]["avatar"];
     // _driver.email = data["driver_info"]["email"];
@@ -34,7 +35,7 @@ class DriverProvider with ChangeNotifier {
     _driver.license_plate =
         data["driver_info"]["driver_vehicle"]["license_plate"];
     _driver.nameCar = data["driver_info"]["driver_vehicle"]["name"];
-    _driver.rating = data["statics"]["starResult"]/1;
+    _driver.rating = (data["statics"]["starResult"] / 1).toStringAsFixed(1);
     _driver.number_of_trips = data["statics"]["number_of_trips"];
     _driver.successResult = data["statics"]["successResult"];
     print("cout<< may ne: $_driver");

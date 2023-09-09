@@ -11,8 +11,10 @@ import 'package:clientapp_taxi_getgo/providers/userViewModel.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/dialogSuccess.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
@@ -37,12 +39,12 @@ class SocketService with ChangeNotifier {
             .setQuery({'username': 'loc'}).build());
     _socket.onConnect(
       (data) {
-        _socket.emit(
-            'user-login', {"user_id": context.read<UserViewModel>().user.id});
+        _socket.emit('user-login', {"user_id": 5});
         userFoundDriver(context);
         handleTripUpdate(context);
         scheduleStart(context);
         reconectSocket(context);
+        receiptMessage(context);
         // getLocationDriver(context);
         print("connect " + _socket.id.toString());
       },
@@ -73,28 +75,28 @@ class SocketService with ChangeNotifier {
           polylinePoints: [],
           totalDistance:
               check ? data['distance'] : double.parse(data['distance']),
-          totalDuration: data['duration']),
+          totalDuration: '5'), //)data['duration']),
       statusTrip: data['status'],
       idTrip: check ? data['trip_id'] : data['id'],
       currentLocation: LocationModel(
         title: 'Điểm đi',
         summary: data['start']['place'],
         coordinates: LatLng(
-          data['start']['lat'],
-          data['start']['lng'],
+          data['start']['lat'] / 1,
+          data['start']['lng'] / 1,
         ),
       ),
       desLocation: LocationModel(
         title: 'Điểm đi',
         summary: data['end']['place'],
         coordinates: LatLng(
-          data['end']['lat'],
-          data['end']['lng'],
+          data['end']['lat'] / 1,
+          data['end']['lng'] / 1,
         ),
       ),
       // driverLocation: driverLocation,
       isSchedule: data['is_scheduled'],
-      dateSchedule:DateTime.parse(data['schedule_time']), // DateTime.now()
+      dateSchedule: DateTime.parse(data['schedule_time']), // DateTime.now()
     );
   }
 
@@ -206,6 +208,22 @@ class SocketService with ChangeNotifier {
     _socket.emit("user-cancel-trip", {trip_id: trip_id});
   }
 
+  void receiptMessage(BuildContext context) {
+    _socket.on("message-to-user", (data) {
+      print('cout<<<<<11$data');
+      DateTime now = DateTime.now();
+      String formattedTime = DateFormat('HH:mm').format(now);
+      context.read<TripsViewModel>().pushMessage(data, '0', formattedTime);
+    });
+  }
+
+  void sendMessage(String text, BuildContext context) {
+    _socket.emit("user-message", {
+      'message': text,
+      'user_id': context.read<DriverProvider>().driver.id,
+      'trip_id': context.read<TripsViewModel>().tripId
+    });
+  }
   // void getLocationDriver(BuildContext context) {
   //   _socket.on('get-location-driver', (data) {
   //     // String? currentRoute = ModalRoute.of(context)?.settings.name;

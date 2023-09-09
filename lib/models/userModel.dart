@@ -15,7 +15,7 @@ class UserModel {
   Map<String, dynamic>? inforDriver;
   String? license_plate;
   String? nameCar;
-  double? rating;
+  String? rating;
   int? number_of_trips;
   int? successResult;
   UserModel({

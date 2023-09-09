@@ -24,6 +24,9 @@ class _ItemState extends State<Item> {
   Widget build(BuildContext context) {
     print('cout<<<<< ${widget.trip.toString()}');
     print('cout<<<<< ${widget.trip['start']}');
+    print('cout<<<<< ${widget.trip['start'] is String}');
+    Map<String, dynamic> startData = widget.trip['start'];
+    Map<String, dynamic> endData = widget.trip['end'];
     return Column(
       children: [
         Container(
@@ -46,7 +49,7 @@ class _ItemState extends State<Item> {
                           ? "Completed"
                           : widget.trip['status'] == "Cancelled"
                               ? "Cancelled"
-                              : "Active"),
+                              : widget.trip['status']),
                 const Padding(
                   padding: EdgeInsets.only(top: 16),
                   child: Divider(
@@ -116,8 +119,7 @@ class _ItemState extends State<Item> {
                         ),
                       ),
                       PlaceStrip(
-                          start: json.decode(widget.trip['start'])['place'],
-                          end: json.decode(widget.trip['end'])['place']),
+                          start: startData['place'], end: endData['place']),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Divider(
@@ -126,11 +128,13 @@ class _ItemState extends State<Item> {
                           color: Color(0xFFD5DDE0),
                         ),
                       ),
-                      ButtonSizeL(
-                        onTap: () {},
-                        name: "Track Driver",
-                        height: 40,
-                      ),
+                      if (widget.trip['status'] != 'Done' &&
+                          widget.trip['status'] != 'Cancelled')
+                        ButtonSizeL(
+                          onTap: () {},
+                          name: "Track Driver",
+                          height: 40,
+                        ),
                     ],
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'package:clientapp_taxi_getgo/models/location.dart';
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
 import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/method_payment_view_model.dart';
+import 'package:clientapp_taxi_getgo/providers/userViewModel.dart';
 import 'package:clientapp_taxi_getgo/services/DioInterceptorManager.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,8 @@ class ApiDriver {
         "lng": location.desLocation.coordinates.longitude,
         "place": location.desLocation.summary,
       },
-      "distance":location.info.totalDistance,
-      "duration":location.info.totalDuration,
+      "distance": location.info.totalDistance,
+      "duration": location.info.totalDuration,
       "is_scheduled": location.schedule,
       "schedule_time": location.dateSchedule.toString(),
       "price": context.read<CarTypeProvider>().price,
@@ -43,14 +44,15 @@ class ApiDriver {
       "paymentMethod": context.read<MethodPaymentViewModel>().selectedMethodType
     };
     print('cout<<<<<$data');
+    final user = context.read<UserViewModel>();
+
     Response response = await _dio.post(
       RoutePathApi.bookDriver,
       data: data,
       options: Options(headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization':
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicGhvbmUiOiIrODQ1NTU1NTU1NTUiLCJ0eXBlIjoiVXNlciIsImlhdCI6MTY5MzM3OTY0MywiZXhwIjoxNjk0NDU5NjQzfQ.cIz8vzmHl0KZYWXjW-cdeduW2ucJ8WDwVxgleaKbV44",
+        'Authorization': "Bearer ${user.user.token}",
       }),
     );
     print('1111111111111111ne');

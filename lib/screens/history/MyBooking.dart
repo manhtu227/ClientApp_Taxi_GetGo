@@ -1,5 +1,7 @@
 import 'package:clientapp_taxi_getgo/models/CarType.dart';
 import 'package:clientapp_taxi_getgo/providers/CarTypeViewModel.dart';
+import 'package:clientapp_taxi_getgo/providers/list_trip_model.dart';
+import 'package:clientapp_taxi_getgo/providers/userViewModel.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/screens/history/ListItem.dart';
 import 'package:clientapp_taxi_getgo/services/apis/api_history.dart';
@@ -30,28 +32,34 @@ class _MyBookingState extends State<MyBooking> with TickerProviderStateMixin {
   void fetchData() async {
     try {
       print('sao rồi');
-
-      Map<String, dynamic> newData = await ApiHistory.getAllHistory(4);
+      String id = context.read<UserViewModel>().idUser;
+      print('cout<<<<<<<<<<<<<<<<<<<$id');
+      Map<String, dynamic> newData = await ApiHistory.getAllHistory(id);
       // if(newData["trip"])
       List<dynamic> tripsDone = newData["trip"]
           .where((trip) => trip["status"] == "Done")
           .toList() as List<dynamic>;
       List<dynamic> tripsCancel = newData["trip"]
-          .where((trip) => trip["status"] == "Cancel")
-          .toList() as List<dynamic>;
-      List<dynamic> trips = newData["trip"]
           .where((trip) =>
-              trip["status"] != "Cancel" &&
+              trip["status"] == "Cancelled" &&
               trip["status"] != "Done" &&
               trip["status"] != "Pending")
           .toList() as List<dynamic>;
+      List<dynamic> trips = newData["trip"]
+          .where((trip) =>
+              trip["status"] != "Cancelled" && trip["status"] != "Done")
+          .toList() as List<dynamic>;
+      Iterable<dynamic> tripss = trips.where(
+          (trip) => context.read<ListTripViewModel>().checkTrip(trip['id']));
+
+      List<dynamic> tripList = tripss.toList();
       // Map<String, dynamic> newDataDetail = await _apiReport.getDetail(context);
       setState(() {
         print('dsddddd');
         print(tripsDone);
         _tripsDone = tripsDone;
         _tripsCancel = tripsCancel;
-        _trips = trips;
+        _trips = tripList;
       });
     } catch (e) {
       print('lỗi rồi');
@@ -158,19 +166,46 @@ class _MyBookingState extends State<MyBooking> with TickerProviderStateMixin {
           controller: _tabController,
           children: <Widget>[
             SingleChildScrollView(
-              child: ListItem(
-                trips: _trips,
-              ),
+              child: _trips.isNotEmpty
+                  ? ListItem(
+                      trips: _trips,
+                    )
+                  : Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: Image.asset(
+                        'assets/images/empty.png',
+                        height: 300,
+                        width: 266,
+                      ),
+                    ),
             ),
             SingleChildScrollView(
-              child: ListItem(
-                trips: _tripsDone,
-              ),
+              child: _tripsDone.isNotEmpty
+                  ? ListItem(
+                      trips: _tripsDone,
+                    )
+                  : Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: Image.asset(
+                        'assets/images/empty.png',
+                        height: 300,
+                        width: 266,
+                      ),
+                    ),
             ),
             SingleChildScrollView(
-              child: ListItem(
-                trips: _tripsCancel,
-              ),
+              child: _tripsCancel.isNotEmpty
+                  ? ListItem(
+                      trips: _tripsCancel,
+                    )
+                  : Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: Image.asset(
+                        'assets/images/empty.png',
+                        height: 300,
+                        width: 266,
+                      ),
+                    ),
             ),
           ],
         ),

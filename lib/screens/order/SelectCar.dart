@@ -64,6 +64,7 @@ class _SelectCarState extends State<SelectCar> {
       Navigator.of(context).pushReplacementNamed(Routes.home);
       DialogSchedule.show(context);
     } else {
+      await bookDriverApi();
       Navigator.of(context).pushNamed(Routes.SearchDriver);
     }
   }

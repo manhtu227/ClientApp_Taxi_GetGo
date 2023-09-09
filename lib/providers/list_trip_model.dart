@@ -25,6 +25,15 @@ class ListTripViewModel with ChangeNotifier {
         dateSchedule: DateTime.now(),
         driver: null)
   ];
+  bool checkTrip(int id) {
+    for (TripModel trip in _trips) {
+      if (trip.idTrip == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   TripModel tripByID(int id) {
     print("print($id)");
     TripModel trip = _trips.firstWhere((trip) => trip.idTrip == id);
@@ -32,8 +41,12 @@ class ListTripViewModel with ChangeNotifier {
   }
 
   void updateDriverWithTrip(int idTrip, Map<String, dynamic> data) {
+    double x = 5.3333;
+    x.toStringAsFixed(2);
+    print('thông tin driver${data["driver_info"]}');
     UserModel check = UserModel(
-      avatar: data["driver_info"]["avatar"],
+      avatar:
+          'https://1.bp.blogspot.com/-mkEhP_QXSHI/WE9-UdNKnyI/AAAAAAAACpc/z5mdcFZbQz41dhnXknAeGTRhG1Xj3jfQgCLcB/s1600/15085502_591915637681021_5420424684372040797_n.jpg',
       name: data["driver_info"]["name"],
       phone: data["driver_info"]["avatar"],
       email: 'manhtu',
@@ -43,7 +56,7 @@ class ListTripViewModel with ChangeNotifier {
       typeCar: data["driver_info"]["type"],
       license_plate: data["driver_info"]["driver_vehicle"]["license_plate"],
       nameCar: data["driver_info"]["driver_vehicle"]["name"],
-      rating: data["statics"]["starResult"],
+      rating: (data["statics"]["starResult"] / 1).toStringAsFixed(1),
       number_of_trips: data["statics"]["number_of_trips"],
       successResult: data["statics"]["successResult"],
     );

@@ -64,31 +64,6 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    bookDriverApi();
-  }
-
-  void bookDriverApi() async {
-    final reponse = await ApiDriver.bookDriver(context);
-    final location = context.read<TripsViewModel>();
-
-    print('qqqqqqqqqq');
-    print(reponse.statusCode);
-    if (reponse.statusCode == 200) {
-      print('qqqqqqqqqq111111');
-      location.updateCheckActive(true);
-      context.read<ListTripViewModel>().addTrip(TripModel(
-          info: Directions(
-              polylinePoints: location.polylinePoints,
-              totalDistance: location.totalDistance,
-              totalDuration: location.totalDuration),
-          statusTrip: location.statusTrip,
-          idTrip: reponse.data['trip_info']['trip_id'],
-          currentLocation: location.currentLocation,
-          desLocation: location.desLocation,
-          // driverLocation: driverLocation,
-          isSchedule: location.schedule,
-          dateSchedule: location.dateSchedule));
-    }
   }
 
   @override
@@ -125,7 +100,7 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
             color: Colors.black, // Icon color is black
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pushReplacementNamed(Routes.home);
             // Handle back button press here
           },
         ),
@@ -266,12 +241,13 @@ class _SearchDriverScreenState extends State<SearchDriverScreen>
             right: 50,
             left: 50,
             child: SlideAction(
-              borderRadius: 10,
+              borderRadius: 15,
               height: 55,
               sliderButtonIconPadding: 10,
               innerColor: Colors.white,
               outerColor: Theme.of(context).primaryColor,
               text: 'Hủy chuyến đi',
+              textStyle: TextStyle(fontSize: 13),
               onSubmit: () {
                 SocketService().cancelTrip;
                 Navigator.of(context).pushReplacementNamed(Routes.home);

@@ -50,6 +50,17 @@ class TripsViewModel with ChangeNotifier {
   LocationModel get desLocation => _desLocation;
   Directions get info => _info;
 
+  final List<Map<String, String>> _message = [
+    {"5": 'Chào em', "time": '10:00'},
+    {"0": 'Chào anh', "time": '10:05'}
+  ];
+  List<Map<String, String>> get message => _message;
+  void pushMessage(String text, String id, String time) {
+    _message.add({id: text, "time": time});
+    notifyListeners();
+
+  }
+
   void setShedule(bool isSchedule, DateTime schedule) {
     _isSchedule = isSchedule;
     _dateSchedule = schedule;

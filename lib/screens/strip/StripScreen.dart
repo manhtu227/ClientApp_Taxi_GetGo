@@ -3,6 +3,7 @@ import 'package:clientapp_taxi_getgo/models/directions.dart';
 import 'package:clientapp_taxi_getgo/models/location.dart';
 import 'package:clientapp_taxi_getgo/providers/driver_view_model.dart';
 import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
+import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/Buider/GoogleMapBuider.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/PlaceStrip.dart';
@@ -195,7 +196,9 @@ class _TripScreenState extends State<TripScreen> {
                               width: 20,
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pushNamed(context, Routes.message);
+                              },
                               child: Container(
                                 height: 40,
                                 width: 40,
@@ -203,7 +206,7 @@ class _TripScreenState extends State<TripScreen> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(50)),
                                     color: Theme.of(context).primaryColor),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.message,
                                   size: 20,
                                   color: Colors.white,
@@ -212,11 +215,11 @@ class _TripScreenState extends State<TripScreen> {
                             ),
                           ],
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                 ],
               ),
             ),
-            borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
           ),
         ),
       ),

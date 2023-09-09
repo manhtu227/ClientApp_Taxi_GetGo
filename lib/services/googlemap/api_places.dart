@@ -64,7 +64,8 @@ class APIPlace {
       }
       return locations;
     } else {
-      throw Exception('fail to load data');
+      print('looix');
+      return [];
     }
   }
 

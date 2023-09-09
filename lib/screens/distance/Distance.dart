@@ -145,7 +145,7 @@ class _DetailDistanceState extends State<DetailDistance> {
               top: 0,
               right: 0,
               left: 0,
-              bottom: MediaQuery.of(context).size.height / 3.1,
+              bottom: MediaQuery.of(context).size.height / 2.7,
               child: GoogleMapBuider(currentLocation: _currentLocation)
                   .setDesLocation(_desLocation)
                   .setPolyline(_listPoint)

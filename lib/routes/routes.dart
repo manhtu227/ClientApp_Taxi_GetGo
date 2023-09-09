@@ -3,6 +3,7 @@ import 'package:clientapp_taxi_getgo/screens/auth/updateAccount.dart';
 import 'package:clientapp_taxi_getgo/screens/auth/verify.dart';
 import 'package:clientapp_taxi_getgo/screens/distance/Distance.dart';
 import 'package:clientapp_taxi_getgo/screens/home/home.dart';
+import 'package:clientapp_taxi_getgo/screens/message/screen_message.dart';
 import 'package:clientapp_taxi_getgo/screens/order/SelectCar.dart';
 import 'package:clientapp_taxi_getgo/screens/order/SelectPayment.dart';
 import 'package:clientapp_taxi_getgo/screens/ratting/rating.dart';
@@ -24,6 +25,7 @@ class Routes {
   static const String rating = '/rating';
   static const String paymentMethod = '/SelectePayment';
   static const String updateAccount = '/updateAccount';
+  static const String message = '/message';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -51,8 +53,11 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SearchDriverScreen());
       case paymentMethod:
         return MaterialPageRoute(builder: (_) => SelectPayment());
+      case message:
+        return MaterialPageRoute(builder: (_) => MessageScreen());
       case updateAccount:
-        return MaterialPageRoute(builder: (_) => UpdateAccount(), settings: settings);
+        return MaterialPageRoute(
+            builder: (_) => UpdateAccount(), settings: settings);
       default:
         return null;
     }

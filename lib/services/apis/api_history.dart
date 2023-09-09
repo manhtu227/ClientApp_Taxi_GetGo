@@ -5,10 +5,11 @@ import 'package:dio/dio.dart';
 class ApiHistory {
   static final _dioInterceptorManager = DioInterceptorManager();
   static final Dio _dio = _dioInterceptorManager.dioInstance;
-  static Future<Map<String, dynamic>> getAllHistory(int id) async {
+  static Future<Map<String, dynamic>> getAllHistory(String id) async {
     try {
       Response response = await _dio.get('${RoutePathApi.getAllHistory}/$id');
-      print('1111111111111111all');
+      print('cout<< 1111111111111111all');
+      print('1111111111111111all ${response.data}');
       return response.data;
     } catch (error) {
       throw (error);

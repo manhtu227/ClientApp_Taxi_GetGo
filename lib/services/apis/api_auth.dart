@@ -3,6 +3,7 @@ import 'package:clientapp_taxi_getgo/configs/api_config.dart';
 import 'package:clientapp_taxi_getgo/configs/route_path_api.dart';
 import 'package:clientapp_taxi_getgo/services/DioInterceptorManager.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 
 class ApiAuth {
@@ -11,8 +12,10 @@ class ApiAuth {
   // static final Response response;
   static Future<Map<String, dynamic>> login(
       String phone, String password) async {
-    Response response = await _dio
-        .post(RoutePathApi.login, data: {'phone': phone, 'password': password});
+    final token = await FirebaseMessaging.instance.getToken();
+    print('cout<<<<<<<<<$token');
+    Response response = await _dio.post(RoutePathApi.login,
+        data: {'phone': phone, 'password': password, 'token_fcm': token});
     return response.data;
   }
 
@@ -29,8 +32,9 @@ class ApiAuth {
 
   static Future<Map<String, dynamic>> checkPhone(String phone) async {
     try {
-      final response = await _dio
-          .get(RoutePathApi.checkPhone, queryParameters: {'phone': phone});
+      print(phone);
+      final response = await _dio.get(RoutePathApi.checkPhone,
+          queryParameters: {'phone': "84555555555"});
       return response.data;
     } catch (error) {
       throw (error);
