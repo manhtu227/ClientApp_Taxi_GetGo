@@ -18,7 +18,6 @@ class LoginStrategy implements OTPStrategy {
     print(response);
     if (response['statusCode'] == 200) {
       context.read<UserViewModel>().updateUser(response['user_info']);
-      context.read<SocketService>().connectserver(context);
       Navigator.of(context).pushReplacementNamed(Routes.home);
     }
   }

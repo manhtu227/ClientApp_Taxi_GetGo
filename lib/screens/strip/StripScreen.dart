@@ -9,6 +9,7 @@ import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/PlaceStrip.dart';
 import 'package:clientapp_taxi_getgo/widgets/SummaryDriver.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -179,17 +180,26 @@ class _TripScreenState extends State<TripScreen> {
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(50)),
-                                  color: Theme.of(context).primaryColor),
-                              child: const Icon(
-                                Icons.phone,
-                                size: 20,
-                                color: Colors.white,
+                            InkWell(
+                              onTap: () async {
+                                await FlutterPhoneDirectCaller.callNumber(
+                                    context
+                                        .read<DriverProvider>()
+                                        .driver
+                                        .phone);
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50)),
+                                    color: Theme.of(context).primaryColor),
+                                child: const Icon(
+                                  Icons.phone,
+                                  size: 20,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                             const SizedBox(

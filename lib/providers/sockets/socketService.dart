@@ -34,12 +34,13 @@ class SocketService with ChangeNotifier {
 
     _socket = io.io(
         ApiConfig.baseUrl,
-        io.OptionBuilder().setTransports(['websocket'])
-            // .disableAutoConnect()
-            .setQuery({'username': 'loc'}).build());
+        io.OptionBuilder()
+            .setTransports(['websocket'])
+            .enableForceNew()
+            .build());
     _socket.onConnect(
       (data) {
-        _socket.emit('user-login', {"user_id": 5});
+        _socket.emit('user-login', {"user_id": context.read<UserViewModel>().idUser});
         userFoundDriver(context);
         handleTripUpdate(context);
         scheduleStart(context);
