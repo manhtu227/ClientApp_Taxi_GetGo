@@ -40,7 +40,8 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   void initState() {
     super.initState();
-    if (!context.read<SocketService>().socket.connected)
+    // print('sao vaaaaa: ${context.read<SocketService>().socket.connected}');
+    if (context.read<SocketService>().socket == null)
       context.read<SocketService>().connectserver(context);
   }
 

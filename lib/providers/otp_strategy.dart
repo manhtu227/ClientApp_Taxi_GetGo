@@ -40,7 +40,7 @@ class VerifyStrategy implements OTPStrategy {
       print(phone);
       if (response['statusCode'] == null) {
         // context.read<UserViewModel>().updateUser(response['user_info']);
-        Navigator.of(context).pushReplacementNamed(Routes.login);
+        Navigator.of(context).pushNamed(Routes.login);
       }
     }
     // Xử lý khi nhập mã OTP và data['check'] là false

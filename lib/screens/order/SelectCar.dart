@@ -62,7 +62,8 @@ class _SelectCarState extends State<SelectCar> {
     if (mounted) {
       if (context.read<TripsViewModel>().schedule) {
         await bookDriverApi();
-        Navigator.of(context).pushReplacementNamed(Routes.home);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(Routes.home, (route) => false);
         DialogSchedule.show(context, context.read<TripsViewModel>().tripId);
       } else {
         await bookDriverApi();

@@ -44,7 +44,7 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
     _loadMapStyle();
-    context.read<SocketService>().socket.on('get-location-driver', (data) {
+    context.read<SocketService>().socket?.on('get-location-driver', (data) {
       print('cout<< $data');
       print('cout<< ${data["directions"]}');
       if (context.read<TripsViewModel>().driverLocation.status == 'comming' &&

@@ -19,8 +19,8 @@ import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class SocketService with ChangeNotifier {
-  late io.Socket _socket;
-  io.Socket get socket => _socket;
+  io.Socket? _socket;
+  io.Socket? get socket => _socket;
 // const tk = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicGhvbmUiOiIrODQ0NDQ0NDQ0NDQiLCJ0eXBlIjoiVXNlcl9WaXAiLCJpYXQiOjE2OTA5NjM0NzksImV4cCI6MTY5MjA0MzQ3OX0.o0kfUy4iiG5kyYoB3ea8URXpISHenDkopQdlKvwtNeU'
 
 // const socket = io.connect("ws://localhost:3000", {
@@ -38,36 +38,40 @@ class SocketService with ChangeNotifier {
             .setTransports(['websocket'])
             .enableForceNew()
             .build());
-    _socket.onConnect(
+    _socket?.onConnect(
       (data) {
-        _socket.emit('user-login', {"user_id": context.read<UserViewModel>().idUser});
+        _socket?.emit(
+            'user-login', {"user_id": context.read<UserViewModel>().idUser});
         userFoundDriver(context);
         handleTripUpdate(context);
         scheduleStart(context);
         reconectSocket(context);
         receiptMessage(context);
         // getLocationDriver(context);
-        print("connect " + _socket.id.toString());
+        print("connect " + _socket!.id.toString());
       },
     );
-    _socket.onDisconnect((data) {
+    _socket?.onDisconnect((data) {
+      _socket = null;
       print("disconnect");
     });
 
-    _socket.onConnectError((data) {
+    _socket?.onConnectError((data) {
+      _socket = null;
       print("err:");
       print(data);
     });
   }
 
   void disconnect() {
-    _socket.disconnect();
+    _socket = null;
+    _socket?.disconnect();
   }
 
   void userFindTrip(Map<String, dynamic> data) {
     print("cout<< " + data["trip_info"].toString());
 
-    _socket.emit('user-find-trip', data["trip_info"]);
+    _socket?.emit('user-find-trip', data["trip_info"]);
   }
 
   TripModel getTrip(Map<String, dynamic> data, bool check) {
@@ -102,7 +106,7 @@ class SocketService with ChangeNotifier {
   }
 
   void reconectSocket(BuildContext context) {
-    _socket.on('user-reconnect', (data) {
+    _socket?.on('user-reconnect', (data) {
       print('cin>>1 ${data}');
       print('cin>>2 ${data['schedule']}');
       final providerTrip = context.read<TripsViewModel>();
@@ -137,11 +141,11 @@ class SocketService with ChangeNotifier {
   }
 
   void userFoundDriverSchedule(BuildContext context) {
-    _socket.on('found-driver-schedule', (data) {});
+    _socket?.on('found-driver-schedule', (data) {});
   }
 
   void userFoundDriver(BuildContext context) {
-    _socket.on('found-driver', (data) async {
+    _socket?.on('found-driver', (data) async {
       // if (data["is_scheduled"]) {
       //   context
       //       .read<ListTripViewModel>()
@@ -167,7 +171,7 @@ class SocketService with ChangeNotifier {
   }
 
   void scheduleStart(BuildContext context) {
-    _socket.on('schedule-start', (data) async {
+    _socket?.on('schedule-start', (data) async {
       final providerTrip = context.read<TripsViewModel>();
       final providerListTrip = context.read<ListTripViewModel>();
       print('print( $data)');
@@ -191,7 +195,7 @@ class SocketService with ChangeNotifier {
   }
 
   void handleTripUpdate(BuildContext context) {
-    _socket.on('trip-update', (data) async {
+    _socket?.on('trip-update', (data) async {
       print("cout<< cho vy : ${data['status']}");
       print("cout<< cho vy : ${data}");
       if (data['status'] == "Driving") {
@@ -206,11 +210,11 @@ class SocketService with ChangeNotifier {
   }
 
   void cancelTrip(int trip_id) {
-    _socket.emit("user-cancel-trip", {trip_id: trip_id});
+    _socket?.emit("user-cancel-trip", {trip_id: trip_id});
   }
 
   void receiptMessage(BuildContext context) {
-    _socket.on("message-to-user", (data) {
+    _socket?.on("message-to-user", (data) {
       print('cout<<<<<11$data');
       DateTime now = DateTime.now();
       String formattedTime = DateFormat('HH:mm').format(now);
@@ -219,14 +223,14 @@ class SocketService with ChangeNotifier {
   }
 
   void sendMessage(String text, BuildContext context) {
-    _socket.emit("user-message", {
+    _socket?.emit("user-message", {
       'message': text,
       'user_id': context.read<DriverProvider>().driver.id,
       'trip_id': context.read<TripsViewModel>().tripId
     });
   }
   // void getLocationDriver(BuildContext context) {
-  //   _socket.on('get-location-driver', (data) {
+  //   _socket?.on('get-location-driver', (data) {
   //     // String? currentRoute = ModalRoute.of(context)?.settings.name;
   //     print('cout<< ' +
   //         context.read<DirectionsViewModel>().driverLocation.status);
