@@ -19,7 +19,7 @@ class UserViewModel with ChangeNotifier {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicGhvbmUiOiIrODQ1NTU1NTU1NTUiLCJ0eXBlIjoiVXNlciIsImlhdCI6MTY5NDA5MjQ3OSwiZXhwIjoxNjk1MTcyNDc5fQ.Zp05KJgetJGPndOc_9u7qcH99MHzFADFt9-RtD_iQ7c',
   );
   List<LatLng> _listDriver = [];
-  Future<void> updateUser(Map<String, dynamic> data) async {
+  void updateUser(Map<String, dynamic> data)  {
     print('cout<<<<$data');
     _user.avatar =
         "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcellphones.com.vn%2Fsforum%2Fthu-thuat-vi-tri-va-goc-bi-kip-chup-anh-dep-bang-smartphone-khong-the-bo-qua&psig=AOvVaw1SS8z_712EUkvv3L_E8yao&ust=1693721893843000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCMiP5fGji4EDFQAAAAAdAAAAABAE";
@@ -27,7 +27,7 @@ class UserViewModel with ChangeNotifier {
     _user.phone = data["phone"];
     _user.id = data["user_id"].toString();
     _user.token = data["accessToken"];
-    notifyListeners();
+    // notifyListeners();
   }
 
   String get idUser => _user.id;

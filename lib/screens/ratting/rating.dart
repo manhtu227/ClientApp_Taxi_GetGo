@@ -181,7 +181,7 @@ class _RatingScreenState extends State<RatingScreen> {
                       onTap: () {
                         print('cout<<   sssss');
                         ApiDriver.ratingTrip(context, rate);
-                        Navigator.of(context).pushReplacementNamed(Routes.home);
+                        Navigator.of(context).pushNamedAndRemoveUntil(Routes.home, (route) => false);
                       },
                       name: "Submit"),
                 ],

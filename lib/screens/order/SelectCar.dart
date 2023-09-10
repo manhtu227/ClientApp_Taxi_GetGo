@@ -59,14 +59,14 @@ class _SelectCarState extends State<SelectCar> {
   }
 
   void onTap() async {
-    if (context.read<TripsViewModel>().schedule) {
+    if(mounted){if (context.read<TripsViewModel>().schedule) {
       await bookDriverApi();
       Navigator.of(context).pushReplacementNamed(Routes.home);
       DialogSchedule.show(context);
     } else {
       await bookDriverApi();
       Navigator.of(context).pushNamed(Routes.SearchDriver);
-    }
+    }}
   }
 
   @override

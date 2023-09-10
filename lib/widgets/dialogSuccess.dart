@@ -54,7 +54,7 @@ class DialogMessage {
         );
       },
     ).then((value) {
-      Navigator.of(context).pushReplacementNamed(Routes.rating);
+      Navigator.of(context).pushNamed(Routes.rating);
     });
     ;
   }

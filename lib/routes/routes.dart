@@ -58,6 +58,7 @@ class Routes {
       case updateAccount:
         return MaterialPageRoute(
             builder: (_) => UpdateAccount(), settings: settings);
+
       default:
         return null;
     }
