@@ -1,3 +1,4 @@
+import 'package:clientapp_taxi_getgo/providers/sockets/socketService.dart';
 import 'package:clientapp_taxi_getgo/providers/userViewModel.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/services/apis/api_auth.dart';
@@ -17,6 +18,7 @@ class LoginStrategy implements OTPStrategy {
     print(response);
     if (response['statusCode'] == 200) {
       context.read<UserViewModel>().updateUser(response['user_info']);
+      context.read<SocketService>().connectserver(context);
       Navigator.of(context).pushReplacementNamed(Routes.home);
     }
   }

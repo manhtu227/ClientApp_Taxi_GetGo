@@ -16,6 +16,7 @@ class ApiAuth {
     print('cout<<<<<<<<<$token');
     Response response = await _dio.post(RoutePathApi.login,
         data: {'phone': phone, 'password': password, 'token_fcm': token});
+      
     return response.data;
   }
 

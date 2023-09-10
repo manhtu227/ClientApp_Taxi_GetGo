@@ -40,7 +40,6 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<SocketService>().connectserver(context);
   }
 
   void _selectPage(int index) {

@@ -137,53 +137,72 @@ class APIPlace {
   // }
   static Future<Directions> getDirections(
       {required LatLng origin, required LatLng destination}) async {
-    final url = 'https://routes.googleapis.com/directions/v2:computeRoutes';
+    double result = 0;
+    result = Geolocator.distanceBetween(
+      origin.latitude,
+      origin.longitude,
+      destination.latitude,
+      destination.longitude,
+    );
+    if (result > 200) {
+      final url = 'https://routes.googleapis.com/directions/v2:computeRoutes';
 
-    final headers = {
-      'Content-Type': 'application/json',
-      'X-Goog-Api-Key': 'AIzaSyBLAnygT3LzvYGdMD43t12_zw79CXC0O2w',
-      'X-Goog-FieldMask':
-          'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline',
-    };
+      final headers = {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': 'AIzaSyBLAnygT3LzvYGdMD43t12_zw79CXC0O2w',
+        'X-Goog-FieldMask':
+            'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline',
+      };
 
-    final body = {
-      "origin": {
-        "location": {
-          "latLng": {"latitude": origin.latitude, "longitude": origin.longitude}
-        }
-      },
-      "destination": {
-        "location": {
-          "latLng": {
-            "latitude": destination.latitude,
-            "longitude": destination.longitude
+      final body = {
+        "origin": {
+          "location": {
+            "latLng": {
+              "latitude": origin.latitude,
+              "longitude": origin.longitude
+            }
           }
-        }
-      },
-      "travelMode": "DRIVE",
-      "routingPreference": "TRAFFIC_AWARE",
-      "departureTime": "2023-10-15T15:01:23.045123456Z",
-      "computeAlternativeRoutes": false,
-      "routeModifiers": {
-        "avoidTolls": false,
-        "avoidHighways": false,
-        "avoidFerries": false
-      },
-      "languageCode": "en-US",
-      "units": "IMPERIAL"
-    };
+        },
+        "destination": {
+          "location": {
+            "latLng": {
+              "latitude": destination.latitude,
+              "longitude": destination.longitude
+            }
+          }
+        },
+        "travelMode": "DRIVE",
+        "routingPreference": "TRAFFIC_AWARE",
+        "departureTime": "2023-10-15T15:01:23.045123456Z",
+        "computeAlternativeRoutes": false,
+        "routeModifiers": {
+          "avoidTolls": false,
+          "avoidHighways": false,
+          "avoidFerries": false
+        },
+        "languageCode": "en-US",
+        "units": "IMPERIAL"
+      };
 
-    final response =
-        await _dio.post(url, options: Options(headers: headers), data: body);
-    print('helloq242');
-    print(response);
-    if (response.statusCode == 200) {
-      // Successful response
-      // TODO: Handle and display the response data as per your requirement
-      print(response.data);
-      return Directions.fromMap(response.data);
+      final response =
+          await _dio.post(url, options: Options(headers: headers), data: body);
+      print('helloq242');
+      print(response);
+      if (response.statusCode == 200) {
+        // Successful response
+        // TODO: Handle and display the response data as per your requirement
+        print(response.data);
+        return Directions.fromMap(response.data);
+      } else {
+        return Directions(
+            polylinePoints: [], totalDistance: 5, totalDuration: '5');
+      }
+    } else {
+      return Directions(
+          polylinePoints: [], totalDistance: 5, totalDuration: '5');
     }
-    throw Exception('Request failed with status: ${response.statusCode}');
+
+    // throw Exception('Request failed with status: ${response.statusCode}');
   }
 
   // static Future<LatLng> getCurrentLocation() async {
