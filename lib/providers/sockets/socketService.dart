@@ -28,7 +28,8 @@ class SocketService with ChangeNotifier {
 //         token: tk
 //     }
 // })
-  void connectserver(BuildContext context) {
+  late BuildContext context;
+  void connectserver() {
     // String tk =
     //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicGhvbmUiOiIrODQ0NDQ0NDQ0NDQiLCJ0eXBlIjoiVXNlcl9WaXAiLCJpYXQiOjE2OTA5NjM0NzksImV4cCI6MTY5MjA0MzQ3OX0.o0kfUy4iiG5kyYoB3ea8URXpISHenDkopQdlKvwtNeU";
 
@@ -42,13 +43,13 @@ class SocketService with ChangeNotifier {
       (data) {
         _socket?.emit(
             'user-login', {"user_id": context.read<UserViewModel>().idUser});
-        userFoundDriver(context);
-        handleTripUpdate(context);
-        scheduleStart(context);
-        reconectSocket(context);
-        receiptMessage(context);
+        userFoundDriver();
+        handleTripUpdate();
+        scheduleStart();
+        reconectSocket();
+        receiptMessage();
         // getLocationDriver(context);
-        print("connect " + _socket!.id.toString());
+        // print("connect " + _socket!.id.toString());
       },
     );
     _socket?.onDisconnect((data) {
@@ -105,7 +106,7 @@ class SocketService with ChangeNotifier {
     );
   }
 
-  void reconectSocket(BuildContext context) {
+  void reconectSocket() {
     _socket?.on('user-reconnect', (data) {
       print('cin>>1 ${data}');
       print('cin>>2 ${data['schedule']}');
@@ -140,11 +141,11 @@ class SocketService with ChangeNotifier {
     });
   }
 
-  void userFoundDriverSchedule(BuildContext context) {
+  void userFoundDriverSchedule() {
     _socket?.on('found-driver-schedule', (data) {});
   }
 
-  void userFoundDriver(BuildContext context) {
+  void userFoundDriver() {
     _socket?.on('found-driver', (data) async {
       // if (data["is_scheduled"]) {
       //   context
@@ -170,7 +171,7 @@ class SocketService with ChangeNotifier {
     });
   }
 
-  void scheduleStart(BuildContext context) {
+  void scheduleStart() {
     _socket?.on('schedule-start', (data) async {
       final providerTrip = context.read<TripsViewModel>();
       final providerListTrip = context.read<ListTripViewModel>();
@@ -194,7 +195,7 @@ class SocketService with ChangeNotifier {
     });
   }
 
-  void handleTripUpdate(BuildContext context) {
+  void handleTripUpdate() {
     _socket?.on('trip-update', (data) async {
       print("cout<< cho vy : ${data['status']}");
       print("cout<< cho vy : ${data}");
@@ -213,7 +214,7 @@ class SocketService with ChangeNotifier {
     _socket?.emit("user-cancel-trip", {trip_id: trip_id});
   }
 
-  void receiptMessage(BuildContext context) {
+  void receiptMessage() {
     _socket?.on("message-to-user", (data) {
       print('cout<<<<<11$data');
       DateTime now = DateTime.now();

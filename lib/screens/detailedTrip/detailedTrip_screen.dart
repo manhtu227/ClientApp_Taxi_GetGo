@@ -17,8 +17,8 @@ class DetailedTripScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, Object> data =
-        ModalRoute.of(context)!.settings.arguments as Map<String, Object>;
+    Map<String, dynamic> data =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final format = DateFormat("HH:mm dd/MM/yyyy");
     final TripModel trip =
         context.read<ListTripViewModel>().tripByID(data['idTrip'] as int);
@@ -66,7 +66,8 @@ class DetailedTripScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               InfoStats(
-                  title: "Khoảng cách", content: "${trip.info.totalDistance} km"),
+                  title: "Khoảng cách",
+                  content: "${trip.info.totalDistance} km"),
               Container(
                 height: MediaQuery.of(context).size.height * 0.08,
                 width: 1,
@@ -74,7 +75,7 @@ class DetailedTripScreen extends StatelessWidget {
               ),
               InfoStats(
                 title: "Giá tiền",
-                content: "Giá tiền",
+                content: '${trip.info.totalDistance * 7000}',
                 color: themedata.primaryColor,
               ),
               Container(
@@ -82,7 +83,7 @@ class DetailedTripScreen extends StatelessWidget {
                 width: 1,
                 decoration: BoxDecoration(color: Colors.black54),
               ),
-              InfoStats(title: "Dịch vụ", content: "loai xe"),
+              InfoStats(title: "Dịch vụ", content: "4 chỗ"),
             ],
           ),
           const Divider(height: 1, color: Colors.black54),
@@ -90,7 +91,7 @@ class DetailedTripScreen extends StatelessWidget {
           Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: Address(
-                address: "dideemr ddense",
+                address: trip.desLocation.summary,
                 img: "assets/svgs/currentlocation.svg",
                 color: themedata.primaryColor,
               )),
@@ -98,13 +99,12 @@ class DetailedTripScreen extends StatelessWidget {
           Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: Address(
-                address: "diem di",
+                address: trip.currentLocation.summary,
                 img: "assets/svgs/currentlocation.svg",
               )),
           const SizedBox(height: 15),
-          UserLineInfo(
-              title: "Phương thức thanh toán", info: "phuong thuc thanh toasn"),
-          UserLineInfo(title: "Lưu ý", info: "note note"),
+          UserLineInfo(title: "Phương thức thanh toán", info: "Tiền mặt"),
+          UserLineInfo(title: "Lưu ý", info: "Không có"),
           const SizedBox(height: 30),
           // context.read<DriverViewModel>().status == "Done"
           //     ? InkWell(

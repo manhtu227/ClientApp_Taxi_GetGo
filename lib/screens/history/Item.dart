@@ -102,7 +102,8 @@ class _ItemState extends State<Item> {
                           ),
                           Text(
                             DateFormat('MMM d, y | hh:mm a').format(
-                                DateTime.parse(widget.trip['createdAt'])),
+                                DateTime.parse(widget.trip['createdAt'])
+                                    .add(Duration(hours: 7))),
                             style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w400,

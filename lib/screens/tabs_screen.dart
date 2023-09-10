@@ -41,8 +41,11 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     super.initState();
     // print('sao vaaaaa: ${context.read<SocketService>().socket.connected}');
-    if (context.read<SocketService>().socket == null)
-      context.read<SocketService>().connectserver(context);
+    context.read<SocketService>().context = context;
+    if (context.read<SocketService>().socket == null) {
+      print("sao v thoat socket");
+      context.read<SocketService>().connectserver();
+    }
   }
 
   void _selectPage(int index) {
