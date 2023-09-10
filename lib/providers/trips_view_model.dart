@@ -85,7 +85,7 @@ class TripsViewModel with ChangeNotifier {
 
   void updatePolylinePoints(List<PointLatLng> polylinePoints) {
     _info.polylinePoints = polylinePoints;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateTotalDistance(double totalDistance) {

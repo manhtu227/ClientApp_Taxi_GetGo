@@ -1,11 +1,13 @@
 import 'package:clientapp_taxi_getgo/screens/auth/login.dart';
 import 'package:clientapp_taxi_getgo/screens/auth/updateAccount.dart';
 import 'package:clientapp_taxi_getgo/screens/auth/verify.dart';
+import 'package:clientapp_taxi_getgo/screens/detailedTrip/detailedTrip_screen.dart';
 import 'package:clientapp_taxi_getgo/screens/distance/Distance.dart';
 import 'package:clientapp_taxi_getgo/screens/home/home.dart';
 import 'package:clientapp_taxi_getgo/screens/message/screen_message.dart';
 import 'package:clientapp_taxi_getgo/screens/order/SelectCar.dart';
 import 'package:clientapp_taxi_getgo/screens/order/SelectPayment.dart';
+import 'package:clientapp_taxi_getgo/screens/profile/profile_screen.dart';
 import 'package:clientapp_taxi_getgo/screens/ratting/rating.dart';
 import 'package:clientapp_taxi_getgo/screens/search/search_des_sreen.dart';
 import 'package:clientapp_taxi_getgo/screens/search/search_driver_screen.dart';
@@ -26,6 +28,8 @@ class Routes {
   static const String paymentMethod = '/SelectePayment';
   static const String updateAccount = '/updateAccount';
   static const String message = '/message';
+  static const String setting = '/setting';
+  static const String detailTrip = '/detailTrip';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -55,9 +59,15 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SelectPayment());
       case message:
         return MaterialPageRoute(builder: (_) => MessageScreen());
+      case setting:
+        return MaterialPageRoute(builder: (_) => ProfileScreen());
+      case detailTrip:
+        return MaterialPageRoute(
+            builder: (_) => DetailedTripScreen(), settings: settings);
       case updateAccount:
         return MaterialPageRoute(
             builder: (_) => UpdateAccount(), settings: settings);
+
       default:
         return null;
     }

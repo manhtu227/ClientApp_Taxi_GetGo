@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:clientapp_taxi_getgo/widgets/IconText.dart';
 import 'package:clientapp_taxi_getgo/widgets/PlaceStrip.dart';
@@ -70,11 +71,11 @@ class _ItemState extends State<Item> {
                           children: [
                             IconText(
                               icon: "km",
-                              text: "4 km",
+                              text: "${widget.trip['distance']} km",
                             ),
                             IconText(
                               icon: "clock",
-                              text: "4 mins",
+                              text: "${widget.trip['duration']} mins",
                             ),
                             IconText(
                               icon: "money",
@@ -131,8 +132,13 @@ class _ItemState extends State<Item> {
                       if (widget.trip['status'] != 'Done' &&
                           widget.trip['status'] != 'Cancelled')
                         ButtonSizeL(
-                          onTap: () {},
-                          name: "Track Driver",
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.detailTrip,
+                                arguments: {
+                                  'idTrip': widget.trip['id'],
+                                });
+                          },
+                          name: "Xem chi tiết",
                           height: 40,
                         ),
                     ],

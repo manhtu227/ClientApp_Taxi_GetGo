@@ -64,6 +64,8 @@ dependencies:
   slide_to_act: ^2.0.1
   firebase_messaging: ^14.6.1
   flutter_local_notifications: ^14.1.1
+  flutter_phone_direct_caller: ^2.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

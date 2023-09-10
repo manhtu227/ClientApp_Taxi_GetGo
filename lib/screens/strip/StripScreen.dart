@@ -187,7 +187,7 @@ class _TripScreenState extends State<TripScreen> {
                                       BorderRadius.all(Radius.circular(50)),
                                   color: Theme.of(context).primaryColor),
                               child: const Icon(
-                                Icons.close,
+                                Icons.phone,
                                 size: 20,
                                 color: Colors.white,
                               ),

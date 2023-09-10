@@ -4,6 +4,7 @@ import 'package:clientapp_taxi_getgo/providers/trips_view_model.dart';
 import 'package:clientapp_taxi_getgo/routes/routes.dart';
 import 'package:clientapp_taxi_getgo/screens/history/MyBooking.dart';
 import 'package:clientapp_taxi_getgo/screens/home/home.dart';
+import 'package:clientapp_taxi_getgo/screens/profile/profile_screen.dart';
 import 'package:clientapp_taxi_getgo/services/notifications.dart';
 import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:flutter/material.dart';
@@ -24,14 +25,14 @@ class _TabsScreenState extends State<TabsScreen> {
     },
     {
       'page': MyBooking(),
-      'title': 'History',
+      'title': 'My Booking',
     },
+    // {
+    //   'page': HomeScreen(),
+    //   'title': 'Login',
+    // },
     {
-      'page': HomeScreen(),
-      'title': 'Login',
-    },
-    {
-      'page': HomeScreen(),
+      'page': ProfileScreen(),
       'title': 'profile',
     },
   ];

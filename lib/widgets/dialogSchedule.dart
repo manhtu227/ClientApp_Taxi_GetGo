@@ -3,7 +3,7 @@ import 'package:clientapp_taxi_getgo/widgets/ButtonSizeL.dart';
 import 'package:flutter/material.dart';
 
 class DialogSchedule {
-  static show(BuildContext context) {
+  static show(BuildContext context,int id) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -53,7 +53,12 @@ class DialogSchedule {
                       width: 150,
                     ),
                     ButtonSizeL(
-                        onTap: () {}, name: 'OK', fontSize: 14, width: 100),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        name: 'OK',
+                        fontSize: 14,
+                        width: 100),
                   ],
                 )
               ],

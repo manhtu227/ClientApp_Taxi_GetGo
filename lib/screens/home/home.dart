@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             InkWell(
               onTap: () {
-                DialogSchedule.show(context);
+                // DialogSchedule.show(context);
               },
               child: Container(
                 margin: EdgeInsets.only(left: ScreenUtil().setWidth(16)),
