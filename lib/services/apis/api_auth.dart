@@ -16,7 +16,7 @@ class ApiAuth {
     print('cout<<<<<<<<<$token');
     Response response = await _dio.post(RoutePathApi.login,
         data: {'phone': phone, 'password': password, 'token_fcm': token});
-      
+
     return response.data;
   }
 
@@ -35,7 +35,7 @@ class ApiAuth {
     try {
       print(phone);
       final response = await _dio.get(RoutePathApi.checkPhone,
-          queryParameters: {'phone': "84555555555"});
+          queryParameters: {'phone': phone.substring(1)});
       return response.data;
     } catch (error) {
       throw (error);

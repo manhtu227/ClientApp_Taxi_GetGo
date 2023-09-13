@@ -47,22 +47,26 @@ class _MapScreenState extends State<MapScreen> {
     context.read<SocketService>().socket?.on('get-location-driver', (data) {
       print('cout<< $data');
       print('cout<< ${data["directions"]}');
-      if (context.read<TripsViewModel>().driverLocation.status == 'comming' &&
-          mounted &&
-          data["directions"] != '' &&
-          data["directions"] != null) {
-        context.read<TripsViewModel>().updateDriverLocation(
-            LatLng(data['lat'] / 1, data['lng'] / 1),
-            data['heading'] / 1 ?? 0,
-            'comming');
-        addMarkerPicture('current', LatLng(data['lat'] / 1, data['lng'] / 1),
-            widget.icon, data['heading'] / 1);
-        final directionsData = data["directions"];
-        print(data["directions"] is String);
-        if (directionsData != '' && directionsData is String) {
-          widget.listPoint = PolylinePoints().decodePolyline(directionsData);
+      if (mounted) {
+        if (context.read<TripsViewModel>().driverLocation.status == 'comming') {
+          context.read<TripsViewModel>().updateDriverLocation(
+              LatLng(data['lat'] / 1, data['lng'] / 1),
+              data['heading'] / 1 ?? 0,
+              'comming');
+          addMarkerPicture('current', LatLng(data['lat'] / 1, data['lng'] / 1),
+              widget.icon, data['heading'] / 1);
+          final directionsData = data["directions"];
+          print(data["directions"] is String);
+          if (data["directions"] != '' &&
+              data["directions"] != null &&
+              directionsData is String) {
+            widget.listPoint = PolylinePoints().decodePolyline(directionsData);
+          } else {
+            widget.listPoint = [];
+          }
+          setState(() {});
+          // context.read<DirectionsViewModel>().updatePolylines1(directionsData);
         }
-        // context.read<DirectionsViewModel>().updatePolylines1(directionsData);
       }
     });
   }
