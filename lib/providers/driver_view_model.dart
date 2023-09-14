@@ -27,7 +27,7 @@ class DriverProvider with ChangeNotifier {
     _driver.avatar = data["driver_info"]["avatar"];
     _driver.id = data["driver_info"]["id"].toString();
     _driver.name = data["driver_info"]["name"];
-    _driver.phone = data["driver_info"]["avatar"];
+    _driver.phone = data["driver_info"]["phone"];
     // _driver.email = data["driver_info"]["email"];
     // _driver.gender = data["driver_info"]["gender"];
     // _driver.birthDate = data["driver_info"]["birthday"];

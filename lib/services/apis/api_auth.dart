@@ -33,7 +33,8 @@ class ApiAuth {
 
   static Future<Map<String, dynamic>> checkPhone(String phone) async {
     try {
-      print(phone);
+      print('phone11');
+      print(phone.substring(1));
       final response = await _dio.get(RoutePathApi.checkPhone,
           queryParameters: {'phone': phone.substring(1)});
       return response.data;

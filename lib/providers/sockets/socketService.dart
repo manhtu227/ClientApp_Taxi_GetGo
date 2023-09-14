@@ -175,6 +175,7 @@ class SocketService with ChangeNotifier {
     _socket?.on('schedule-start', (data) async {
       final providerTrip = context.read<TripsViewModel>();
       final providerListTrip = context.read<ListTripViewModel>();
+      print("tu");
       print('print( $data)');
       providerTrip.updateTripID(data['trip_id'], context);
       await context.read<DriverProvider>().updateDriver(data['driver_info']);

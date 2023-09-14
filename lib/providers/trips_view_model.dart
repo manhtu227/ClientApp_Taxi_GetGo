@@ -58,7 +58,6 @@ class TripsViewModel with ChangeNotifier {
   void pushMessage(String text, String id, String time) {
     _message.add({id: text, "time": time});
     notifyListeners();
-
   }
 
   void setShedule(bool isSchedule, DateTime schedule) {
@@ -191,10 +190,12 @@ class TripsViewModel with ChangeNotifier {
     try {
       Location location = Location();
       location.getLocation().then((location) async {
+        print(location);
         _myLocation = await APIPlace.getAddressFromLatLng(
             location.latitude!, location.longitude!);
       });
       location.onLocationChanged.listen((newLocation) async {
+        print(newLocation);
         _myLocation = await APIPlace.getAddressFromLatLng(
             newLocation.latitude!, newLocation.longitude!);
         // notifyListeners();
