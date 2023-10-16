@@ -7,9 +7,9 @@ Flutter: 3.7.7
 Model used in the project: MVVM
 ![image](https://github.com/manhtu227/ClientApp_Taxi_GetGo/assets/106653553/b3cdabdb-5850-434d-b370-b5464142b710)
 
-Server: Nodejs: https://github.com/Baguette-Enjoyer/getsgo
-Client: Flutter: https://github.com/manhtu227/ClientApp_Taxi_GetGo
-Driver: Flutter: https://github.com/doanhuuloc/get-go-driver
+Server: Nodejs: https://github.com/Baguette-Enjoyer/getsgo.
+Client: Flutter: https://github.com/manhtu227/ClientApp_Taxi_GetGo.
+Driver: Flutter: https://github.com/doanhuuloc/get-go-driver.
 Link Figma: https://www.figma.com/file/lICzrrVCIfh8sCkYhJVEqm/GetGo-App?type=design&node-id=0%3A1&mode=design&t=RVyULSdlNnuTHxo3-1
 
 ## Features:
