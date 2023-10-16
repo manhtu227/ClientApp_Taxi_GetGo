@@ -2,6 +2,10 @@
 
 This is my project built when I started learning flutter. The purpose of this project is to simulate the car booking process on an application. Maybe you're curious about the project name, let me explain quickly. I relied on the operating procedures of the be, SM green taxi, and grab applications to help me write the figma design and running process as closely as possible. I wanted to challenge myself and also learn something while doing it. this project, so don't be confused about the app or anything, there is no video tutorial on how to clone this app, so I did everything by myself.
 
+## Demo:
+This video includes the user-side app, the driver-side app and Callcenter.
+https://youtu.be/qqm4FTB-f1g
+
 ## Things you should know about my project:
 - Flutter: 3.7.7
 - Server: Nodejs: https://github.com/Baguette-Enjoyer/getsgo.
@@ -25,6 +29,4 @@ This is my project built when I started learning flutter. The purpose of this pr
  9. Chat message to driver
  10. Call to driver
  11. Cancel trip
-## Demo:
-This video includes the user-side app, the driver-side app and Callcenter.
-https://youtu.be/qqm4FTB-f1g
+
